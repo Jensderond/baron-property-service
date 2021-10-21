@@ -17,6 +17,6 @@ class PyberClient implements PyberClientInterface {
     {
         $req = $this->http->request('GET', '');
 
-        return $req->toArray();
+        return $req->getContent();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PropertyRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,7 +13,6 @@ class Property
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -82,9 +82,51 @@ class Property
      */
     private $external_storage;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $registration_type;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $sale;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $rent;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $category_rename;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $updateHash;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getCategory(): ?string
@@ -241,5 +283,118 @@ class Property
         $this->external_storage = $external_storage;
 
         return $this;
+    }
+
+    public function getCreated(): ?\DateTime
+    {
+        return $this->created;
+    }
+
+
+    /**
+     * @param string|\DateTime $created
+     *
+     * @return $this
+     */
+    public function setCreated($created): self
+    {
+        if (is_string($created)) {
+            $created = \DateTime::createFromFormat('Y-m-d H:i:s', $created);
+        }
+        $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUpdated(): ?\DateTime
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param string|\DateTime $updated
+     *
+     * @return $this
+     */
+    public function setUpdated( $updated): self
+    {
+        if (is_string($updated)) {
+            $updated = \DateTime::createFromFormat('Y-m-d H:i:s', $updated);
+        }
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getRegistrationType(): ?string
+    {
+        return $this->registration_type;
+    }
+
+    public function setRegistrationType(string $registration_type): self
+    {
+        $this->registration_type = $registration_type;
+
+        return $this;
+    }
+
+    public function getSale(): ?bool
+    {
+        return $this->sale;
+    }
+
+    public function setSale(?bool $sale): self
+    {
+        $this->sale = $sale;
+
+        return $this;
+    }
+
+    public function getRent(): ?bool
+    {
+        return $this->rent;
+    }
+
+    public function setRent(?bool $rent): self
+    {
+        $this->rent = $rent;
+
+        return $this;
+    }
+
+    public function getCategoryRename(): ?string
+    {
+        return $this->category_rename;
+    }
+
+    public function setCategoryRename(string $category_rename): self
+    {
+        $this->category_rename = $category_rename;
+
+        return $this;
+    }
+
+    public function getUpdateHash(): ?string
+    {
+        return $this->updateHash;
+    }
+
+    public function setUpdateHash(?string $updateHash): self
+    {
+        $this->updateHash = $updateHash;
+
+        return $this;
+    }
+
+    public function map(Property $newProperties)
+    {
+        $reflectionClass = new \ReflectionClass($this);
+        foreach($reflectionClass->getMethods() as $method) { // setUpdateHash
+            if (substr($method->getName(), 0, 3) === 'set') {
+                $setMethod = 'set' . substr($method->getName(), 3);
+                $getMethod = 'get' . substr($method->getName(), 3); // getUpdateHash
+                $this->$setMethod($newProperties->$getMethod());
+            }
+        }
     }
 }

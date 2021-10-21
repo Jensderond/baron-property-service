@@ -36,6 +36,11 @@ class PropertyRepository extends ServiceEntityRepository
     }
     */
 
+    // TODO: Add query builder.
+//    public function updateOneByFields($existingProperty, $newProperty): Property {
+//        return $this->createQueryBuilder()
+//    }
+
     /*
     public function findOneBySomeField($value): ?Property
     {

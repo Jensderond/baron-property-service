@@ -3,32 +3,36 @@
 namespace App\Service;
 
 use App\Contract\PyberClientInterface;
-// use Symfony\Component\Serializer\SerializerInterface;
+use App\Entity\Property;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class PyberService implements PyberClientInterface
+class PropertyService implements PyberClientInterface
 {
-    // private $serializer;
     private $client;
 
     public function __construct(PyberClientInterface $client)
     {
-        // $this->serializer = $serializer;
         $this->client = $client;
     }
 
+    /**
+     * @return Property[]
+     */
     public function getProperties(): array
     {
         $properties = $this->client->getProperties();
 
         $serializer = new Serializer(
-            [new GetSetMethodNormalizer(), new ArrayDenormalizer()],
+            [new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter()), new GetSetMethodNormalizer(), new ArrayDenormalizer()],
             [new JsonEncoder()]
         );
 
-        return $serializer->deserialize(json_encode($properties),'App\Entity\Property[]', 'json');//->deserialize($properties, 'App\Entity\Property[]', 'json');
+        return $serializer->deserialize($properties,'App\Entity\Property[]', 'json');
     }
 }
+
