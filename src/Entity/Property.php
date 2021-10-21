@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\PropertyRepository;
@@ -256,8 +258,12 @@ class Property
         return $this->archived;
     }
 
-    public function setArchived(bool $archived): self
+    public function setArchived($archived): self
     {
+        if (is_string($archived)) {
+            $archived = filter_var($archived, FILTER_VALIDATE_BOOLEAN);
+        }
+
         $this->archived = $archived;
 
         return $this;
