@@ -39,6 +39,7 @@ class PropertyImportController extends AbstractController
 
 
             if(!isset($existingProperty)) {
+                $property->setUpdateHash(md5(serialize($property)));
                 $entityManager->persist($property);
 
                 $createdProperties++;

@@ -117,6 +117,116 @@ class Property
      */
     private $updateHash;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $street_address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $house_number;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $house_number_addition;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $street;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $zip;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $acceptance;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $energy_class;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $subtype;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $new_construction;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $pets_allowed;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $images = [];
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="object", nullable=true)
+     */
+    private $titles;
+
+    /**
+     * @ORM\Column(type="object", nullable=true)
+     */
+    private $meta_keywords;
+
+    /**
+     * @ORM\Column(type="object", nullable=true)
+     */
+    private $meta_descriptions;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $price_type_sale;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -396,5 +506,269 @@ class Property
                 $this->$setMethod($newProperties->$getMethod());
             }
         }
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getStreetAddress(): ?string
+    {
+        return $this->street_address;
+    }
+
+    public function setStreetAddress(?string $street_address): self
+    {
+        $this->street_address = $street_address;
+
+        return $this;
+    }
+
+    public function getHouseNumber(): ?string
+    {
+        return $this->house_number;
+    }
+
+    public function setHouseNumber(?string $house_number): self
+    {
+        $this->house_number = $house_number;
+
+        return $this;
+    }
+
+    public function getHouseNumberAddition(): ?string
+    {
+        return $this->house_number_addition;
+    }
+
+    public function setHouseNumberAddition(?string $house_number_addition): self
+    {
+        $this->house_number_addition = $house_number_addition;
+
+        return $this;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): self
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    public function getZip(): ?string
+    {
+        return $this->zip;
+    }
+
+    public function setZip(?string $zip): self
+    {
+        $this->zip = $zip;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getAcceptance(): ?string
+    {
+        return $this->acceptance;
+    }
+
+    public function setAcceptance(?string $acceptance): self
+    {
+        $this->acceptance = $acceptance;
+
+        return $this;
+    }
+
+    public function getEnergyClass(): ?string
+    {
+        return $this->energy_class;
+    }
+
+    public function setEnergyClass(?string $energy_class): self
+    {
+        $this->energy_class = $energy_class;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSubtype(): ?string
+    {
+        return $this->subtype;
+    }
+
+    public function setSubtype(?string $subtype): self
+    {
+        $this->subtype = $subtype;
+
+        return $this;
+    }
+
+    public function getNewConstruction(): ?bool
+    {
+        return $this->new_construction;
+    }
+
+    public function setNewConstruction(bool $new_construction): self
+    {
+        $this->new_construction = $new_construction;
+
+        return $this;
+    }
+
+    public function getPetsAllowed(): ?bool
+    {
+        return $this->pets_allowed;
+    }
+
+    public function setPetsAllowed(bool $pets_allowed): self
+    {
+        $this->pets_allowed = $pets_allowed;
+
+        return $this;
+    }
+
+    public function getImages(): ?array
+    {
+        return $this->images;
+    }
+
+    public function setImages(?array $images): self
+    {
+        $this->images = $images;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getTitles()
+    {
+        return $this->titles;
+    }
+
+    public function setTitles($titles): self
+    {
+        $this->titles = $titles;
+
+        return $this;
+    }
+
+    public function getMetaKeywords()
+    {
+        return $this->meta_keywords;
+    }
+
+    public function setMetaKeywords($meta_keywords): self
+    {
+        $this->meta_keywords = $meta_keywords;
+
+        return $this;
+    }
+
+    public function getMetaDescriptions()
+    {
+        return $this->meta_descriptions;
+    }
+
+    public function setMetaDescriptions($meta_descriptions): self
+    {
+        $this->meta_descriptions = $meta_descriptions;
+
+        return $this;
+    }
+
+    public function getPriceTypeSale(): ?string
+    {
+        return $this->price_type_sale;
+    }
+
+    public function setPriceTypeSale(?string $price_type_sale): self
+    {
+        $this->price_type_sale = $price_type_sale;
+
+        return $this;
     }
 }
