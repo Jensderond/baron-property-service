@@ -389,10 +389,10 @@ class Property
     public function map(Property $newProperties)
     {
         $reflectionClass = new \ReflectionClass($this);
-        foreach($reflectionClass->getMethods() as $method) { // setUpdateHash
+        foreach($reflectionClass->getMethods() as $method) {
             if (substr($method->getName(), 0, 3) === 'set') {
                 $setMethod = 'set' . substr($method->getName(), 3);
-                $getMethod = 'get' . substr($method->getName(), 3); // getUpdateHash
+                $getMethod = 'get' . substr($method->getName(), 3);
                 $this->$setMethod($newProperties->$getMethod());
             }
         }
