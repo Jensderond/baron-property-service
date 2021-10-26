@@ -1,6 +1,7 @@
 api_platform:
     title: Baron property service
     version: 0.0.1
+    show_webby: false
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:

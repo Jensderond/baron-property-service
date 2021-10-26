@@ -16,7 +16,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * A property.
  * @ORM\Entity
  */
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        'get' => ['method' => 'get'],
+    ],
+    itemOperations: [
+        'get' => ['method' => 'get'],
+    ],
+)]
 #[ApiFilter(DateFilter::class, properties: ["created", "updated"])]
 #[ApiFilter(SearchFilter::class, properties: ["category" => "exact", "archived" => "exact", "status" => "exact", "description" => "partial"])]
 #[ApiFilter(RangeFilter::class, properties: ["price"])]
