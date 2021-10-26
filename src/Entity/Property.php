@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\PropertyRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ORM\Entity(repositoryClass=PropertyRepository::class)
+ * A property.
+ * @ORM\Entity
  */
+#[ApiResource]
+#[ApiFilter(DateFilter::class, properties: ["created", "updated"])]
+#[ApiFilter(SearchFilter::class, properties: ["category" => "exact", "archived" => "exact", "status" => "exact", "description" => "partial"])]
+#[ApiFilter(RangeFilter::class, properties: ["price"])]
 class Property
 {
     /**
