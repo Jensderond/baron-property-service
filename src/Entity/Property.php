@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use DateTime;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use ReflectionClass;
 
 /**
  * A property.
- * @ORM\Entity
  */
 #[ApiResource(
     collectionOperations: [
@@ -24,225 +26,140 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
         'get' => ['method' => 'get'],
     ],
 )]
-#[ApiFilter(DateFilter::class, properties: ["created", "updated"])]
-#[ApiFilter(SearchFilter::class, properties: ["category" => "exact", "archived" => "exact", "status" => "exact", "description" => "partial"])]
-#[ApiFilter(RangeFilter::class, properties: ["price"])]
+#[ApiFilter(DateFilter::class, properties: ['created', 'updated'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'description' => 'partial'])]
+#[ApiFilter(RangeFilter::class, properties: ['price'])]
+#[Entity]
 class Property
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     */
+    #[Id]
+    #[Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[Column(type: 'string', length: 100, nullable: true)]
     private $category;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[Column(type: 'boolean')]
     private $archived;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $build_year;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $build_period;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $living_space;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $plot_surface;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $volume;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $rooms;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $bedrooms;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $bathrooms;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[Column(type: 'string', length: 100)]
     private $status;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $other_indoor_space;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $external_storage;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[Column(type: 'datetime')]
     private $created;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[Column(type: 'datetime')]
     private $updated;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Column(type: 'string', length: 50)]
     private $registration_type;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private $sale;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[Column(type: 'boolean', nullable: true)]
     private $rent;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[Column(type: 'string', length: 255)]
     private $category_rename;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $updateHash;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: 'integer', nullable: true)]
     private $price;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $address;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $street_address;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $house_number;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $house_number_addition;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $street;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $zip;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $city;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $latitude;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $longitude;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $acceptance;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
+    #[Column(type: 'string', length: 10, nullable: true)]
     private $energy_class;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $type;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $subtype;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[Column(type: 'boolean')]
     private $new_construction;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[Column(type: 'boolean')]
     private $pets_allowed;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
+    #[Column(type: 'array', nullable: true)]
     private $images = [];
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
-    /**
-     * @ORM\Column(type="object", nullable=true)
-     */
+    #[Column(type: 'object', nullable: true)]
     private $titles;
 
-    /**
-     * @ORM\Column(type="object", nullable=true)
-     */
+    #[Column(type: 'object', nullable: true)]
     private $meta_keywords;
 
-    /**
-     * @ORM\Column(type="object", nullable=true)
-     */
+    #[Column(type: 'object', nullable: true)]
     private $meta_descriptions;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: 'string', length: 255, nullable: true)]
     private $price_type_sale;
 
     public function getId(): ?int
@@ -417,41 +334,36 @@ class Property
         return $this;
     }
 
-    public function getCreated(): ?\DateTime
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }
 
-
     /**
-     * @param string|\DateTime $created
-     *
-     * @return $this
+     * @param string|DateTime $created
      */
     public function setCreated($created): self
     {
         if (is_string($created)) {
-            $created = \DateTime::createFromFormat('Y-m-d H:i:s', $created);
+            $created = DateTime::createFromFormat('Y-m-d H:i:s', $created);
         }
         $this->created = $created;
 
         return $this;
     }
 
-    public function getUpdated(): ?\DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
 
     /**
-     * @param string|\DateTime $updated
-     *
-     * @return $this
+     * @param string|DateTime $updated
      */
-    public function setUpdated( $updated): self
+    public function setUpdated($updated): self
     {
         if (is_string($updated)) {
-            $updated = \DateTime::createFromFormat('Y-m-d H:i:s', $updated);
+            $updated = DateTime::createFromFormat('Y-m-d H:i:s', $updated);
         }
         $this->updated = $updated;
 
@@ -520,11 +432,11 @@ class Property
 
     public function map(Property $newProperties)
     {
-        $reflectionClass = new \ReflectionClass($this);
-        foreach($reflectionClass->getMethods() as $method) {
-            if (substr($method->getName(), 0, 3) === 'set') {
-                $setMethod = 'set' . substr($method->getName(), 3);
-                $getMethod = 'get' . substr($method->getName(), 3);
+        $reflectionClass = new ReflectionClass($this);
+        foreach ($reflectionClass->getMethods() as $method) {
+            if ('set' === substr($method->getName(), 0, 3)) {
+                $setMethod = 'set'.substr($method->getName(), 3);
+                $getMethod = 'get'.substr($method->getName(), 3);
                 $this->$setMethod($newProperties->$getMethod());
             }
         }

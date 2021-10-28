@@ -16,6 +16,12 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
+    "composer/semver": {
+        "version": "3.2.6"
+    },
+    "composer/xdebug-handler": {
+        "version": "2.0.2"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -99,6 +105,18 @@
     "fig/link-util": {
         "version": "1.1.2"
     },
+    "friendsofphp/php-cs-fixer": {
+        "version": "3.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "be2103eb4a20942e28a6dd87736669b757132435"
+        },
+        "files": [
+            ".php-cs-fixer.dist.php"
+        ]
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -120,6 +138,9 @@
     "nikic/php-parser": {
         "version": "v4.13.0"
     },
+    "php-cs-fixer/diff": {
+        "version": "v2.0.2"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -128,6 +149,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.5.1"
+    },
+    "phpstan/phpstan": {
+        "version": "0.12.99"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -143,6 +167,9 @@
     },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "rector/rector": {
+        "version": "0.11.60"
     },
     "symfony/asset": {
         "version": "v5.3.4"
@@ -250,6 +277,9 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/options-resolver": {
+        "version": "v5.3.7"
+    },
     "symfony/password-hasher": {
         "version": "v5.3.8"
     },
@@ -270,6 +300,9 @@
     },
     "symfony/polyfill-php81": {
         "version": "v1.23.0"
+    },
+    "symfony/process": {
+        "version": "v5.3.7"
     },
     "symfony/property-access": {
         "version": "v5.3.8"

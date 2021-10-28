@@ -2,7 +2,7 @@
 
 namespace App\Contract;
 
-interface PyberClientInterface
+interface PropertyClientInterface
 {
     public function getProperties();
 }

@@ -23,9 +23,13 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    App\Client\PyberClient: ~
+    App\Client\PropertyClient: ~
 
-    App\Contract\PyberClientInterface: '@App\Client\PyberClient'
+    App\Contract\PropertyClientInterface: '@App\Client\PropertyClient'
+
+    App\Command\ImportPropertiesCommand:
+        arguments:
+            - '@App\Service\PropertyService'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
