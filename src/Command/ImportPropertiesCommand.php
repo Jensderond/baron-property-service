@@ -40,6 +40,7 @@ class ImportPropertiesCommand extends Command
             if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdateHash() !== md5(serialize($property))) {
                 $property->setUpdateHash(md5(serialize($property)));
                 $existingProperty->map($property);
+                $existingProperty->setSlug($property->getAddress() . '-' . $property->getId());
                 $this->entityManager->persist($existingProperty);
                 ++$updatedProperties;
 
@@ -48,6 +49,7 @@ class ImportPropertiesCommand extends Command
 
             if (!isset($existingProperty)) {
                 $property->setUpdateHash(md5(serialize($property)));
+                $property->setSlug($property->getAddress() . '-' . $property->getId());
                 $this->entityManager->persist($property);
                 ++$createdProperties;
             }

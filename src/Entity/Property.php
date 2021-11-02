@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Cocur\Slugify\Slugify;
 use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -161,6 +162,9 @@ class Property
 
     #[Column(type: 'string', length: 255, nullable: true)]
     private $price_type_sale;
+
+    #[Column(type: 'string', length: 255)]
+    private $slug;
 
     public function getId(): ?int
     {
@@ -702,6 +706,25 @@ class Property
     public function setPriceTypeSale(?string $price_type_sale): self
     {
         $this->price_type_sale = $price_type_sale;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        if(!isset($slug)) {
+            $this->slug = "";
+            return $this;
+        }
+
+        $slugify = new Slugify();
+
+        $this->slug = $slugify->slugify($slug);
 
         return $this;
     }

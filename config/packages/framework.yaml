@@ -9,7 +9,7 @@ framework:
     http_client:
         scoped_clients:
             pyber.client:
-                base_uri: 'https://app.pyber.nl/export/objects/9872ed9fc22fc182d371c3e9ed316094'
+                base_uri: '%env(PYBER_CLIENT_URL)%'
                 headers:
                     Accept: 'application/json'
 
