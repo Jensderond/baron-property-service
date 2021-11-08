@@ -23,6 +23,8 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter': ~
+
     App\Client\PropertyClient: ~
 
     App\Contract\PropertyClientInterface: '@App\Client\PropertyClient'
