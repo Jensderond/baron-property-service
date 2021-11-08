@@ -11,7 +11,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Cocur\Slugify\Slugify;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use ReflectionClass;
@@ -165,6 +168,17 @@ class Property
 
     #[Column(type: 'string', length: 255)]
     private $slug;
+
+    #[OneToMany(mappedBy: 'property', targetEntity: Video::class, orphanRemoval: true, cascade: ["persist"])]
+    private $videos;
+
+    #[Column(type: 'text')]
+    private $description_nl;
+
+    public function __construct()
+    {
+        $this->videos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -725,6 +739,57 @@ class Property
         $slugify = new Slugify();
 
         $this->slug = $slugify->slugify($slug);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Video[]
+     */
+    public function getVideos(): ?Collection
+    {
+        return $this->videos;
+    }
+
+    public function setVideos(Video ...$videos): self
+    {
+        foreach ($videos as $video) {
+            $this->addVideo($video);
+        }
+
+        return $this;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+            $video->setProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getProperty() === $this) {
+                $video->setProperty(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDescriptionNl(): ?string
+    {
+        return $this->description_nl;
+    }
+
+    public function setDescriptionNl(string $description_nl): self
+    {
+        $this->description_nl = $description_nl;
 
         return $this;
     }
