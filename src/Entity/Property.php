@@ -209,7 +209,7 @@ class Property
         return $this->archived;
     }
 
-    public function setArchived($archived): self
+    public function setArchived(string|bool $archived): self
     {
         if (is_string($archived)) {
             $archived = filter_var($archived, FILTER_VALIDATE_BOOLEAN);
@@ -357,10 +357,7 @@ class Property
         return $this->created;
     }
 
-    /**
-     * @param string|DateTime $created
-     */
-    public function setCreated($created): self
+    public function setCreated(string|DateTime $created): self
     {
         if (is_string($created)) {
             $created = DateTime::createFromFormat('Y-m-d H:i:s', $created);
@@ -375,10 +372,7 @@ class Property
         return $this->updated;
     }
 
-    /**
-     * @param string|DateTime $updated
-     */
-    public function setUpdated($updated): self
+    public function setUpdated(string|DateTime $updated): self
     {
         if (is_string($updated)) {
             $updated = DateTime::createFromFormat('Y-m-d H:i:s', $updated);
