@@ -5,15 +5,18 @@ namespace App\Command;
 use App\Entity\Property;
 use App\Service\PropertyService;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Flysystem\FilesystemException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use League\Flysystem\FilesystemOperator;
 
 class ImportPropertiesCommand extends Command
 {
     protected static $defaultName = 'app:import-properties';
 
-    public function __construct(protected PropertyService $propertyService, protected EntityManagerInterface $entityManager)
+    public function __construct(protected PropertyService $propertyService, protected FilesystemOperator $publicUploadsFilesystem, protected EntityManagerInterface $entityManager, private LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -41,6 +44,8 @@ class ImportPropertiesCommand extends Command
                 $property->setUpdateHash(md5(serialize($property)));
                 $existingProperty->map($property);
                 $existingProperty->setSlug($property->getAddress() . '-' . $property->getId());
+                $existingProperty->setImage($this->downloadFileIfNotExists($property->getImage()));
+                $existingProperty->setImages($this->downloadAllImages($property->getImages()));
                 $this->entityManager->persist($existingProperty);
                 ++$updatedProperties;
 
@@ -50,6 +55,8 @@ class ImportPropertiesCommand extends Command
             if (!isset($existingProperty)) {
                 $property->setUpdateHash(md5(serialize($property)));
                 $property->setSlug($property->getAddress() . '-' . $property->getId());
+                $property->setImage($this->downloadFileIfNotExists($property->getImage()));
+                $property->setImages($this->downloadAllImages($property->getImages()));
                 $this->entityManager->persist($property);
                 ++$createdProperties;
             }
@@ -60,5 +67,39 @@ class ImportPropertiesCommand extends Command
         $output->write('Saved '.$createdProperties.' properties and updated '.$updatedProperties.' properties');
 
         return Command::SUCCESS;
+    }
+
+    private function downloadFileIfNotExists(?string $url): string|null {
+        if(!$url) return null;
+        $relativeUrl = parse_url($url);
+
+        try {
+            if($this->publicUploadsFilesystem->fileExists($relativeUrl['path'])) {
+                $this->logger->info("File exists");
+                return '/uploads' . $relativeUrl['path'];
+            }
+        } catch (FilesystemException $e) {
+            $this->logger->error("Filesystem error:" . $e);
+        }
+
+        try {
+            $file = file_get_contents($url);
+            $this->logger->info("Downloading file");
+            $this->publicUploadsFilesystem->write($relativeUrl['path'], $file);
+        } catch ( FilesystemException $e) {
+            $this->logger->error("Download went wrong:" . $e);
+        }
+
+        return '/uploads' .  $relativeUrl['path'];
+    }
+
+    private function downloadAllImages(array $images): array {
+        $tempImages = [];
+        foreach($images as $image) {
+            if(!empty($image['url'])) {
+                $tempImages[] = $this->downloadFileIfNotExists($image['url']);
+            }
+        }
+        return $tempImages;
     }
 }

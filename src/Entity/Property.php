@@ -175,6 +175,12 @@ class Property
     #[Column(type: 'text')]
     private $description_nl;
 
+    #[Column(type: 'string', length: 20, nullable: true)]
+    private $commercial_manager_main_phone;
+
+    #[Column(type: 'string', length: 20, nullable: true)]
+    private $commercial_manager_whatsapp;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -745,10 +751,18 @@ class Property
         return $this->videos;
     }
 
-    public function setVideos(Video ...$videos): self
+    public function setVideos(ArrayCollection $videos): self
     {
         foreach ($videos as $video) {
-            $this->addVideo($video);
+            if( $video instanceof Video ) {
+                $found = $this->videos->filter( function ( $item ) use ( $video ) {
+                    return $item->getCode() === $video->getCode();
+                } );
+
+                if ( empty( $found ) ) {
+                    $this->addVideo( $video );
+                }
+            }
         }
 
         return $this;
@@ -756,10 +770,8 @@ class Property
 
     public function addVideo(Video $video): self
     {
-        if (!$this->videos->contains($video)) {
-            $this->videos[] = $video;
-            $video->setProperty($this);
-        }
+        $this->videos[] = $video;
+        $video->setProperty($this);
 
         return $this;
     }
@@ -784,6 +796,30 @@ class Property
     public function setDescriptionNl(string $description_nl): self
     {
         $this->description_nl = $description_nl;
+
+        return $this;
+    }
+
+    public function getCommercialManagerMainPhone(): ?string
+    {
+        return $this->commercial_manager_main_phone;
+    }
+
+    public function setCommercialManagerMainPhone(?string $commercial_manager_main_phone): self
+    {
+        $this->commercial_manager_main_phone = $commercial_manager_main_phone;
+
+        return $this;
+    }
+
+    public function getCommercialManagerWhatsapp(): ?string
+    {
+        return $this->commercial_manager_whatsapp;
+    }
+
+    public function setCommercialManagerWhatsapp(?string $commercial_manager_whatsapp): self
+    {
+        $this->commercial_manager_whatsapp = $commercial_manager_whatsapp;
 
         return $this;
     }
