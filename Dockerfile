@@ -23,6 +23,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     && apt-get clean
 
 RUN a2enmod rewrite
+RUN a2enmod headers
 
 COPY ./docker/php.ini /usr/local/etc/php/php.ini
 COPY ./docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
