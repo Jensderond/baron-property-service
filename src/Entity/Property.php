@@ -14,9 +14,9 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
 use ReflectionClass;
 
 /**
@@ -97,9 +97,6 @@ class Property
     #[Column(type: 'string', length: 255)]
     private $category_rename;
 
-    #[Column(type: 'string', length: 255, nullable: true)]
-    private $updateHash;
-
     #[Column(type: 'integer', nullable: true)]
     private $price;
 
@@ -169,7 +166,7 @@ class Property
     #[Column(type: 'string', length: 255)]
     private $slug;
 
-    #[OneToMany(mappedBy: 'property', targetEntity: Video::class, orphanRemoval: true, cascade: ["persist"])]
+    #[OneToMany(mappedBy: 'property', targetEntity: Video::class, orphanRemoval: true, cascade: ['persist'])]
     private $videos;
 
     #[Column(type: 'text')]
@@ -432,18 +429,6 @@ class Property
     public function setCategoryRename(string $category_rename): self
     {
         $this->category_rename = $category_rename;
-
-        return $this;
-    }
-
-    public function getUpdateHash(): ?string
-    {
-        return $this->updateHash;
-    }
-
-    public function setUpdateHash(?string $updateHash): self
-    {
-        $this->updateHash = $updateHash;
 
         return $this;
     }
@@ -731,8 +716,9 @@ class Property
 
     public function setSlug(?string $slug): self
     {
-        if(!isset($slug)) {
-            $this->slug = "";
+        if (!isset($slug)) {
+            $this->slug = '';
+
             return $this;
         }
 
@@ -754,13 +740,13 @@ class Property
     public function setVideos(ArrayCollection $videos): self
     {
         foreach ($videos as $video) {
-            if( $video instanceof Video ) {
-                $found = $this->videos->filter( function ( $item ) use ( $video ) {
+            if ($video instanceof Video) {
+                $found = $this->videos->filter(function ($item) use ($video) {
                     return $item->getCode() === $video->getCode();
-                } );
+                });
 
-                if ( empty( $found ) ) {
-                    $this->addVideo( $video );
+                if (empty($found)) {
+                    $this->addVideo($video);
                 }
             }
         }

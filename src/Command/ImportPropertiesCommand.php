@@ -6,11 +6,11 @@ use App\Entity\Property;
 use App\Service\PropertyService;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use League\Flysystem\FilesystemOperator;
 
 class ImportPropertiesCommand extends Command
 {
@@ -40,10 +40,9 @@ class ImportPropertiesCommand extends Command
         $propertyRepo = $this->entityManager->getRepository(Property::class);
 
         foreach ($data as $property) {
-            if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdateHash() !== md5(serialize($property))) {
-                $property->setUpdateHash(md5(serialize($property)));
+            if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdated() !== $property->getUpdated()) {
                 $existingProperty->map($property);
-                $existingProperty->setSlug($property->getAddress() . '-' . $property->getId());
+                $existingProperty->setSlug($property->getAddress().'-'.$property->getId());
                 $existingProperty->setImage($this->downloadFileIfNotExists($property->getImage()));
                 $existingProperty->setImages($this->downloadAllImages($property->getImages()));
                 $this->entityManager->persist($existingProperty);
@@ -53,8 +52,7 @@ class ImportPropertiesCommand extends Command
             }
 
             if (!isset($existingProperty)) {
-                $property->setUpdateHash(md5(serialize($property)));
-                $property->setSlug($property->getAddress() . '-' . $property->getId());
+                $property->setSlug($property->getAddress().'-'.$property->getId());
                 $property->setImage($this->downloadFileIfNotExists($property->getImage()));
                 $property->setImages($this->downloadAllImages($property->getImages()));
                 $this->entityManager->persist($property);
@@ -69,37 +67,43 @@ class ImportPropertiesCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function downloadFileIfNotExists(?string $url): string|null {
-        if(!$url) return null;
+    private function downloadFileIfNotExists(?string $url): string|null
+    {
+        if (!$url) {
+            return null;
+        }
         $relativeUrl = parse_url($url);
 
         try {
-            if($this->publicUploadsFilesystem->fileExists($relativeUrl['path'])) {
-                $this->logger->info("File exists");
-                return '/uploads' . $relativeUrl['path'];
+            if ($this->publicUploadsFilesystem->fileExists($relativeUrl['path'])) {
+                $this->logger->info('File exists');
+
+                return '/uploads'.$relativeUrl['path'];
             }
         } catch (FilesystemException $e) {
-            $this->logger->error("Filesystem error:" . $e);
+            $this->logger->error('Filesystem error:'.$e);
         }
 
         try {
             $file = file_get_contents($url);
-            $this->logger->info("Downloading file");
+            $this->logger->info('Downloading file');
             $this->publicUploadsFilesystem->write($relativeUrl['path'], $file);
-        } catch ( FilesystemException $e) {
-            $this->logger->error("Download went wrong:" . $e);
+        } catch (FilesystemException $e) {
+            $this->logger->error('Download went wrong:'.$e);
         }
 
-        return '/uploads' .  $relativeUrl['path'];
+        return '/uploads'.$relativeUrl['path'];
     }
 
-    private function downloadAllImages(array $images): array {
+    private function downloadAllImages(array $images): array
+    {
         $tempImages = [];
-        foreach($images as $image) {
-            if(!empty($image['url'])) {
+        foreach ($images as $image) {
+            if (!empty($image['url'])) {
                 $tempImages[] = $this->downloadFileIfNotExists($image['url']);
             }
         }
+
         return $tempImages;
     }
 }
