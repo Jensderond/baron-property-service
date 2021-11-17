@@ -433,18 +433,6 @@ class Property
         return $this;
     }
 
-    public function map(Property $newProperties)
-    {
-        $reflectionClass = new ReflectionClass($this);
-        foreach ($reflectionClass->getMethods() as $method) {
-            if ('set' === substr($method->getName(), 0, 3)) {
-                $setMethod = 'set'.substr($method->getName(), 3);
-                $getMethod = 'get'.substr($method->getName(), 3);
-                $this->$setMethod($newProperties->$getMethod());
-            }
-        }
-    }
-
     public function getPrice(): ?int
     {
         return $this->price;
@@ -808,5 +796,17 @@ class Property
         $this->commercial_manager_whatsapp = $commercial_manager_whatsapp;
 
         return $this;
+    }
+
+    public function map(Property $newProperties)
+    {
+        $reflectionClass = new ReflectionClass($this);
+        foreach ($reflectionClass->getMethods() as $method) {
+            if ('set' === substr($method->getName(), 0, 3)) {
+                $setMethod = 'set'.substr($method->getName(), 3);
+                $getMethod = 'get'.substr($method->getName(), 3);
+                $this->$setMethod($newProperties->$getMethod());
+            }
+        }
     }
 }

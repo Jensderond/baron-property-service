@@ -40,7 +40,7 @@ class ImportPropertiesCommand extends Command
         $propertyRepo = $this->entityManager->getRepository(Property::class);
 
         foreach ($data as $property) {
-            if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdated() !== $property->getUpdated()) {
+            if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdated()->format('Y-m-d H:i:s') !== $property->getUpdated()->format('Y-m-d H:i:s')) {
                 $existingProperty->map($property);
                 $existingProperty->setSlug($property->getAddress().'-'.$property->getId());
                 $existingProperty->setImage($this->downloadFileIfNotExists($property->getImage()));
