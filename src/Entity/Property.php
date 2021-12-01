@@ -67,9 +67,6 @@ class Property
     #[Column(type: 'integer', nullable: true)]
     private $bedrooms;
 
-    #[Column(type: 'integer', nullable: true)]
-    private $bathrooms;
-
     #[Column(type: 'string', length: 100)]
     private $status;
 
@@ -178,9 +175,19 @@ class Property
     #[Column(type: 'string', length: 20, nullable: true)]
     private $commercial_manager_whatsapp;
 
+    #[Column(type: 'text', nullable: true)]
+    private $external_plans;
+
+    #[Column(type: 'text', nullable: true)]
+    private $external_panoramas;
+
+    #[OneToMany(mappedBy: 'property', targetEntity: Plan::class, orphanRemoval: true, cascade: ['persist'])]
+    private $plans;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
+        $this->plans = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -303,18 +310,6 @@ class Property
     public function setBedrooms(?int $bedrooms): self
     {
         $this->bedrooms = $bedrooms;
-
-        return $this;
-    }
-
-    public function getBathrooms(): ?int
-    {
-        return $this->bathrooms;
-    }
-
-    public function setBathrooms(?int $bathrooms): self
-    {
-        $this->bathrooms = $bathrooms;
 
         return $this;
     }
@@ -727,13 +722,23 @@ class Property
 
     public function setVideos(ArrayCollection $videos): self
     {
+        foreach ($this->videos as $video) {
+            $found = $videos->exists(function ($key, $item) use ($video) {
+                return $item->getCode() === $video->getCode();
+            });
+
+            if (!$found) {
+                $this->removeVideo($video);
+            }
+        }
+
         foreach ($videos as $video) {
             if ($video instanceof Video) {
-                $found = $this->videos->filter(function ($item) use ($video) {
+                $found = $this->videos->exists(function ($key, $item) use ($video) {
                     return $item->getCode() === $video->getCode();
                 });
 
-                if (empty($found)) {
+                if (!$found) {
                     $this->addVideo($video);
                 }
             }
@@ -808,5 +813,84 @@ class Property
                 $this->$setMethod($newProperties->$getMethod());
             }
         }
+    }
+
+    public function getExternalPlans(): ?string
+    {
+        return $this->external_plans;
+    }
+
+    public function setExternalPlans(?string $external_plans): self
+    {
+        $this->external_plans = $external_plans;
+
+        return $this;
+    }
+
+    public function getExternalPanoramas(): ?string
+    {
+        return $this->external_panoramas;
+    }
+
+    public function setExternalPanoramas(?string $external_panoramas): self
+    {
+        $this->external_panoramas = $external_panoramas;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Plan[]
+     */
+    public function getPlans(): Collection
+    {
+        return $this->plans;
+    }
+
+    public function setPlans(ArrayCollection $plans): self
+    {
+        foreach ($this->plans as $plan) {
+            $found = $plans->exists(function ($key, $item) use ($plan) {
+                return $item->getId() === $plan->getId();
+            });
+
+            if (!$found) {
+                $this->removePlan($plan);
+            }
+        }
+
+        foreach ($plans as $plan) {
+            if ($plan instanceof Plan) {
+                $found = $this->plans->exists(function ($key, $item) use ($plan) {
+                    return $item->getId() === $plan->getId();
+                });
+
+                if (!$found) {
+                    $this->addPlan($plan);
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    public function addPlan(Plan $plan): self
+    {
+        $this->plans[] = $plan;
+        $plan->setProperty($this);
+
+        return $this;
+    }
+
+    public function removePlan(Plan $plan): self
+    {
+        if ($this->plans->removeElement($plan)) {
+            // set the owning side to null (unless already changed)
+            if ($plan->getProperty() === $this) {
+                $plan->setProperty(null);
+            }
+        }
+
+        return $this;
     }
 }

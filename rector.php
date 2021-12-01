@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 use Rector\Core\Configuration\Option;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Rector\Doctrine\Set\DoctrineSetList;
-use Rector\Symfony\Set\SymfonySetList;
 use Rector\Nette\Set\NetteSetList;
-use Rector\Set\ValueObject\SetList;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
+use Rector\Set\ValueObject\SetList;
+use Rector\Symfony\Set\SymfonySetList;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\SymfonyPhpConfig\ValueObjectInliner;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // get parameters
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::PATHS, [
-        __DIR__ . '/src'
+        __DIR__.'/src',
     ]);
 
     // Define what rule sets will be applied

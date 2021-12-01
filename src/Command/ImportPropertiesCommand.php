@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Plan;
 use App\Entity\Property;
 use App\Service\PropertyService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,11 +41,17 @@ class ImportPropertiesCommand extends Command
         $propertyRepo = $this->entityManager->getRepository(Property::class);
 
         foreach ($data as $property) {
+            /* @var $existingProperty Property */
             if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdated()->format('Y-m-d H:i:s') !== $property->getUpdated()->format('Y-m-d H:i:s')) {
                 $existingProperty->map($property);
                 $existingProperty->setSlug($property->getAddress().'-'.$property->getId());
                 $existingProperty->setImage($this->downloadFileIfNotExists($property->getImage()));
                 $existingProperty->setImages($this->downloadAllImages($property->getImages()));
+
+                foreach ($existingProperty->getPlans() as $plan) {
+                    $plan->setUrl($this->downloadFileIfNotExists($plan->getUrl()));
+                }
+
                 $this->entityManager->persist($existingProperty);
                 ++$updatedProperties;
 
@@ -55,6 +62,11 @@ class ImportPropertiesCommand extends Command
                 $property->setSlug($property->getAddress().'-'.$property->getId());
                 $property->setImage($this->downloadFileIfNotExists($property->getImage()));
                 $property->setImages($this->downloadAllImages($property->getImages()));
+
+                foreach ($property->getPlans() as $plan) {
+                    $plan->setUrl($this->downloadFileIfNotExists($plan->getUrl()));
+                }
+
                 $this->entityManager->persist($property);
                 ++$createdProperties;
             }
@@ -105,5 +117,18 @@ class ImportPropertiesCommand extends Command
         }
 
         return $tempImages;
+    }
+
+    private function downloadPlans(array $plans): array
+    {
+        $tempPlans = [];
+        /* @var $plan Plan */
+        foreach ($plans as $plan) {
+            if (!empty($plan->getUrl())) {
+                $tempPlans[] = $this->downloadFileIfNotExists($plan->getUrl());
+            }
+        }
+
+        return $tempPlans;
     }
 }
