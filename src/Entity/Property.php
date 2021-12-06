@@ -31,8 +31,8 @@ use ReflectionClass;
     ],
 )]
 #[ApiFilter(DateFilter::class, properties: ['created', 'updated'])]
-#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'description' => 'partial'])]
-#[ApiFilter(RangeFilter::class, properties: ['price'])]
+#[ApiFilter(SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'address' => 'partial'])]
+#[ApiFilter(RangeFilter::class, properties: ['price', 'rooms', 'plot_surface'])]
 #[Entity]
 class Property
 {
