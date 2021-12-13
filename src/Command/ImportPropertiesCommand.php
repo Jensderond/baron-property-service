@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\Plan;
 use App\Entity\Property;
 use App\Service\PropertyService;
 use Doctrine\ORM\EntityManagerInterface;
