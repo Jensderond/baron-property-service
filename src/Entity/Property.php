@@ -184,6 +184,12 @@ class Property
     #[OneToMany(mappedBy: 'property', targetEntity: Plan::class, orphanRemoval: true, cascade: ['persist'])]
     private $plans;
 
+    #[Column(type: 'integer', nullable: true)]
+    private $rental_price;
+
+    #[Column(type: 'integer', nullable: true)]
+    private $deposit;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -890,6 +896,30 @@ class Property
                 $plan->setProperty(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRentalPrice(): ?int
+    {
+        return $this->rental_price;
+    }
+
+    public function setRentalPrice(?int $rental_price): self
+    {
+        $this->rental_price = $rental_price;
+
+        return $this;
+    }
+
+    public function getDeposit(): ?int
+    {
+        return $this->deposit;
+    }
+
+    public function setDeposit(?int $deposit): self
+    {
+        $this->deposit = $deposit;
 
         return $this;
     }
