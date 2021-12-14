@@ -1,4 +1,4 @@
-FROM jitesoft/composer:8.0 as composer
+FROM jitesoft/composer:8.1 as composer
 
 ADD . /build
 WORKDIR /build
@@ -6,7 +6,7 @@ WORKDIR /build
 ENV APP_ENV prod
 RUN composer install --no-dev -o
 
-FROM php:8.0.12-apache
+FROM php:8.1.0-apache
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
       libzip-dev \
