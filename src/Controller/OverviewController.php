@@ -28,21 +28,21 @@ class OverviewController extends ServiceEntityRepository
 
         $filteredTypes = [];
         foreach ($types as $type) {
-            if($type['type'] !== null) {
+            if (null !== $type['type']) {
                 $filteredTypes[] = $type['type'];
             }
         }
 
         $filteredCities = [];
         foreach ($cities as $city) {
-            if($city['city'] !== null) {
+            if (null !== $city['city']) {
                 $filteredCities[] = $city['city'];
             }
         }
 
         $filteredStatusses = [];
         foreach ($statusses as $status) {
-            if($status['status'] !== null) {
+            if (null !== $status['status']) {
                 $filteredStatusses[] = $status['status'];
             }
         }
