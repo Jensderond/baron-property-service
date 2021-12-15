@@ -47,7 +47,7 @@ class ImportPropertiesCommand extends Command
                 $existingProperty->setImage($this->downloadFileIfNotExists($property->getImage()));
                 $existingProperty->setImages($this->downloadAllImages($property->getImages()));
 
-                foreach ($existingProperty->getPlans() as $plan) {
+                foreach ($property->getPlans() as $plan) {
                     $plan->setUrl($this->downloadFileIfNotExists($plan->getUrl()));
                 }
 
@@ -80,7 +80,7 @@ class ImportPropertiesCommand extends Command
 
     private function downloadFileIfNotExists(?string $url): string|null
     {
-        if (!$url) {
+        if (!$url && !$this->isValidUrl($url)) {
             return null;
         }
         $relativeUrl = parse_url($url);
@@ -90,20 +90,18 @@ class ImportPropertiesCommand extends Command
                 $this->logger->info('File exists');
 
                 return '/uploads'.$relativeUrl['path'];
+            } else {
+                $this->logger->info('Downloading file');
+                $file = file_get_contents($url);
+                $this->publicUploadsFilesystem->write($relativeUrl['path'], $file);
+
+                return '/uploads'.$relativeUrl['path'];
             }
         } catch (FilesystemException $e) {
             $this->logger->error('Filesystem error:'.$e);
         }
 
-        try {
-            $file = file_get_contents($url);
-            $this->logger->info('Downloading file');
-            $this->publicUploadsFilesystem->write($relativeUrl['path'], $file);
-        } catch (FilesystemException $e) {
-            $this->logger->error('Download went wrong:'.$e);
-        }
-
-        return '/uploads'.$relativeUrl['path'];
+        return null;
     }
 
     private function downloadAllImages(array $images): array
@@ -118,16 +116,10 @@ class ImportPropertiesCommand extends Command
         return $tempImages;
     }
 
-    private function downloadPlans(array $plans): array
+    private function isValidUrl(string $url): bool
     {
-        $tempPlans = [];
-        /* @var $plan Plan */
-        foreach ($plans as $plan) {
-            if (!empty($plan->getUrl())) {
-                $tempPlans[] = $this->downloadFileIfNotExists($plan->getUrl());
-            }
-        }
+        $url = parse_url($url);
 
-        return $tempPlans;
+        return isset($url['scheme']) && in_array($url['scheme'], ['http', 'https'], true);
     }
 }

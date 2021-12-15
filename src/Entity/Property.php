@@ -190,6 +190,30 @@ class Property
     #[Column(type: 'integer', nullable: true)]
     private $deposit;
 
+    #[Column(type: 'string', length: 20, nullable: true)]
+    private $rental_condition;
+
+    #[Column(type: 'string', length: 20, nullable: true)]
+    private $availability;
+
+    #[Column(type: 'date', nullable: true)]
+    private $available_from;
+
+    #[Column(type: 'date', nullable: true)]
+    private $rented_till;
+
+    #[Column(type: 'integer', nullable: true)]
+    private $min_contract_length;
+
+    #[Column(type: 'integer', nullable: true)]
+    private $contract_length;
+
+    #[Column(type: 'float', nullable: true)]
+    private $service_costs;
+
+    #[Column(type: 'float', nullable: true)]
+    private $owners_contribution_community;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -920,6 +944,102 @@ class Property
     public function setDeposit(?int $deposit): self
     {
         $this->deposit = $deposit;
+
+        return $this;
+    }
+
+    public function getRentalCondition(): ?string
+    {
+        return $this->rental_condition;
+    }
+
+    public function setRentalCondition(?string $rental_condition): self
+    {
+        $this->rental_condition = $rental_condition;
+
+        return $this;
+    }
+
+    public function getAvailability(): ?string
+    {
+        return $this->availability;
+    }
+
+    public function setAvailability(?string $availability): self
+    {
+        $this->availability = $availability;
+
+        return $this;
+    }
+
+    public function getAvailableFrom(): ?\DateTimeInterface
+    {
+        return $this->available_from;
+    }
+
+    public function setAvailableFrom(?\DateTimeInterface $available_from): self
+    {
+        $this->available_from = $available_from;
+
+        return $this;
+    }
+
+    public function getRentedTill(): ?\DateTimeInterface
+    {
+        return $this->rented_till;
+    }
+
+    public function setRentedTill(?\DateTimeInterface $rented_till): self
+    {
+        $this->rented_till = $rented_till;
+
+        return $this;
+    }
+
+    public function getMinContractLength(): ?int
+    {
+        return $this->min_contract_length;
+    }
+
+    public function setMinContractLength(?int $min_contract_length): self
+    {
+        $this->min_contract_length = $min_contract_length;
+
+        return $this;
+    }
+
+    public function getContractLength(): ?int
+    {
+        return $this->contract_length;
+    }
+
+    public function setContractLength(?int $contract_length): self
+    {
+        $this->contract_length = $contract_length;
+
+        return $this;
+    }
+
+    public function getServiceCosts(): ?float
+    {
+        return $this->service_costs;
+    }
+
+    public function setServiceCosts(?float $service_costs): self
+    {
+        $this->service_costs = $service_costs;
+
+        return $this;
+    }
+
+    public function getOwnersContributionCommunity(): ?float
+    {
+        return $this->owners_contribution_community;
+    }
+
+    public function setOwnersContributionCommunity(?float $owners_contribution_community): self
+    {
+        $this->owners_contribution_community = $owners_contribution_community;
 
         return $this;
     }
