@@ -36,8 +36,15 @@ WORKDIR /var/www
 
 RUN rm -rf ./docker ./.ddev ./rector.php
 
+
 RUN mkdir -p var/cache/prod var/cache/dev var/cache/test var/log \
    && chown -R www-data:www-data var/ \
    && chmod -R ug+rwX var/
+
+RUN groupadd dev -g 1000
+RUN useradd dev -g dev -d /home/dev -m
+RUN echo '%dev ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER dev:dev
+RUN usermod -u dev www-data
 
 CMD ["apache2-foreground"]
