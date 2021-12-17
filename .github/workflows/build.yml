@@ -77,8 +77,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: 22
           script: |
-            "/home/${{ secrets.USERNAME }}/go-deploy unpack -f /home/${{ secrets.USERNAME }}/releases/tars/${{ github.sha }}-release.tar.gz"
-            "/home/${{ secrets.USERNAME }}/go-deploy symlink -r $CI_PIPELINE_ID-release"
-            "rm -rf \`ls -v -d -1 /home/${{ secrets.USERNAME }}/releases/** | grep -w release | head -n -5\`"
-            "rm /home/${{ secrets.USERNAME }}/releases/tars/*"
-            "sudo service php8.1-fpm reload"
+            ./go-deploy unpack -f /home/${{ secrets.USERNAME }}/releases/tars/${{ github.sha }}-release.tar.gz
+            ./go-deploy symlink -r $CI_PIPELINE_ID-release
+            rm -rf \`ls -v -d -1 /home/${{ secrets.USERNAME }}/releases/** | grep -w release | head -n -5\`
+            rm /home/${{ secrets.USERNAME }}/releases/tars/*
+            sudo service php8.1-fpm reload
