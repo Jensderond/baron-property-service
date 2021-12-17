@@ -39,7 +39,10 @@ jobs:
         run: APP_ENV=prod composer install --no-dev -o
 
       - name: Make tar gzipped artifact
-        run: tar -czf app-${{ github.sha }}.tar.gz .
+        run: |
+          rm -rf .git .ddev rector.php
+          tar -czf /tmp/${{ github.sha }}-release.tar.gz .
+          mv /tmp/${{ github.sha }}-release.tar.gz ${{ github.sha }}-release.tar.gz
 
   deploy:
     runs-on: ubuntu-latest
