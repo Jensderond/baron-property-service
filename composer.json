@@ -1,4 +1,6 @@
 {
+    "name": "roundtheweb/baron-property-service",
+    "description": "API for baron's property service",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -33,7 +35,8 @@
         "symfony/serializer": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
         "symfony/validator": "5.4.*",
-        "symfony/yaml": "5.4.*"
+        "symfony/yaml": "5.4.*",
+        "webonyx/graphql-php": "^14.11"
     },
     "config": {
         "optimize-autoloader": true,
