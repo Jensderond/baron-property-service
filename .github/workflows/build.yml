@@ -33,7 +33,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        run: APP_ENV=prod composer install --no-dev -o
+        run: composer install -o
 
       - name: Make tar gzipped artifact
         run: |
