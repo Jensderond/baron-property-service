@@ -8,3 +8,4 @@ oneup_flysystem:
         public_uploads_filesystem:
             adapter: public_uploads_adapter
             visibility: public
+            directory_visibility: public
