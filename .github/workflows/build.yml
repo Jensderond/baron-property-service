@@ -64,7 +64,6 @@ jobs:
           host: woningen.uwbaron.nl
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          fingerprint: ${{ secrets.FINGERPRINT }}
           port: 22
           source: "${{ github.sha }}-release.tar.gz"
           target: "/home/${{ secrets.USERNAME }}/releases/tars/"
@@ -75,7 +74,6 @@ jobs:
           host: woningen.uwbaron.nl
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          fingerprint: ${{ secrets.FINGERPRINT }}
           port: 22
           script: |
             "/home/${{ secrets.USERNAME }}/go-deploy unpack -f /home/${{ secrets.USERNAME }}/releases/tars/${{ github.sha }}-release.tar.gz"
