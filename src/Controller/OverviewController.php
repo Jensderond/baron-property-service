@@ -22,14 +22,15 @@ class OverviewController extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        $types = $em->createQuery('SELECT DISTINCT p.type FROM App\Entity\Property p')->getResult();
+        $categories = $em->createQuery('SELECT DISTINCT p.category FROM App\Entity\Property p')->getResult();
         $cities = $em->createQuery('SELECT DISTINCT p.city FROM App\Entity\Property p')->getResult();
         $statusses = $em->createQuery('SELECT DISTINCT p.status FROM App\Entity\Property p')->getResult();
+        $types = $em->createQuery('SELECT DISTINCT p.type FROM App\Entity\Property p')->getResult();
 
-        $filteredTypes = [];
-        foreach ($types as $type) {
-            if (null !== $type['type']) {
-                $filteredTypes[] = $type['type'];
+        $filteredCategories = [];
+        foreach ($categories as $category) {
+            if (null !== $category['category']) {
+                $filteredCategories[] = $category['category'];
             }
         }
 
@@ -47,6 +48,13 @@ class OverviewController extends ServiceEntityRepository
             }
         }
 
-        return new JsonResponse(['filters' => ['types' => $filteredTypes, 'cities' => $filteredCities, 'statusses' => $filteredStatusses]]);
+        $filteredTypes = [];
+        foreach ($types as $type) {
+            if (null !== $type['type']) {
+                $filteredTypes[] = $type['type'];
+            }
+        }
+
+        return new JsonResponse(['filters' => ['categories' => $filteredCategories, 'types' => $filteredTypes, 'cities' => $filteredCities, 'statusses' => $filteredStatusses]]);
     }
 }
