@@ -79,6 +79,6 @@ jobs:
           script: |
             ./go-deploy unpack -f /home/${{ secrets.USERNAME }}/releases/tars/${{ github.sha }}-release.tar.gz
             ./go-deploy symlink -r ${{ github.sha }}-release
-            rm -rf `ls -v -d -1 /home/${{ secrets.USERNAME }}/releases/** | grep -w release | head -n -5`
+            rm -rf `ls -tr -d -1 /home/${{ secrets.USERNAME }}/releases/** | grep -w release | head -n -5`
             rm /home/${{ secrets.USERNAME }}/releases/tars/*
             sudo service php8.1-fpm reload
