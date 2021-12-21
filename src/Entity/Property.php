@@ -23,6 +23,12 @@ use ReflectionClass;
  * A property.
  */
 #[ApiResource(
+    graphql: [
+        'item_query',
+        'collection_query' => [
+            'pagination_type' => 'page',
+        ],
+    ],
     collectionOperations: [
         'get' => ['method' => 'get'],
     ],
