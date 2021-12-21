@@ -16,7 +16,6 @@
         "doctrine/doctrine-migrations-bundle": "^3.1.1",
         "doctrine/migrations": "^3.2.1",
         "doctrine/orm": "^2.10",
-        "nelmio/cors-bundle": "^2.1",
         "oneup/flysystem-bundle": "^4.1",
         "phpdocumentor/reflection-docblock": "^5.3",
         "symfony/asset": "5.4.*",
