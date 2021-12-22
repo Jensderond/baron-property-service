@@ -220,6 +220,9 @@ class Property
     #[Column(type: 'float', nullable: true)]
     private $owners_contribution_community;
 
+    #[Column(name: "`condition`", type: 'string', length: 10, nullable: true)]
+    private $condition;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -1046,6 +1049,18 @@ class Property
     public function setOwnersContributionCommunity(?float $owners_contribution_community): self
     {
         $this->owners_contribution_community = $owners_contribution_community;
+
+        return $this;
+    }
+
+    public function getCondition(): ?string
+    {
+        return $this->condition;
+    }
+
+    public function setCondition(?string $condition): self
+    {
+        $this->condition = $condition;
 
         return $this;
     }
