@@ -81,4 +81,6 @@ jobs:
             ./go-deploy symlink -r ${{ github.sha }}-release
             rm -rf `ls -tr -d -1 /home/${{ secrets.USERNAME }}/releases/** | grep -w release | head -n -5`
             rm /home/${{ secrets.USERNAME }}/releases/tars/*
+            cd /home/${{ secrets.USERNAME }}/releases/current/ && make migration
+            cd /home/${{ secrets.USERNAME }}/releases/current/ && make import
             sudo service php8.1-fpm reload

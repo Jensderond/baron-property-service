@@ -9,6 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Cocur\Slugify\Slugify;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -39,6 +40,7 @@ use ReflectionClass;
 #[ApiFilter(DateFilter::class, properties: ['created', 'updated'])]
 #[ApiFilter(SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'type' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'address' => 'partial'])]
 #[ApiFilter(RangeFilter::class, properties: ['price', 'rooms', 'plot_surface'])]
+#[ApiFilter(OrderFilter::class, properties: ['created', 'status'], arguments: ['orderParameterName' => 'order'])]
 #[Entity]
 class Property
 {
