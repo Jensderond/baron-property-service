@@ -9,33 +9,33 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "api-platform/core": "^2.6",
+        "api-platform/core": "^v2.6.7",
         "cocur/slugify": "^4.0",
         "composer/package-versions-deprecated": "^1.11.99.4",
-        "doctrine/doctrine-bundle": "^2.4",
-        "doctrine/doctrine-migrations-bundle": "^3.1.1",
-        "doctrine/migrations": "^3.2.1",
-        "doctrine/orm": "^2.10",
-        "oneup/flysystem-bundle": "^4.1",
+        "doctrine/doctrine-bundle": "^2.5.4",
+        "doctrine/doctrine-migrations-bundle": "^3.2.1",
+        "doctrine/migrations": "^3.3.2",
+        "doctrine/orm": "^2.10.4",
+        "oneup/flysystem-bundle": "^4.3.0",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "symfony/asset": "5.4.*",
-        "symfony/console": "5.4.*",
-        "symfony/dotenv": "5.4.*",
-        "symfony/expression-language": "5.4.*",
+        "symfony/asset": "6.0.*",
+        "symfony/console": "6.0.*",
+        "symfony/dotenv": "6.0.*",
+        "symfony/expression-language": "6.0.*",
         "symfony/flex": "^2.0",
-        "symfony/framework-bundle": "5.4.*",
-        "symfony/http-client": "5.4.*",
+        "symfony/framework-bundle": "6.0.*",
+        "symfony/http-client": "6.0.*",
         "symfony/monolog-bundle": "^3.7",
-        "symfony/property-access": "5.4.*",
-        "symfony/property-info": "5.4.*",
-        "symfony/proxy-manager-bridge": "5.4.*",
-        "symfony/runtime": "5.4.*",
-        "symfony/security-bundle": "5.4.*",
-        "symfony/serializer": "5.4.*",
-        "symfony/twig-bundle": "5.4.*",
-        "symfony/validator": "5.4.*",
-        "symfony/yaml": "5.4.*",
-        "webonyx/graphql-php": "^14.11"
+        "symfony/property-access": "6.0.*",
+        "symfony/property-info": "6.0.*",
+        "symfony/proxy-manager-bridge": "6.0.*",
+        "symfony/runtime": "6.0.*",
+        "symfony/security-bundle": "6.0.*",
+        "symfony/serializer": "6.0.*",
+        "symfony/twig-bundle": "6.0.*",
+        "symfony/validator": "6.0.*",
+        "symfony/yaml": "6.0.*",
+        "webonyx/graphql-php": "^v14.11.3"
     },
     "config": {
         "optimize-autoloader": true,
@@ -77,14 +77,14 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.4.*"
+            "require": "6.0.*"
         }
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.2",
         "rector/rector": "^0.11.60",
         "symfony/maker-bundle": "^1.34",
-        "symfony/stopwatch": "5.4.*",
-        "symfony/web-profiler-bundle": "5.4.*"
+        "symfony/stopwatch": "6.0.*",
+        "symfony/web-profiler-bundle": "6.0.*"
     }
 }
