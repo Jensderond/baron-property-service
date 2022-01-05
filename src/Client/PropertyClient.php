@@ -9,12 +9,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PropertyClient implements PropertyClientInterface
 {
-    private HttpClientInterface $http;
-
-    public function __construct(HttpClientInterface $pyberClient)
-    {
-        $this->http = $pyberClient;
-    }
+    public function __construct(private readonly HttpClientInterface $pyberClient) {}
 
     /**
      * @throws Exception\ServerExceptionInterface
@@ -25,7 +20,7 @@ class PropertyClient implements PropertyClientInterface
     public function getProperties(): string
     {
         try {
-            $req = $this->http->request('GET', '');
+            $req = $this->pyberClient->request('GET', '');
         } catch (Exception\TransportExceptionInterface $e) {
             throw new Error('Something went wrong with the request'.$e);
         }
