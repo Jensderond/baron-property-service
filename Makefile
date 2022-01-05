@@ -9,10 +9,10 @@ SYMFONY        = $(EXEC_PHP) ./bin/console
 COMPOSER       = $(EXEC_PHP) composer
 
 migration:
+	$(SYMFONY) cache:clear
 	$(SYMFONY) doctrine:cache:clear-metadata
 	$(SYMFONY) doctrine:migrations:diff --allow-empty-diff
 	$(SYMFONY) doctrine:migrations:migrate --no-interaction --allow-no-migration
-	$(SYMFONY) cache:clear
 
 reset-db:
 	$(SYMFONY) doctrine:database:drop --force
