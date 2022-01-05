@@ -3,6 +3,7 @@ name: Build and deploy application
 on:
   push:
     branches:
+      - staging
       - main
 
 jobs:
