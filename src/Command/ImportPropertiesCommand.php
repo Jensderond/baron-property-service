@@ -16,7 +16,7 @@ class ImportPropertiesCommand extends Command
 {
     protected static $defaultName = 'app:import-properties';
 
-    public function __construct(protected PropertyService $propertyService, protected FilesystemOperator $publicUploadsFilesystem, protected EntityManagerInterface $entityManager, private LoggerInterface $logger)
+    public function __construct(protected PropertyService $propertyService, protected FilesystemOperator $publicUploadsFilesystem, protected EntityManagerInterface $entityManager, private readonly LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -54,7 +54,7 @@ class ImportPropertiesCommand extends Command
                 $this->entityManager->persist($existingProperty);
                 ++$updatedProperties;
 
-                continue;
+                break;
             }
 
             if (!isset($existingProperty)) {

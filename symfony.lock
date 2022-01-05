@@ -138,6 +138,12 @@
     "monolog/monolog": {
         "version": "2.3.5"
     },
+    "nette/neon": {
+        "version": "v3.3.2"
+    },
+    "nette/utils": {
+        "version": "v3.2.6"
+    },
     "nikic/php-parser": {
         "version": "v4.13.0"
     },
@@ -449,6 +455,27 @@
     },
     "symfony/yaml": {
         "version": "v5.3.6"
+    },
+    "symplify/autowire-array-parameter": {
+        "version": "10.0.4"
+    },
+    "symplify/composer-json-manipulator": {
+        "version": "10.0.4"
+    },
+    "symplify/easy-testing": {
+        "version": "10.0.4"
+    },
+    "symplify/package-builder": {
+        "version": "10.0.4"
+    },
+    "symplify/smart-file-system": {
+        "version": "10.0.4"
+    },
+    "symplify/symfony-php-config": {
+        "version": "10.0.4"
+    },
+    "symplify/symplify-kernel": {
+        "version": "10.0.4"
     },
     "twig/twig": {
         "version": "v3.3.3"
