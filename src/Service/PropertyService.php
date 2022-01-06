@@ -15,12 +15,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class PropertyService implements PropertyClientInterface
 {
-    private $client;
-
-    public function __construct(PropertyClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    public function __construct(private readonly PropertyClientInterface $client) {}
 
     /**
      * @return Property[]

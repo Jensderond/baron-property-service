@@ -1,0 +1,87 @@
+name: Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
+      # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install -o
+
+      - name: Make tar gzipped artifact
+        run: |
+          rm -rf .git .ddev rector.php
+          tar -czf /tmp/${{ github.sha }}-release.tar.gz .
+          mv /tmp/${{ github.sha }}-release.tar.gz ${{ github.sha }}-release.tar.gz
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: release
+          path: ${{ github.sha }}-release.tar.gz
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@master
+        with:
+          name: release
+          path: ${{ github.sha }}-release.tar.gz
+
+      - name: SCP files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: 22
+          source: "${{ github.sha }}-release.tar.gz"
+          target: "/home/${{ secrets.USERNAME }}/releases/tars"
+          strip_components: 1
+
+      - name: SSH actions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: 22
+          script: |
+            ./go-deploy unpack -f /home/${{ secrets.USERNAME }}/releases/tars/${{ github.sha }}-release.tar.gz
+            ./go-deploy symlink -r ${{ github.sha }}-release
+            rm -rf `ls -tr -d -1 /home/${{ secrets.USERNAME }}/releases/** | grep -w release | head -n -5`
+            rm /home/${{ secrets.USERNAME }}/releases/tars/*
+            cd /home/${{ secrets.USERNAME }}/releases/current/ && APP_ENV=prod make migration
+            cd /home/${{ secrets.USERNAME }}/releases/current/ && APP_ENV=prod make import
+            sudo service php8.1-fpm reload

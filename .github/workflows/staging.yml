@@ -1,9 +1,9 @@
-name: Build and deploy application
+name: Staging
 
 on:
   push:
     branches:
-      - main
+      - staging
 
 jobs:
   build:
@@ -48,6 +48,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    environment: staging
     needs: build
     steps:
       - name: Checkout
@@ -61,7 +62,7 @@ jobs:
       - name: SCP files
         uses: appleboy/scp-action@master
         with:
-          host: woningen.uwbaron.nl
+          host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: 22
@@ -72,7 +73,7 @@ jobs:
       - name: SSH actions
         uses: appleboy/ssh-action@master
         with:
-          host: woningen.uwbaron.nl
+          host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: 22

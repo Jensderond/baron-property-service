@@ -151,7 +151,7 @@ class Property
     private $pets_allowed;
 
     #[Column(type: 'array', nullable: true)]
-    private $images = [];
+    private array $images = [];
 
     #[Column(type: 'string', length: 255, nullable: true)]
     private $image;
@@ -764,9 +764,7 @@ class Property
     public function setVideos(ArrayCollection $videos): self
     {
         foreach ($this->videos as $video) {
-            $found = $videos->exists(function ($key, $item) use ($video) {
-                return $item->getCode() === $video->getCode();
-            });
+            $found = $videos->exists(fn($key, $item) => $item->getCode() === $video->getCode());
 
             if (!$found) {
                 $this->removeVideo($video);
@@ -775,9 +773,7 @@ class Property
 
         foreach ($videos as $video) {
             if ($video instanceof Video) {
-                $found = $this->videos->exists(function ($key, $item) use ($video) {
-                    return $item->getCode() === $video->getCode();
-                });
+                $found = $this->videos->exists(fn($key, $item) => $item->getCode() === $video->getCode());
 
                 if (!$found) {
                     $this->addVideo($video);
@@ -848,7 +844,7 @@ class Property
     {
         $reflectionClass = new ReflectionClass($this);
         foreach ($reflectionClass->getMethods() as $method) {
-            if ('set' === substr($method->getName(), 0, 3)) {
+            if (str_starts_with($method->getName(), 'set')) {
                 $setMethod = 'set'.substr($method->getName(), 3);
                 $getMethod = 'get'.substr($method->getName(), 3);
                 $this->$setMethod($newProperties->$getMethod());
@@ -891,9 +887,7 @@ class Property
     public function setPlans(ArrayCollection $plans): self
     {
         foreach ($this->plans as $plan) {
-            $found = $plans->exists(function ($key, $item) use ($plan) {
-                return $item->getId() === $plan->getId();
-            });
+            $found = $plans->exists(fn($key, $item) => $item->getId() === $plan->getId());
 
             if (!$found) {
                 $this->removePlan($plan);
@@ -902,9 +896,7 @@ class Property
 
         foreach ($plans as $plan) {
             if ($plan instanceof Plan) {
-                $found = $this->plans->exists(function ($key, $item) use ($plan) {
-                    return $item->getId() === $plan->getId();
-                });
+                $found = $this->plans->exists(fn($key, $item) => $item->getId() === $plan->getId());
 
                 if (!$found) {
                     $this->addPlan($plan);
