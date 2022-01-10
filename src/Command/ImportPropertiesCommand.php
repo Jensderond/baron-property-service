@@ -43,7 +43,7 @@ class ImportPropertiesCommand extends Command
             /* @var $existingProperty Property */
             if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdated()->format('Y-m-d H:i:s') !== $property->getUpdated()->format('Y-m-d H:i:s')) {
                 $existingProperty->map($property);
-                $existingProperty->setSlug($property->getAddress().'-'.$property->getId());
+                $existingProperty->setSlug($property->getStreetAddress().'-'.$property->getHouseNumber().$property->getHouseNumberAddition().'-'.$property->getCity().'-'.$property->getId());
                 $existingProperty->setImage($this->downloadFileIfNotExists($property->getImage()));
                 $existingProperty->setImages($this->downloadAllImages($property->getImages()));
 
@@ -58,7 +58,7 @@ class ImportPropertiesCommand extends Command
             }
 
             if (!isset($existingProperty)) {
-                $property->setSlug($property->getAddress().'-'.$property->getId());
+                $property->setSlug($property->getStreetAddress().'-'.$property->getHouseNumber().$property->getHouseNumberAddition().'-'.$property->getCity().'-'.$property->getId());
                 $property->setImage($this->downloadFileIfNotExists($property->getImage()));
                 $property->setImages($this->downloadAllImages($property->getImages()));
 
