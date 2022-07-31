@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## Description: Setup init login
+## Usage: init
+## Example: "ddev init"
+
+echo "Running init script on the host system."
+date
+echo "Start script"
+
+ddev composer install
+
+date
+echo "End script"
