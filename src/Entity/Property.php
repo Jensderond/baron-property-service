@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -39,6 +40,7 @@ use ReflectionClass;
 )]
 #[ApiFilter(DateFilter::class, properties: ['created', 'updated'])]
 #[ApiFilter(SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'type' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'address' => 'partial'])]
+#[ApiFilter(BooleanFilter::class, properties: ['archived'])]
 #[ApiFilter(RangeFilter::class, properties: ['price', 'rooms', 'plot_surface'])]
 #[ApiFilter(OrderFilter::class, properties: ['created', 'status'], arguments: ['orderParameterName' => 'order'])]
 #[Entity]
