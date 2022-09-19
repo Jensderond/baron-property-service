@@ -22,7 +22,10 @@ class SanityController extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        $allProps = $em->getRepository(Property::class)->findAll();
+        $allProps = $em->getRepository(Property::class)->createQueryBuilder('p')
+            ->where('p.archived = 0 OR p.archived is null')
+            ->getQuery()
+            ->getResult();
 
         $properties = [];
 

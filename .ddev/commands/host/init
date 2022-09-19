@@ -9,6 +9,7 @@ date
 echo "Start script"
 
 ddev composer install
+make reset-db
 
 date
 echo "End script"

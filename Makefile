@@ -1,6 +1,6 @@
 ifndef APP_ENV
 	include .env
-	EXEC_PHP       = /usr/local/bin/ddev exec php
+	EXEC_PHP       = /opt/homebrew/bin/ddev exec php
 else
 	EXEC_PHP       = /usr/bin/php
 endif

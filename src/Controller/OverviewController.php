@@ -22,39 +22,44 @@ class OverviewController extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
 
-        $categories = $em->createQuery('SELECT DISTINCT p.category FROM App\Entity\Property p')->getResult();
-        $cities = $em->createQuery('SELECT DISTINCT p.city FROM App\Entity\Property p')->getResult();
-        $statusses = $em->createQuery('SELECT DISTINCT p.status FROM App\Entity\Property p')->getResult();
-        $types = $em->createQuery('SELECT DISTINCT p.type FROM App\Entity\Property p')->getResult();
+        $categories = $em->createQuery('SELECT DISTINCT p.category FROM App\Entity\Property p WHERE p.archived = 0 OR p.archived is null')->getResult();
+        $cities = $em->createQuery('SELECT DISTINCT p.city FROM App\Entity\Property p WHERE p.archived = 0 OR p.archived is null')->getResult();
+        $statusses = $em->createQuery('SELECT DISTINCT p.status FROM App\Entity\Property p WHERE p.archived = 0 OR p.archived is null')->getResult();
+        $types = $em->createQuery('SELECT DISTINCT p.type FROM App\Entity\Property p WHERE p.archived = 0 OR p.archived is null')->getResult();
 
         $filteredCategories = [];
         foreach ($categories as $category) {
-            if (null !== $category['category']) {
+            if (checkEmptyItem($category['category'])) {
                 $filteredCategories[] = $category['category'];
             }
         }
 
         $filteredCities = [];
         foreach ($cities as $city) {
-            if (null !== $city['city']) {
+            if (checkEmptyItem($city['city'])) {
                 $filteredCities[] = $city['city'];
             }
         }
 
         $filteredStatusses = [];
         foreach ($statusses as $status) {
-            if (null !== $status['status']) {
+            if (checkEmptyItem($status['status'])) {
                 $filteredStatusses[] = $status['status'];
             }
         }
 
         $filteredTypes = [];
         foreach ($types as $type) {
-            if (null !== $type['type']) {
+            if (checkEmptyItem($type['type'])) {
                 $filteredTypes[] = $type['type'];
             }
         }
 
         return new JsonResponse(['filters' => ['categories' => $filteredCategories, 'types' => $filteredTypes, 'cities' => $filteredCities, 'statusses' => $filteredStatusses]]);
     }
+}
+
+
+function checkEmptyItem(string | null $item): bool {
+    return null !== $item && $item !== "";
 }

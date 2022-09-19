@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Property;
 use App\Service\PropertyService;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
@@ -36,10 +37,13 @@ class ImportPropertiesCommand extends Command
 
         $createdProperties = 0;
         $updatedProperties = 0;
+        $archivedProperties = 0;
+        $idsInImport = [];
         $data = $this->propertyService->getProperties();
         $propertyRepo = $this->entityManager->getRepository(Property::class);
 
         foreach ($data as $property) {
+            $idsInImport[] = $property->getId();
             /* @var $existingProperty Property */
             if (($existingProperty = $propertyRepo->findOneBy(['id' => $property->getId()])) && $existingProperty->getUpdated()->format('Y-m-d H:i:s') !== $property->getUpdated()->format('Y-m-d H:i:s')) {
                 $existingProperty->map($property);
@@ -71,9 +75,31 @@ class ImportPropertiesCommand extends Command
             }
         }
 
+        $disabledProperties = $propertyRepo->createQueryBuilder('p')
+            ->where('p.id NOT IN (:ids)')
+            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->setParameter('ids', $idsInImport, Connection::PARAM_INT_ARRAY)
+            ->getQuery()
+            ->getResult();
+
+        foreach ($disabledProperties as $disabledProperty) {
+            /* @var $property Property | null */
+            if($property = $propertyRepo->findOneBy(['id' => $disabledProperty->getId()])) {
+                $property->setArchived(true);
+                $this->entityManager->persist($property);
+                ++$archivedProperties;
+            }
+        }
+
         $this->entityManager->flush();
 
         $output->write('Saved '.$createdProperties.' properties and updated '.$updatedProperties.' properties');
+        if($archivedProperties > 0){
+            $output->writeln([
+                '',
+                'Archived '.$archivedProperties.' properties',
+            ]);
+        }
 
         return Command::SUCCESS;
     }
