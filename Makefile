@@ -20,10 +20,32 @@ reset-db:
 	$(SYMFONY) doctrine:migrations:migrate --no-interaction
 	$(SYMFONY) app:import-properties
 
+php: up
+	ddev exec php \
+		$(filter-out $@,$(MAKECMDGOALS))
+
+composer: up
+	ddev composer \
+		$(filter-out $@,$(MAKECMDGOALS))
+
+lint: up
+	ddev exec php vendor/bin/php-cs-fixer fix src
+
 import:
 	$(SYMFONY) app:import-properties
 
 schema:
 	$(SYMFONY) api:openapi:export --yaml > schema.yaml
 
-.PHONY: migrations reset-db import schema
+.PHONY: migrations reset-db import lint schema up php composer
+
+up:
+	if [ ! "$$(ddev describe | grep OK)" ]; then \
+		ddev auth ssh; \
+		ddev start; \
+		ddev composer install; \
+		ddev exec npm install; \
+	fi
+
+%:
+	@:

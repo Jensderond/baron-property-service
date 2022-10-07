@@ -60,6 +60,7 @@ class OverviewController extends ServiceEntityRepository
 }
 
 
-function checkEmptyItem(string | null $item): bool {
+function checkEmptyItem(string | null $item): bool
+{
     return null !== $item && $item !== "";
 }

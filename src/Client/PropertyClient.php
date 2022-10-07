@@ -9,7 +9,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PropertyClient implements PropertyClientInterface
 {
-    public function __construct(private readonly HttpClientInterface $pyberClient) {}
+    public function __construct(private readonly HttpClientInterface $pyberClient)
+    {
+    }
 
     /**
      * @throws Exception\ServerExceptionInterface

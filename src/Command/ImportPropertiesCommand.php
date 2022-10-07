@@ -84,7 +84,7 @@ class ImportPropertiesCommand extends Command
 
         foreach ($disabledProperties as $disabledProperty) {
             /* @var $property Property | null */
-            if($property = $propertyRepo->findOneBy(['id' => $disabledProperty->getId()])) {
+            if ($property = $propertyRepo->findOneBy(['id' => $disabledProperty->getId()])) {
                 $property->setArchived(true);
                 $this->entityManager->persist($property);
                 ++$archivedProperties;
@@ -94,7 +94,7 @@ class ImportPropertiesCommand extends Command
         $this->entityManager->flush();
 
         $output->write('Saved '.$createdProperties.' properties and updated '.$updatedProperties.' properties');
-        if($archivedProperties > 0){
+        if ($archivedProperties > 0) {
             $output->writeln([
                 '',
                 'Archived '.$archivedProperties.' properties',
