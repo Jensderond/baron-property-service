@@ -58,7 +58,7 @@ class ImportPropertiesCommand extends Command
                 $this->entityManager->persist($existingProperty);
                 ++$updatedProperties;
 
-                break;
+                continue;
             }
 
             if (!isset($existingProperty)) {
