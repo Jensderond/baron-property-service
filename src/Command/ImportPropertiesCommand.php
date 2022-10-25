@@ -61,6 +61,14 @@ class ImportPropertiesCommand extends Command
                 continue;
             }
 
+            if($existingProperty->getArchived() !== $property->getArchived()){
+                $existingProperty->setArchived($property->getArchived());
+                $this->entityManager->persist($existingProperty);
+                ++$updatedProperties;
+
+                continue;
+            }
+
             if (!isset($existingProperty)) {
                 $property->setSlug($property->getStreetAddress().'-'.$property->getHouseNumber().$property->getHouseNumberAddition().'-'.$property->getCity().'-'.$property->getId());
                 $property->setImage($this->downloadFileIfNotExists($property->getImage()));
