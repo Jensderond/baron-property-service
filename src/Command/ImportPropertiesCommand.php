@@ -61,7 +61,7 @@ class ImportPropertiesCommand extends Command
                 continue;
             }
 
-            if($existingProperty->getArchived() !== $property->getArchived()){
+            if(isset($existingProperty) && $existingProperty->getArchived() !== $property->getArchived()){
                 $existingProperty->setArchived($property->getArchived());
                 $this->entityManager->persist($existingProperty);
                 ++$updatedProperties;
