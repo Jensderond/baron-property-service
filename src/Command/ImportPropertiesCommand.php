@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\Property;
 use App\Service\PropertyService;
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
@@ -55,6 +55,8 @@ class ImportPropertiesCommand extends Command
                     $plan->setUrl($this->downloadFileIfNotExists($plan->getUrl()));
                 }
 
+                $existingProperty->setVideos($property->getVideos());
+
                 $this->entityManager->persist($existingProperty);
                 ++$updatedProperties;
 
@@ -86,7 +88,7 @@ class ImportPropertiesCommand extends Command
         $disabledProperties = $propertyRepo->createQueryBuilder('p')
             ->where('p.id NOT IN (:ids)')
             ->andWhere('p.archived = 0 OR p.archived is null')
-            ->setParameter('ids', $idsInImport, Connection::PARAM_INT_ARRAY)
+            ->setParameter('ids', $idsInImport, ArrayParameterType::INTEGER)
             ->getQuery()
             ->getResult();
 
@@ -101,7 +103,7 @@ class ImportPropertiesCommand extends Command
 
         $this->entityManager->flush();
 
-        $output->write('Saved '.$createdProperties.' properties and updated '.$updatedProperties.' properties');
+        $output->write('Created '.$createdProperties.' properties and updated '.$updatedProperties.' properties');
         if ($archivedProperties > 0) {
             $output->writeln([
                 '',

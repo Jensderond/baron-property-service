@@ -1,8 +1,7 @@
 api_platform:
     title: Baron property service
-    version: 1.0.0
+    version: 1.0.1
     show_webby: false
-    metadata_backward_compatibility_layer: false
     graphql:
         graphql_playground:
             enabled: false
@@ -17,3 +16,5 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+        normalization_context:
+            skip_null_values: true

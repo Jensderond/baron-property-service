@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
@@ -29,7 +28,7 @@ use ReflectionClass;
 /**
  * A property.
  */
-#[ApiResource(operations: [new Get(), new GetCollection()], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
+#[ApiResource(operations: [new Get(name: "getPropertyItem"), new GetCollection(name: "getPropertyCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
 #[Entity]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['created', 'updated'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'type' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'address' => 'partial'])]
@@ -159,6 +158,10 @@ class Property
     private $owners_contribution_community;
     #[Column(name: "`condition`", type: 'string', length: 10, nullable: true)]
     private $condition;
+
+    #[Column(type: 'string', length: 255, nullable: true)]
+    private ?string $panorama_viewer = null;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -791,6 +794,18 @@ class Property
     public function setCondition(?string $condition): self
     {
         $this->condition = $condition;
+        return $this;
+    }
+
+    public function getPanoramaViewer(): ?string
+    {
+        return $this->panorama_viewer;
+    }
+
+    public function setPanoramaViewer(?string $panorama_viewer): self
+    {
+        $this->panorama_viewer = $panorama_viewer;
+
         return $this;
     }
 }
