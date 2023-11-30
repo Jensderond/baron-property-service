@@ -11,13 +11,16 @@ COMPOSER       = $(EXEC_PHP) composer
 migration:
 	$(SYMFONY) cache:clear
 	$(SYMFONY) doctrine:cache:clear-metadata
-	$(SYMFONY) doctrine:migrations:diff --allow-empty-diff
 	$(SYMFONY) doctrine:migrations:migrate --no-interaction --allow-no-migration
+
+recreate-db:
+	$(SYMFONY) doctrine:database:drop --force
+	$(SYMFONY) doctrine:database:create
 
 reset-db:
 	$(SYMFONY) doctrine:database:drop --force
 	$(SYMFONY) doctrine:database:create
-	$(SYMFONY) doctrine:migrations:migrate --no-interaction
+	$(SYMFONY) doctrine:migrations:migrate --no-interaction --allow-no-migration
 	$(SYMFONY) app:import-properties
 
 php: up

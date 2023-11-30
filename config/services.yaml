@@ -25,12 +25,17 @@ services:
     'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter': ~
 
     App\Client\PropertyClient: ~
-    App\Contract\PropertyClientInterface: '@App\Client\PropertyClient'
+    App\Contract\AddressClientInterface: '@App\Client\OpenStreetMapClient'
+    App\Contract\PropertyClientInterface: '@App\Client\RealworksClient'
 
     App\Command\ImportPropertiesCommand:
         arguments:
             - '@App\Service\PropertyService'
             - '@oneup_flysystem.public_uploads_filesystem_filesystem'
+
+    App\Serializer\PropertyNormalizer:
+        arguments:
+            - '@App\Service\AddressService'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

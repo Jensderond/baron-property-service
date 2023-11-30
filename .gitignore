@@ -10,8 +10,8 @@
 /vendor/
 ###< symfony/framework-bundle ###
 .idea
-schema.yaml
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
+src/SwaggerClient-php
 ###< friendsofphp/php-cs-fixer ###

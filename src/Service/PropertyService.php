@@ -4,9 +4,11 @@ namespace App\Service;
 
 use App\Contract\PropertyClientInterface;
 use App\Entity\Property;
+use App\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class PropertyService implements PropertyClientInterface
 {
-    public function __construct(private readonly PropertyClientInterface $client)
+    public function __construct(private readonly PropertyClientInterface $client, private readonly AddressService $addressService)
     {
     }
 
@@ -27,10 +29,12 @@ class PropertyService implements PropertyClientInterface
         $properties = $this->client->getProperties();
 
         $serializer = new Serializer(
-            [new DateTimeNormalizer(), new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter(), null, new ReflectionExtractor()), new GetSetMethodNormalizer(), new ArrayDenormalizer()],
+            [new PropertyNormalizer($this->addressService), new ArrayDenormalizer()],
             [new JsonEncoder()]
         );
 
-        return $serializer->deserialize($properties, 'App\Entity\Property[]', 'json');
+        $jsonProperties = json_decode($properties, true);
+
+        return $serializer->deserialize(json_encode($jsonProperties['resultaten']), 'App\Entity\Property[]', 'json');
     }
 }
