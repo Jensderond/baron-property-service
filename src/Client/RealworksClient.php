@@ -12,10 +12,7 @@ class RealworksClient implements PropertyClientInterface
 {
     public function __construct(private HttpClientInterface $realworksClient)
     {
-        $this->realworksClient = $realworksClient->withOptions([
-            'base_uri' => 'https://api.realworks.nl',
-            'headers' => ['Authorization' => $_ENV['REALWORKS_TOKEN']],
-        ]);
+        $this->realworksClient = $realworksClient;
     }
 
     /**
@@ -26,8 +23,33 @@ class RealworksClient implements PropertyClientInterface
      */
     public function getProperties(): string
     {
+        $this->realworksClient = $this->realworksClient->withOptions([
+            'base_uri' => 'https://api.realworks.nl',
+            'headers' => ['Authorization' => $_ENV['REALWORKS_PROPERTY_TOKEN']],
+        ]);
         try {
             $req = $this->realworksClient->request('GET', '/wonen/v2/objecten');
+        } catch (Exception\TransportExceptionInterface $e) {
+            throw new Error('Something went wrong with the request'.$e);
+        }
+
+        return $req->getContent();
+    }
+
+    /**
+     * @throws Exception\ServerExceptionInterface
+     * @throws Exception\RedirectionExceptionInterface
+     * @throws Exception\ClientExceptionInterface
+     * @throws Exception\TransportExceptionInterface
+     */
+    public function getProjects(): string
+    {
+        $this->realworksClient = $this->realworksClient->withOptions([
+            'base_uri' => 'https://api.realworks.nl',
+            'headers' => ['Authorization' => $_ENV['REALWORKS_PROJECT_TOKEN']],
+        ]);
+        try {
+            $req = $this->realworksClient->request('GET', '/nieuwbouw/v2/projecten');
         } catch (Exception\TransportExceptionInterface $e) {
             throw new Error('Something went wrong with the request'.$e);
         }

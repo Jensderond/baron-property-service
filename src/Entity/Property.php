@@ -23,6 +23,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use ReflectionClass;
@@ -35,6 +36,7 @@ use ReflectionClass;
 class Property
 {
     #[Id]
+    #[GeneratedValue]
     #[Column(type: 'integer')]
     private $id;
 
@@ -79,6 +81,15 @@ class Property
 
     #[Column(length: 255, nullable: true)]
     private ?string $lng = null;
+
+    #[Column(length: 255)]
+    private ?string $slug = null;
+
+    #[Column]
+    private ?int $externalId = null;
+
+    #[Column(length: 255, nullable: true)]
+    private ?string $street = null;
 
     public function __construct()
     {
@@ -270,6 +281,47 @@ class Property
     public function setLng(?string $lng): static
     {
         $this->lng = $lng;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        if (!isset($slug)) {
+            $this->slug = '';
+            return $this;
+        }
+        $slugify = new Slugify();
+        $this->slug = $slugify->slugify($slug);
+
+        return $this;
+    }
+
+    public function getExternalId(): ?int
+    {
+        return $this->externalId;
+    }
+
+    public function setExternalId(int $externalId): static
+    {
+        $this->externalId = $externalId;
+
+        return $this;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): static
+    {
+        $this->street = $street;
 
         return $this;
     }

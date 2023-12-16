@@ -24,7 +24,6 @@ services:
 
     'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter': ~
 
-    App\Client\PropertyClient: ~
     App\Contract\AddressClientInterface: '@App\Client\OpenStreetMapClient'
     App\Contract\PropertyClientInterface: '@App\Client\RealworksClient'
 

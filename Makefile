@@ -22,6 +22,7 @@ reset-db:
 	$(SYMFONY) doctrine:database:create
 	$(SYMFONY) doctrine:migrations:migrate --no-interaction --allow-no-migration
 	$(SYMFONY) app:import-properties
+	$(SYMFONY) app:import-projects
 
 php: up
 	ddev exec php \
