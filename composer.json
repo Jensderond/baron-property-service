@@ -37,7 +37,7 @@
         "symfony/validator": "6.4.*",
         "symfony/yaml": "6.4.*",
         "symplify/package-builder": "^11.0",
-        "webonyx/graphql-php": "^v14.11.3"
+        "webonyx/graphql-php": "v15.8.1"
     },
     "require-dev": {
         "api-platform/schema-generator": "^5.2",
