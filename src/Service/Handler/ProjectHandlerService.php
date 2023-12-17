@@ -2,10 +2,7 @@
 
 namespace App\Service\Handler;
 
-use App\Entity\ConstructionNumber;
-use App\Entity\ConstructionType;
 use App\Entity\Project;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Console\Output\OutputInterface;

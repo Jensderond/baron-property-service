@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ConstructionNumberRepository;
 use Doctrine\DBAL\Types\Types;
@@ -9,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\SerializedPath;
 
 #[ORM\Entity(repositoryClass: ConstructionNumberRepository::class)]
-#[ApiResource]
+#[ApiResource(operations: [new Get(name: "getConstructionNumberItem"), new GetCollection(name: "getConstructionNumberCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
 class ConstructionNumber
 {
     #[ORM\Id]

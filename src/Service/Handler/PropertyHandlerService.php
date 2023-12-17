@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class PropertyHandlerService extends AbstractHandlerService
 {
-
     public function __construct(protected EntityManagerInterface $entityManager)
     {
 

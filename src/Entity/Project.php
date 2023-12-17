@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,8 +16,8 @@ use Symfony\Component\Serializer\Annotation\SerializedPath;
 use Doctrine\ORM\Mapping as ORM;
 use ReflectionClass;
 
+#[ApiResource(operations: [new Get(name: "getProjectItem"), new GetCollection(name: "getProjectCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-#[ApiResource]
 class Project
 {
     #[ORM\Id]

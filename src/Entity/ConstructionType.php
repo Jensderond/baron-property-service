@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ConstructionTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +15,7 @@ use ReflectionClass;
 use Symfony\Component\Serializer\Annotation\SerializedPath;
 
 #[ORM\Entity(repositoryClass: ConstructionTypeRepository::class)]
-#[ApiResource]
+#[ApiResource(operations: [new Get(name: "getConstructionTypeItem"), new GetCollection(name: "getConstructionTypeCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
 class ConstructionType
 {
     #[ORM\Id]
