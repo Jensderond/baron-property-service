@@ -6,17 +6,12 @@ use App\Contract\PropertyClientInterface;
 use App\Entity\Property;
 use App\Entity\Project;
 use App\Serializer\Normalizer\PropertyNormalizer;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -31,7 +26,8 @@ class PropertyService implements PropertyClientInterface
      */
     public function getProperties(): array
     {
-        $properties = $this->client->getProperties();
+        // $properties = $this->client->getProperties();
+        $properties = file_get_contents(__DIR__.'/../../fixtures/properties.json');
 
         $serializer = new Serializer(
             [new PropertyNormalizer($this->addressService), new ArrayDenormalizer()],
@@ -51,7 +47,7 @@ class PropertyService implements PropertyClientInterface
         // $properties = $this->client->getProjects();
         $properties = file_get_contents(__DIR__.'/../../fixtures/project.json');
 
-        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+        $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader(new AnnotationReader()));
 
         $serializer = new Serializer(
             [new ObjectNormalizer($classMetadataFactory, null, null, new PhpDocExtractor()), new ArrayDenormalizer()],

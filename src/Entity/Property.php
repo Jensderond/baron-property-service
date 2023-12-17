@@ -80,6 +80,9 @@ class Property
     #[Column(length: 255, nullable: true)]
     private ?string $street = null;
 
+    #[Column(nullable: true)]
+    private ?bool $archived = null;
+
     public function __construct()
     {
     }
@@ -291,6 +294,13 @@ class Property
         return $this;
     }
 
+    public function createSlug(): static
+    {
+        $this->setSlug($this->getStreet().'-'.$this->getHouseNumber().$this->getHouseNumberAddition().'-'.$this->getCity().'-'.$this->getExternalId());
+
+        return $this;
+    }
+
     public function getExternalId(): ?int
     {
         return $this->externalId;
@@ -311,6 +321,18 @@ class Property
     public function setStreet(?string $street): static
     {
         $this->street = $street;
+
+        return $this;
+    }
+
+    public function getArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
 
         return $this;
     }
