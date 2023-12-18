@@ -4,7 +4,7 @@ api_platform:
     show_webby: false
     graphql:
         graphql_playground:
-            enabled: false
+            enabled: true
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     patch_formats:

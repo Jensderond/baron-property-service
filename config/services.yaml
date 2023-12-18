@@ -27,11 +27,6 @@ services:
     App\Contract\AddressClientInterface: '@App\Client\OpenStreetMapClient'
     App\Contract\PropertyClientInterface: '@App\Client\RealworksClient'
 
-    App\Command\ImportPropertiesCommand:
-        arguments:
-            - '@App\Service\PropertyService'
-            - '@oneup_flysystem.public_uploads_filesystem_filesystem'
-
     App\Serializer\PropertyNormalizer:
         arguments:
             - '@App\Service\AddressService'

@@ -4,24 +4,37 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
+use App\Repository\PropertyRepository;
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use ReflectionClass;
 
 /**
  * A property.
  */
+#[ApiFilter(filterClass: DateFilter::class, properties: ['created', 'updated'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'address' => 'partial'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['created', 'status'], arguments: ['orderParameterName' => 'order'])]
 #[ApiResource(operations: [new Get(name: "getPropertyItem"), new GetCollection(name: "getPropertyCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
-#[Entity]
+#[Entity(repositoryClass: PropertyRepository::class)]
 class Property
 {
     #[Id]
@@ -83,8 +96,27 @@ class Property
     #[Column(nullable: true)]
     private ?bool $archived = null;
 
+    #[Column]
+    private ?int $build_year = null;
+
+    #[Column(nullable: true)]
+    private ?int $price = null;
+
+    #[Column(nullable: true)]
+    private ?int $rental_price = null;
+
+    #[Column(length: 25, nullable: true)]
+    private ?string $energyClass = null;
+
+    #[OneToOne(cascade: ['persist', 'remove'])]
+    private ?Media $image = null;
+
+    #[OneToMany(mappedBy: 'property', targetEntity: Media::class)]
+    private Collection $media;
+
     public function __construct()
     {
+        $this->media = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -333,6 +365,96 @@ class Property
     public function setArchived(?bool $archived): static
     {
         $this->archived = $archived;
+
+        return $this;
+    }
+
+    public function getBuildYear(): ?int
+    {
+        return $this->build_year;
+    }
+
+    public function setBuildYear(int $build_year): static
+    {
+        $this->build_year = $build_year;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getRentalPrice(): ?int
+    {
+        return $this->rental_price;
+    }
+
+    public function setRentalPrice(?int $rental_price): static
+    {
+        $this->rental_price = $rental_price;
+
+        return $this;
+    }
+
+    public function getEnergyClass(): ?string
+    {
+        return $this->energyClass;
+    }
+
+    public function setEnergyClass(?string $energyClass): static
+    {
+        $this->energyClass = $energyClass;
+
+        return $this;
+    }
+
+    public function getImage(): ?Media
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Media $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium(Media $medium): static
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media->add($medium);
+            $medium->setProperty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): static
+    {
+        if ($this->media->removeElement($medium)) {
+            // set the owning side to null (unless already changed)
+            if ($medium->getProperty() === $this) {
+                $medium->setProperty(null);
+            }
+        }
 
         return $this;
     }

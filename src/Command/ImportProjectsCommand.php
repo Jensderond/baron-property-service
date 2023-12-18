@@ -2,14 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\Project;
 use App\Service\PropertyService;
 use App\Service\Handler\ProjectHandlerService;
-use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use League\Flysystem\FilesystemException;
-use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

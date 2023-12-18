@@ -3,12 +3,11 @@
 namespace App\Serializer\Normalizer;
 
 use App\Entity\LandRegistryData;
+use App\Entity\Media;
 use App\Entity\PropertyDetail;
 use App\Service\AddressService;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -38,7 +37,6 @@ class PropertyNormalizer implements DenormalizerInterface
         $property->setLat($geoData['lat']);
         $property->setLng($geoData['lng']);
 
-
         /** Generic */
         $property->setExternalId($data['id']);
         $property->setCategory($data['object']['type']['objecttype']);
@@ -46,9 +44,37 @@ class PropertyNormalizer implements DenormalizerInterface
         $property->setAlgemeen($data['algemeen']);
         $property->setFinancieel($data['financieel']);
         $property->setTeksten($data['teksten']);
+        dump($data['algemeen']['bouwjaar']);
+        $data['algemeen']['bouwjaar'] ?? $property->setBuildYear($data['algemeen']['bouwjaar']);
+        $data['algemeen']['energieklasse'] ?? $property->setEnergyClass($data['algemeen']['energieklasse']);
+
+        /** Media */
+        $mainImage = array_filter($data['media'], function ($media) {
+            return $media['soort'] === 'HOOFDFOTO';
+        });
+
+        // get first item in $mainImage array
+        $mainImage = array_values($mainImage);
+
+        if (isset($mainImage[0])) {
+            $property->setImage(
+                new Media($mainImage[0]['mimetype'], $mainImage[0]['link'])
+            );
+        } else {
+            $property->setImage(
+                new Media($data['media'][0]['mimetype'], $data['media'][0]['link'])
+            );
+        }
+
+        foreach ($data['media'] as $media) {
+            $property->addMedium(
+                new Media($media['mimetype'], $media['link'], $media['soort'], $media['volgnummer'])
+            );
+        }
 
         /** Price */
-
+        $property->setPrice($data['financieel']['overdracht']['koopprijs']);
+        $property->setRentalPrice($data['financieel']['overdracht']['huurprijs']);
 
         /** Detail */
         $landRegistryData = $serializer->deserialize(json_encode($data['detail']['kadaster'][0]['kadastergegevens'], true), LandRegistryData::class, 'json');

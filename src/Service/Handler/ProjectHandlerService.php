@@ -3,8 +3,8 @@
 namespace App\Service\Handler;
 
 use App\Entity\Project;
+use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ProjectHandlerService extends AbstractHandlerService
@@ -19,7 +19,7 @@ class ProjectHandlerService extends AbstractHandlerService
      */
     public function handle($model, $output): void
     {
-        /** @var EntityRepository<Project> $projectRepo */
+        /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
 
         /** @var list<Project> $existingProject */
@@ -32,14 +32,14 @@ class ProjectHandlerService extends AbstractHandlerService
             $existingProject->createSlug();
 
             $this->entityManager->persist($existingProject);
-            $output->writeln('<info>Updated '.$model->getTitle().'</info>');
+            $output->writeln('<info>Updated Project: '.$model->getTitle().'</info>');
             return;
         }
 
         $model->createSlug();
         $this->entityManager->persist($model);
 
-        $output->writeln('<info>Added '.$model->getTitle().'</info>');
+        $output->writeln('<info>Added Project: '.$model->getTitle().'</info>');
         return;
     }
 
