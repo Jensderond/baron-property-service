@@ -9,6 +9,7 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GetCollection;
@@ -40,6 +41,7 @@ class Property
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
+    #[ApiProperty(identifier: true)]
     private $id;
 
     #[Column(length: 255)]
@@ -96,7 +98,7 @@ class Property
     #[Column(nullable: true)]
     private ?bool $archived = null;
 
-    #[Column]
+    #[Column(nullable: true)]
     private ?int $build_year = null;
 
     #[Column(nullable: true)]
@@ -111,7 +113,7 @@ class Property
     #[OneToOne(cascade: ['persist', 'remove'])]
     private ?Media $image = null;
 
-    #[OneToMany(mappedBy: 'property', targetEntity: Media::class)]
+    #[OneToMany(mappedBy: 'property', targetEntity: Media::class, cascade: ['persist', 'remove'])]
     private Collection $media;
 
     public function __construct()
@@ -374,7 +376,7 @@ class Property
         return $this->build_year;
     }
 
-    public function setBuildYear(int $build_year): static
+    public function setBuildYear(?int $build_year): static
     {
         $this->build_year = $build_year;
 
@@ -457,5 +459,30 @@ class Property
         }
 
         return $this;
+    }
+
+    public function getCondition(): string
+    {
+        $condition = $this->getFinancieel()['overdracht']['koopconditie'] ?? $this->getFinancieel()['overdracht']['huurconditie'] ?? null;
+
+        return match ($condition) {
+            'KOSTEN_KOPER' => 'kk',
+            'VRIJ_OP_NAAM' => 'von',
+            'PER_MAAND' => 'per maand',
+            'PER_JAAR' => 'per jaar',
+            default => 'kk',
+        };
+    }
+
+    public function getBedrooms(): ?int
+    {
+        // array reduce to loop over each
+        $etages = $this->getDetail()->getEtages();
+
+        $slaapkamers = array_reduce($etages, function ($carry, $item) {
+            return $carry + $item['aantalSlaapkamers'];
+        }, 0);
+
+        return $slaapkamers;
     }
 }

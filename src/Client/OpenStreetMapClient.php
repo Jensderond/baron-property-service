@@ -16,12 +16,12 @@ class OpenStreetMapClient implements AddressClientInterface
         ]);
     }
 
-    public function getLatLngFromAddress(int $housenumber, string $street, string $city, string $country): string
+    public function getLatLngFromAddress(int $housenumber, string $street, string $city): string
     {
         try {
             $req = $this->client->request('GET', '/search', [
                 'query' => [
-                    'q' => $housenumber.' '.$street.' '.$city.' '.$country,
+                    'q' => $housenumber.' '.$street.' '.$city.' Nederland',
                     'format' => 'json',
                 ],
             ]);

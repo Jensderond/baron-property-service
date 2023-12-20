@@ -6,6 +6,7 @@ use App\Entity\LandRegistryData;
 use App\Entity\Media;
 use App\Entity\PropertyDetail;
 use App\Service\AddressService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -13,7 +14,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class PropertyNormalizer implements DenormalizerInterface
 {
-    public function __construct(protected AddressService $addressService)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
     }
 
@@ -25,28 +26,50 @@ class PropertyNormalizer implements DenormalizerInterface
         );
 
         $property = new \App\Entity\Property();
-        $geoData = $this->addressService->getLatLngFromAddress($data['adres']['huisnummer'], $data['adres']['straat'], $data['adres']['plaats'], $data['adres']['land']);
 
         /** Address */
-        $property->setAddress($data['adres']['straat'] . ' ' . $data['adres']['huisnummer'] . ', ' . $data['adres']['plaats'] . ' ' . $data['adres']['land']);
-        $property->setHouseNumber($data['adres']['huisnummer']);
-        $property->setHouseNumberAddition($data['adres']['huisnummertoevoeging']);
-        $property->setCity($data['adres']['plaats']);
-        $property->setZip($data['adres']['postcode']);
-        $property->setStreet($data['adres']['straat']);
-        $property->setLat($geoData['lat']);
-        $property->setLng($geoData['lng']);
+        if(isset($data['adres']['huisnummer'])) {
+            $property->setHouseNumber($data['adres']['huisnummer']);
+        }
+        if(isset($data['adres']['huisnummertoevoeging'])) {
+            $property->setHouseNumberAddition($data['adres']['huisnummertoevoeging']);
+        }
+        if(isset($data['adres']['plaats'])) {
+            $property->setCity($data['adres']['plaats']);
+        }
+        if(isset($data['adres']['postcode'])) {
+            $property->setZip($data['adres']['postcode']);
+        }
+        if(isset($data['adres']['straat'])) {
+            $property->setStreet($data['adres']['straat']);
+        }
+
+        $numberIsZero = $property->getHouseNumber() === "0" && null !== $property->getHouseNumber();
+
+        if($numberIsZero) {
+            $property->setAddress("{$property->getStreet()}, {$property->getCity()}");
+        } else {
+            $property->setAddress("{$property->getStreet()} {$property->getHouseNumber()}{$property->getHouseNumberAddition()}, {$property->getCity()}");
+        }
 
         /** Generic */
         $property->setExternalId($data['id']);
         $property->setCategory($data['object']['type']['objecttype']);
-        $property->setTitle($property->getStreet() . ' ' . $property->getHouseNumber() . $property->getHouseNumberAddition() . ', ' . $property->getCity());
+        if($numberIsZero) {
+            $property->setTitle("{$property->getStreet()}, {$property->getCity()}");
+        } else {
+            $property->setTitle("{$property->getStreet()} {$property->getHouseNumber()}{$property->getHouseNumberAddition()}, {$property->getCity()}");
+        }
         $property->setAlgemeen($data['algemeen']);
         $property->setFinancieel($data['financieel']);
         $property->setTeksten($data['teksten']);
-        dump($data['algemeen']['bouwjaar']);
-        $data['algemeen']['bouwjaar'] ?? $property->setBuildYear($data['algemeen']['bouwjaar']);
-        $data['algemeen']['energieklasse'] ?? $property->setEnergyClass($data['algemeen']['energieklasse']);
+
+        if (isset($data['algemeen']['bouwjaar'])) {
+            $property->setBuildYear($data['algemeen']['bouwjaar']);
+        }
+        if (isset($data['algemeen']['energieklasse'])) {
+            $property->setEnergyClass($data['algemeen']['energieklasse']);
+        }
 
         /** Media */
         $mainImage = array_filter($data['media'], function ($media) {
@@ -76,11 +99,16 @@ class PropertyNormalizer implements DenormalizerInterface
         $property->setPrice($data['financieel']['overdracht']['koopprijs']);
         $property->setRentalPrice($data['financieel']['overdracht']['huurprijs']);
 
-        /** Detail */
-        $landRegistryData = $serializer->deserialize(json_encode($data['detail']['kadaster'][0]['kadastergegevens'], true), LandRegistryData::class, 'json');
+        /** @var PropertyDetailRepository $propertyDetailRepo */
+        $propertyDetailRepo = $this->entityManager->getRepository(PropertyDetail::class);
 
-        $propertyDetail = new PropertyDetail();
-        $propertyDetail->setKadaster($landRegistryData);
+        $propertyDetail = $propertyDetailRepo->findOneBy(['id' => $property->getExternalId()]);
+        if (!$propertyDetail) {
+            $propertyDetail = new PropertyDetail($property->getExternalId());
+        }
+
+        $propertyDetail->setEtages($data['detail']['etages']);
+        $propertyDetail->setOverigOnroerendGoed($data['detail']['overigOnroerendGoed']);
         $propertyDetail->setBuitenruimte($data['detail']['buitenruimte']);
         $property->setDetail($propertyDetail);
         $property->setStatus($data['financieel']['overdracht']['status']);
@@ -106,7 +134,6 @@ class PropertyNormalizer implements DenormalizerInterface
     public function getSupportedTypes(?string $format): array
     {
         return [
-            '*' => true,
             \App\Entity\Property::class => true,
             'App\Entity\Property[]' => true,
         ];

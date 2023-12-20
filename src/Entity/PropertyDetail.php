@@ -9,31 +9,26 @@ use Doctrine\ORM\Mapping as ORM;
 class PropertyDetail
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?LandRegistryData $kadaster = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $buitenruimte = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $etages = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $overigOnroerendGoed = null;
+
+    public function __construct(int $id)
+    {
+        $this->id = $id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getKadaster(): ?LandRegistryData
-    {
-        return $this->kadaster;
-    }
-
-    public function setKadaster(?LandRegistryData $kadaster): static
-    {
-        $this->kadaster = $kadaster;
-
-        return $this;
     }
 
     public function getBuitenruimte(): ?array
@@ -44,6 +39,30 @@ class PropertyDetail
     public function setBuitenruimte(?array $buitenruimte): static
     {
         $this->buitenruimte = $buitenruimte;
+
+        return $this;
+    }
+
+    public function getEtages(): ?array
+    {
+        return $this->etages;
+    }
+
+    public function setEtages(?array $etages): static
+    {
+        $this->etages = $etages;
+
+        return $this;
+    }
+
+    public function getOverigOnroerendGoed(): ?array
+    {
+        return $this->overigOnroerendGoed;
+    }
+
+    public function setOverigOnroerendGoed(?array $overigOnroerendGoed): static
+    {
+        $this->overigOnroerendGoed = $overigOnroerendGoed;
 
         return $this;
     }

@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ConstructionTypeRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,7 +41,7 @@ class ConstructionType
     #[ORM\Column(nullable: true)]
     private ?array $teksten = null;
 
-    #[ORM\OneToMany(mappedBy: 'constructionType', targetEntity: ConstructionNumber::class, orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'constructionType', targetEntity: ConstructionNumber::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
     #[SerializedPath('[bouwnummers]')]
     /** @var Collection<int, ConstructionNumber> $constructionNumbers */
     private Collection $constructionNumbers;
@@ -48,6 +49,9 @@ class ConstructionType
     #[ORM\ManyToOne(inversedBy: 'constructionTypes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -59,12 +63,55 @@ class ConstructionType
         $reflectionClass = new ReflectionClass($this);
         foreach ($reflectionClass->getMethods() as $method) {
             if (str_starts_with($method->getName(), 'set')) {
-                $setMethod = 'set' . substr($method->getName(), 3);
-                $getMethod = 'get' . substr($method->getName(), 3);
-                $this->{$setMethod}($newProperties->{$getMethod}());
+                $propertyName = substr($method->getName(), 3);
+                $setMethod = 'set' . $propertyName;
+                $getMethod = 'get' . $propertyName;
+                if ($propertyName !== 'ConstructionNumbers' && $propertyName !== 'Project') {
+                    $this->{$setMethod}($newProperties->{$getMethod}());
+                } elseif ($propertyName !== 'Project') {
+                    $this->updateConstructionNumbers($newProperties->{$getMethod}());
+                }
             }
         }
     }
+
+    public function updateFromNewType(ConstructionType $newType)
+    {
+        $this->map($newType);
+        $this->createSlug();
+        $this->updateConstructionNumbers($newType->getConstructionNumbers());
+    }
+
+    /**
+     * @param Collection<int, ConstructionNumber> $newNumbers
+     */
+    private function updateConstructionNumbers(Collection $newNumbers)
+    {
+        foreach ($newNumbers as $newNumber) {
+            /** @var ConstructionNumber|null $existingNumber */
+            $existingNumber = $this->constructionNumbers->filter(function ($number) use ($newNumber) {
+                return $number->getExternalId() === $newNumber->getExternalId();
+            })->first();
+
+            if ($existingNumber) {
+                $existingNumber->updateFromNewNumber($newNumber);
+                $existingNumber->createSlug();
+            } else {
+                $newNumber->createSlug();
+                $newNumber->setConstructionType($this);
+                $this->constructionNumbers->add($newNumber);
+            }
+        }
+
+        foreach ($this->constructionNumbers as $existingNumber) {
+            if (!$newNumbers->exists(function ($key, $number) use ($existingNumber) {
+                return $number->getExternalId() === $existingNumber->getExternalId();
+            })) {
+                $this->constructionNumbers->removeElement($existingNumber);
+            }
+        }
+    }
+
 
     public function getId(): ?int
     {
@@ -149,6 +196,13 @@ class ConstructionType
         return $this;
     }
 
+    // public function setConstructionNumber(Collection $collection): static
+    // {
+    //     $this->constructionNumbers = $collection;
+
+    //     return $this;
+    // }
+
     public function getProject(): ?Project
     {
         return $this->project;
@@ -169,6 +223,30 @@ class ConstructionType
     public function setTitle(?string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        if (!isset($slug)) {
+            $this->slug = '';
+            return $this;
+        }
+        $slugify = new Slugify();
+        $this->slug = $slugify->slugify($slug);
+
+        return $this;
+    }
+
+    public function createSlug(): static
+    {
+        $this->setSlug($this->getTitle() . '-' . $this->getExternalId());
 
         return $this;
     }

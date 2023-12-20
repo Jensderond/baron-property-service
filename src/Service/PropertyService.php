@@ -9,6 +9,7 @@ use App\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
@@ -17,7 +18,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class PropertyService implements PropertyClientInterface
 {
-    public function __construct(private readonly PropertyClientInterface $client, private readonly AddressService $addressService)
+    public function __construct(private readonly PropertyClientInterface $client, private readonly EntityManagerInterface $entityManager)
     {
     }
 
@@ -30,7 +31,7 @@ class PropertyService implements PropertyClientInterface
         $properties = file_get_contents(__DIR__.'/../../fixtures/properties.json');
 
         $serializer = new Serializer(
-            [new PropertyNormalizer($this->addressService), new ArrayDenormalizer()],
+            [new PropertyNormalizer($this->entityManager), new ArrayDenormalizer()],
             [new JsonEncoder()]
         );
 
