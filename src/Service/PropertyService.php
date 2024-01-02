@@ -32,8 +32,13 @@ class PropertyService implements PropertyClientInterface
      */
     public function getProperties(): array
     {
-        // $properties = $this->client->getProperties();
         $properties = file_get_contents(__DIR__.'/../../fixtures/properties.json');
+
+        if ($_ENV['APP_ENV'] === 'dev') {
+            $properties = file_get_contents(__DIR__.'/../../fixtures/properties.json');
+        } else {
+            $properties = $this->client->getProperties();
+        }
 
         $serializer = new Serializer(
             [new PropertyNormalizer($this->entityManager), new ArrayDenormalizer()],
@@ -50,8 +55,11 @@ class PropertyService implements PropertyClientInterface
      */
     public function getProjects(): array
     {
-        // $properties = $this->client->getProjects();
-        $properties = file_get_contents(__DIR__.'/../../fixtures/project.json');
+        if ($_ENV['APP_ENV'] === 'dev') {
+            $properties = file_get_contents(__DIR__.'/../../fixtures/project.json');
+        } else {
+            $properties = $this->client->getProjects();
+        }
 
         $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader(new AnnotationReader()));
 

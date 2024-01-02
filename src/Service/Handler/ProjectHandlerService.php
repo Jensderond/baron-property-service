@@ -7,11 +7,6 @@ use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use App\Service\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
-use Imagine\Gd\Imagine;
-use Imagine\Image\Box;
-use League\Flysystem\FilesystemException;
-use League\Flysystem\FilesystemOperator;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ProjectHandlerService extends AbstractHandlerService
