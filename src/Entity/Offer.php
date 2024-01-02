@@ -4,10 +4,10 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\State\OfferProvider;
+use DateTimeImmutable;
 
 #[ApiResource(
     operations: [
@@ -15,11 +15,13 @@ use App\State\OfferProvider;
     ]
 )]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact'])]
-class Offer {
+class Offer
+{
     public function __construct(
+        public readonly ?DateTimeImmutable $createdAt,
         public readonly ?string $itemType,
         public readonly ?string $title,
-        public readonly ?string $image,
+        public readonly ?array $image,
         public readonly ?string $condition,
         public readonly ?string $status,
         public readonly ?string $address,

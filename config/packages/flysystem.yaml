@@ -1,0 +1,7 @@
+flysystem:
+    storages:
+        public_uploads.storage:
+            adapter: 'local'
+            public_url: '%env(APP_BASE_URL)%uploads/'
+            options:
+                directory: '%kernel.project_dir%/public/uploads'

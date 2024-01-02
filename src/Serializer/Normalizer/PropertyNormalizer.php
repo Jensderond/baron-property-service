@@ -2,15 +2,9 @@
 
 namespace App\Serializer\Normalizer;
 
-use App\Entity\LandRegistryData;
-use App\Entity\Media;
 use App\Entity\PropertyDetail;
-use App\Service\AddressService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class PropertyNormalizer implements DenormalizerInterface
 {
@@ -20,11 +14,6 @@ class PropertyNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
     {
-        $serializer = new Serializer(
-            [new ObjectNormalizer()],
-            [new JsonEncoder()]
-        );
-
         $property = new \App\Entity\Property();
 
         /** Address */
@@ -53,6 +42,8 @@ class PropertyNormalizer implements DenormalizerInterface
         }
 
         /** Generic */
+        $property->setCreatedAt(new \DateTimeImmutable($data['diversen']['diversen']['invoerdatum']));
+        $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
         $property->setExternalId($data['id']);
         $property->setCategory($data['object']['type']['objecttype']);
         if($numberIsZero) {
@@ -80,20 +71,12 @@ class PropertyNormalizer implements DenormalizerInterface
         $mainImage = array_values($mainImage);
 
         if (isset($mainImage[0])) {
-            $property->setImage(
-                new Media($mainImage[0]['mimetype'], $mainImage[0]['link'])
-            );
+            $property->setImage([$mainImage[0]]);
         } else {
-            $property->setImage(
-                new Media($data['media'][0]['mimetype'], $data['media'][0]['link'])
-            );
+            $property->setImage($data['media']);
         }
 
-        foreach ($data['media'] as $media) {
-            $property->addMedium(
-                new Media($media['mimetype'], $media['link'], $media['soort'], $media['volgnummer'])
-            );
-        }
+        $property->setMedia($data['media']);
 
         /** Price */
         $property->setPrice($data['financieel']['overdracht']['koopprijs']);

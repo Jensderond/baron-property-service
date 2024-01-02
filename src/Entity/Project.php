@@ -9,82 +9,148 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProjectRepository;
+use App\State\ProjectProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Serializer\Annotation\SerializedPath;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ReflectionClass;
 
-#[ApiResource(operations: [new Get(name: "getProjectItem"), new GetCollection(name: "getProjectCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
+#[ApiResource(
+    operations: [
+        new Get(name: "getProjectItem"),
+        new Get(name: "getExternalProjectItem", uriTemplate: '/projectExternal/{id}', provider: ProjectProvider::class, normalizationContext: ['groups' => ['read']]),
+        new GetCollection(name: "getProjectCollection")
+    ],
+    graphQlOperations: [
+        new Query(name: 'item_query'),
+        new QueryCollection(name: 'collection_query', paginationType: 'page')
+    ]
+)]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Project
 {
     #[ORM\Id]
+
+    #[Groups('read')]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[ApiProperty(identifier: true)]
     private ?int $id = null;
 
+    #[Groups('read')]
     #[ORM\Column]
-    #[SerializedPath('[project][id]')]
     private ?int $externalId = null;
 
+    #[Groups('read')]
     #[ORM\Column(length: 255)]
-    #[SerializedPath('[project][algemeen][omschrijving]')]
     private ?string $title = null;
 
+    #[Groups('read')]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[SerializedPath('[teksten][aanbiedingstekst]')]
     private ?string $description = null;
 
+    #[Groups('read')]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[SerializedPath('[teksten][eigenSiteTekst]')]
     private ?string $descriptionSite = null;
 
+    #[Groups('read')]
     #[ORM\Column(length: 255)]
-    #[SerializedPath('[project][algemeen][plaats]')]
     private ?string $city = null;
 
+    #[Groups('read')]
     #[ORM\Column(length: 20)]
-    #[SerializedPath('[project][algemeen][postcode]')]
     private ?string $zipcode = null;
 
+    #[Groups('read')]
     #[ORM\Column(length: 255)]
-    #[SerializedPath('[project][algemeen][provincie]')]
     private ?string $province = null;
 
+    #[Groups('read')]
     #[ORM\Column(length: 255, nullable: true)]
-    #[SerializedPath('[project][diversen][status]')]
     private ?string $status = null;
 
+    #[Groups('read')]
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: ConstructionType::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
-    #[SerializedPath('[bouwtypen]')]
     /** @var Collection<int,ConstructionType> $constructionTypes */
     private Collection $constructionTypes;
 
+    #[Groups('read')]
     #[ORM\Column(length: 255)]
     private ?string $category = 'Nieuwbouw';
 
+    #[Groups('read')]
     #[ORM\Column]
-    #[SerializedPath('[project][diversen]')]
     private array $diversen = [];
 
+    #[Groups('read')]
     #[ORM\Column]
-    #[SerializedPath('[project][algemeen]')]
     private array $algemeen = [];
 
+    #[Groups('read')]
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[Groups('read')]
     #[ORM\Column(nullable: true)]
-    #[SerializedPath('[project][media]')]
     private ?array $media = null;
+
+    #[Groups('read')]
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[Groups('read')]
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[Groups('read')]
+    #[ORM\Column(length: 255)]
+    private ?string $livingArea = null;
+
+    #[Groups('read')]
+    #[ORM\Column(nullable: true)]
+    private ?array $mainImage = null;
+
+    #[Groups('read')]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $plot = null;
 
     public function __construct()
     {
         $this->constructionTypes = new ArrayCollection();
+    }
+
+    /**
+     * @param Collection<int, ConstructionType> $newTypes
+     */
+    private function updateConstructionTypes(Collection $newTypes)
+    {
+        foreach ($newTypes as $newType) {
+            /** @var ConstructionType|null $existingType */
+            $existingType = $this->constructionTypes->filter(function ($type) use ($newType) {
+                return $type->getExternalId() === $newType->getExternalId();
+            })->first();
+
+            if ($existingType) {
+                $existingType->updateFromNewType($newType);
+            } else {
+                $newType->updateFromNewType($newType);
+                $newType->setProject($this);
+                $this->constructionTypes->add($newType);
+            }
+        }
+
+        // Optionally, remove types that are no longer present
+        foreach ($this->constructionTypes as $existingType) {
+            if (!$newTypes->exists(function ($key, $type) use ($existingType) {
+                return $type->getExternalId() === $existingType->getExternalId();
+            })) {
+                $this->constructionTypes->removeElement($existingType);
+            }
+        }
     }
 
     public function __toString()
@@ -270,23 +336,6 @@ class Project
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        $mainImage = array_filter($this->getMedia(), function ($media) {
-            return $media['soort'] === 'HOOFDFOTO';
-        });
-
-        $mainImage = array_values($mainImage);
-
-        if (isset($mainImage[0])) {
-            return $mainImage[0]['link'];
-        } elseif (isset($this->getMedia()[0])) {
-            return $this->getMedia()[0]['link'];
-        }
-
-        return null;
-    }
-
     /**
      * @return Collection<int, ConstructionType>
      */
@@ -327,41 +376,27 @@ class Project
         return $this;
     }
 
-    /**
-     * @param Collection<int, ConstructionType> $newTypes
-     */
-    private function updateConstructionTypes(Collection $newTypes)
-    {
-        foreach ($newTypes as $newType) {
-            /** @var ConstructionType|null $existingType */
-            $existingType = $this->constructionTypes->filter(function ($type) use ($newType) {
-                return $type->getExternalId() === $newType->getExternalId();
-            })->first();
-
-            if ($existingType) {
-                $existingType->updateFromNewType($newType);
-            } else {
-                $newType->updateFromNewType($newType);
-                $newType->setProject($this);
-                $this->constructionTypes->add($newType);
-            }
-        }
-
-        // Optionally, remove types that are no longer present
-        foreach ($this->constructionTypes as $existingType) {
-            if (!$newTypes->exists(function ($key, $type) use ($existingType) {
-                return $type->getExternalId() === $existingType->getExternalId();
-            })) {
-                $this->constructionTypes->removeElement($existingType);
-            }
-        }
-    }
-
+    #[Groups('read')]
     public function getNumberOfObjects(): int
     {
         return ($this->getAlgemeen()['aantalBouwnummers'] ?? 0) + ($this->getAlgemeen()['aantalVrijeEenheden'] ?? 0);
     }
 
+    #[Groups('read')]
+    public function getNumberOfObjectsAvailable(): int
+    {
+        $numbersAvailable = 0;
+        foreach ($this->getConstructionTypes()->toArray() as $type) {
+            foreach ($type->getConstructionNumbers()->toArray() as $number) {
+                if ($number->getStatus() === 'BESCHIKBAAR' || $number->getStatus() === 'ONDER_OPTIE') {
+                    $numbersAvailable++;
+                }
+            }
+        }
+        return $numbersAvailable;
+    }
+
+    #[Groups('read')]
     public function getBuildYear(): ?string
     {
         $buildDateString = $this->getAlgemeen()['datumStartBouw'] ?? null;
@@ -383,6 +418,66 @@ class Project
     public function setCategory(string $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getLivingArea(): ?string
+    {
+        return $this->livingArea;
+    }
+
+    public function setLivingArea(string $livingArea): static
+    {
+        $this->livingArea = $livingArea;
+
+        return $this;
+    }
+
+    public function getMainImage(): ?array
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?array $mainImage): static
+    {
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    public function getPlot(): ?string
+    {
+        return $this->plot;
+    }
+
+    public function setPlot(?string $plot): static
+    {
+        $this->plot = $plot;
 
         return $this;
     }

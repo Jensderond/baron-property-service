@@ -2,21 +2,25 @@
 
 namespace App\Service\Handler;
 
-use App\Entity\ConstructionNumber;
 use App\Entity\ConstructionType;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
-use App\Repository\ConstructionTypeRepository;
-use App\Repository\ConstructionNumberRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Service\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
-use ReflectionClass;
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ProjectHandlerService extends AbstractHandlerService
 {
-    public function __construct(protected EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        protected EntityManagerInterface $entityManager,
+        protected MediaService $mediaService
+        // , protected FilesystemOperator $publicUploadsStorage, private readonly LoggerInterface $logger
+    ) {
     }
 
     /**
@@ -35,29 +39,58 @@ class ProjectHandlerService extends AbstractHandlerService
         if ($existingProject) {
             $existingProject->map($model);
             $existingProject->createSlug();
+            $existingProject->setMainImage($this->handleProjectMainImage($existingProject));
+
+            foreach($existingProject->getConstructionTypes() as $constructionType) {
+                $constructionType->setMainImage($this->handleConstructionTypeMainImage($constructionType));
+            }
 
             $this->entityManager->persist($existingProject);
             $output->writeln('<info>Updated Project: '.$model->getTitle().'</info>');
             return;
         }
 
+        $model->map($model);
         $model->createSlug();
+        $model->setMainImage($this->handleProjectMainImage($model));
+        foreach($model->getConstructionTypes() as $constructionType) {
+            $constructionType->setMainImage($this->handleConstructionTypeMainImage($constructionType));
+        }
+
         $this->entityManager->persist($model);
 
         $output->writeln('<info>Added Project: '.$model->getTitle().'</info>');
         return;
     }
 
-    public function updateSlug(&$model, $output): void
-    {
-        $name = (new ReflectionClass($model))->getShortName();
-        $model->createSlug();
-        $output->writeln('<info>Updated ' . $name . ': ' .$model->getTitle().'</info>');
-        return;
-    }
-
     public function persist(): void
     {
         $this->entityManager->flush();
+    }
+
+    private function handleConstructionTypeMainImage(ConstructionType $constructionType): array
+    {
+        $mainImage = current(array_filter($constructionType->getMedia(), function ($media) {
+            return $media['soort'] === 'HOOFDFOTO';
+        }));
+
+        if (!isset($mainImage)) {
+            return [];
+        }
+
+        return $this->mediaService->buildObject($mainImage['link']);
+    }
+
+    private function handleProjectMainImage(Project $project): array
+    {
+        $mainImage = current(array_filter($project->getMedia(), function ($media) {
+            return $media['soort'] === 'HOOFDFOTO';
+        }));
+
+        if (!isset($mainImage) || !$mainImage) {
+            return [];
+        }
+
+        return $this->mediaService->buildObject($mainImage['link']);
     }
 }

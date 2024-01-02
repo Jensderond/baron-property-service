@@ -5,8 +5,8 @@ namespace App\Service\Handler;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use App\Service\AddressService;
+use App\Service\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PropertyHandlerService extends AbstractHandlerService
@@ -14,7 +14,7 @@ class PropertyHandlerService extends AbstractHandlerService
     /** @var array<int> */
     private array $idsInImport = [];
 
-    public function __construct(protected EntityManagerInterface $entityManager, protected AddressService $addressService)
+    public function __construct(protected EntityManagerInterface $entityManager, protected AddressService $addressService, protected MediaService $mediaService)
     {
     }
 
@@ -44,6 +44,8 @@ class PropertyHandlerService extends AbstractHandlerService
                 $property->setLng($tmpLng);
             }
 
+            $property->setImage($this->handlePropertyMainImage($model));
+
             $this->checkLatLong($property);
 
             $property->createSlug();
@@ -54,6 +56,7 @@ class PropertyHandlerService extends AbstractHandlerService
         }
 
         $model->createSlug();
+        $model->setImage($this->handlePropertyMainImage($model));
         $this->checkLatLong($model);
         $this->entityManager->persist($model);
 
@@ -97,5 +100,18 @@ class PropertyHandlerService extends AbstractHandlerService
     public function persist(): void
     {
         $this->entityManager->flush();
+    }
+
+    private function handlePropertyMainImage(Property $item): array
+    {
+        $mainImage = current(array_filter($item->getMedia(), function ($media) {
+            return $media['soort'] === 'HOOFDFOTO';
+        }));
+
+        if (!isset($mainImage) || !$mainImage) {
+            return [];
+        }
+
+        return $this->mediaService->buildObject($mainImage['link']);
     }
 }

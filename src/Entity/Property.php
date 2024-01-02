@@ -16,15 +16,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PropertyRepository;
+use App\State\PropertyProvider;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping as ORM;
 use ReflectionClass;
 
 /**
@@ -34,91 +30,108 @@ use ReflectionClass;
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'address' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['created', 'status'], arguments: ['orderParameterName' => 'order'])]
-#[ApiResource(operations: [new Get(name: "getPropertyItem"), new GetCollection(name: "getPropertyCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
-#[Entity(repositoryClass: PropertyRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(name: "getPropertyItem"),
+        new GetCollection(name: "getPropertyCollection"),
+        new Get(
+            name: "getByExternalId",
+            uriTemplate: "/properties/external/{id}",
+            provider: PropertyProvider::class
+        )
+    ],
+    graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')]
+)]
+
+#[ORM\Entity(repositoryClass: PropertyRepository::class)]
 class Property
 {
-    #[Id]
-    #[GeneratedValue]
-    #[Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     #[ApiProperty(identifier: true)]
     private $id;
 
-    #[Column(length: 255)]
+    #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Column]
+    #[ORM\Column]
     private array $algemeen = [];
 
-    #[Column]
+    #[ORM\Column]
     private array $financieel = [];
 
-    #[Column]
+    #[ORM\Column]
     private array $teksten = [];
 
-    #[Column(length: 255)]
+    #[ORM\Column(length: 255)]
     private ?string $status = null;
 
-    #[Column(length: 255)]
+    #[ORM\Column(length: 255)]
     private ?string $category = null;
 
-    #[OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?PropertyDetail $detail = null;
 
-    #[Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
 
-    #[Column(nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?int $houseNumber = null;
 
-    #[Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $houseNumberAddition = null;
 
-    #[Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $zip = null;
 
-    #[Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $lat = null;
 
-    #[Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $lng = null;
 
-    #[Column(length: 255)]
+    #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[Column]
+    #[ORM\Column]
     private ?int $externalId = null;
 
-    #[Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[Column(nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?bool $archived = null;
 
-    #[Column(nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?int $build_year = null;
 
-    #[Column(nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?int $price = null;
 
-    #[Column(nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?int $rental_price = null;
 
-    #[Column(length: 25, nullable: true)]
+    #[ORM\Column(length: 25, nullable: true)]
     private ?string $energyClass = null;
 
-    #[OneToOne(cascade: ['persist', 'remove'])]
-    private ?Media $image = null;
+    #[ORM\Column(nullable: true)]
+    private ?array $image = null;
 
-    #[OneToMany(mappedBy: 'property', targetEntity: Media::class, cascade: ['persist', 'remove'])]
-    private Collection $media;
+    #[ORM\Column(nullable: true)]
+    private ?array $media = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function __construct()
     {
-        $this->media = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,8 +149,9 @@ class Property
         $reflectionClass = new ReflectionClass($this);
         foreach ($reflectionClass->getMethods() as $method) {
             if (str_starts_with($method->getName(), 'set')) {
-                $setMethod = 'set' . substr($method->getName(), 3);
-                $getMethod = 'get' . substr($method->getName(), 3);
+                $propertyName = substr($method->getName(), 3);
+                $setMethod = 'set' . $propertyName;
+                $getMethod = 'get' . $propertyName;
                 $this->{$setMethod}($newProperties->{$getMethod}());
             }
         }
@@ -419,44 +433,26 @@ class Property
         return $this;
     }
 
-    public function getImage(): ?Media
+    public function getImage(): ?array
     {
         return $this->image;
     }
 
-    public function setImage(?Media $image): static
+    public function setImage(?array $image): static
     {
         $this->image = $image;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Media>
-     */
-    public function getMedia(): Collection
+    public function getMedia(): ?array
     {
         return $this->media;
     }
 
-    public function addMedium(Media $medium): static
+    public function setMedia(?array $media): static
     {
-        if (!$this->media->contains($medium)) {
-            $this->media->add($medium);
-            $medium->setProperty($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMedium(Media $medium): static
-    {
-        if ($this->media->removeElement($medium)) {
-            // set the owning side to null (unless already changed)
-            if ($medium->getProperty() === $this) {
-                $medium->setProperty(null);
-            }
-        }
+        $this->media = $media;
 
         return $this;
     }
@@ -484,5 +480,29 @@ class Property
         }, 0);
 
         return $slaapkamers;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }
