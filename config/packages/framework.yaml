@@ -10,13 +10,6 @@ framework:
         base_urls:
             - '%env(APP_BASE_URL)%'
 
-    http_client:
-        scoped_clients:
-            pyber.client:
-                base_uri: '%env(PYBER_CLIENT_URL)%'
-                headers:
-                    Accept: 'application/json'
-
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
     session:
