@@ -103,7 +103,7 @@ class ProjectHandlerService extends AbstractHandlerService
 
         foreach ($mediaInput as $key => $media) {
             if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
-                $transformedItems[] = $this->transfromItem($media);
+                $transformedItems[] = $this->mediaService->transfromItem($media);
 
                 unset($mediaInput[$key]);
             }
@@ -112,24 +112,5 @@ class ProjectHandlerService extends AbstractHandlerService
         $mediaItems = array_merge($transformedItems, array_values($mediaInput));
 
         return $mediaItems;
-    }
-
-    private function transfromItem(array $media): array
-    {
-        $options = [
-            'sizes' => [
-                '480w' => '580x387',
-                '768w' => '870x580',
-                '1280w' => '1450x967',
-            ],
-        ];
-
-        $transformedMedia['sizes'] = $this->mediaService->buildObject($media['link'], $options);
-        $transformedMedia['soort'] = $media['soort'];
-        $transformedMedia['title'] = $media['title'] ?? '';
-        $transformedMedia['omschrijving'] = $media['omschrijving'] ?? '';
-        $transformedMedia['mimetype'] = 'image/webp';
-
-        return $transformedMedia;
     }
 }

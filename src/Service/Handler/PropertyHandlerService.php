@@ -106,15 +106,22 @@ class PropertyHandlerService extends AbstractHandlerService
 
     private function handlePropertyMainImage(Property $item): array
     {
+        $options = [
+            'sizes' => [
+                '1x' => '400x266',
+                '2x' => '800x532',
+            ],
+        ];
+
         $mainImage = current(array_filter($item->getMedia(), function ($media) {
             return $media['soort'] === 'HOOFDFOTO';
         }));
 
-        if (!isset($mainImage) || !$mainImage) {
+        if (!$mainImage) {
             return [];
         }
 
-        return $this->mediaService->buildObject($mainImage['link']);
+        return $this->mediaService->buildObject($mainImage['link'], $options);
     }
 
     private function handleMedia(?array $mediaInput): array
