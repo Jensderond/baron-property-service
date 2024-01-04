@@ -32,8 +32,6 @@ class PropertyService implements PropertyClientInterface
      */
     public function getProperties(): array
     {
-        $properties = file_get_contents(__DIR__.'/../../fixtures/properties.json');
-
         if ($_ENV['APP_ENV'] === 'dev') {
             $properties = file_get_contents(__DIR__.'/../../fixtures/properties.json');
         } else {

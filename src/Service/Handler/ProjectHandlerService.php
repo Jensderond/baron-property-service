@@ -34,10 +34,15 @@ class ProjectHandlerService extends AbstractHandlerService
         if ($existingProject) {
             $existingProject->map($model);
             $existingProject->createSlug();
-            $existingProject->setMainImage($this->handleProjectMainImage($existingProject));
+            $existingProject->setMainImage($this->handleMainImage($existingProject->getMedia()));
+            $existingProject->setMedia($this->handleMedia($existingProject->getMedia()));
 
             foreach($existingProject->getConstructionTypes() as $constructionType) {
-                $constructionType->setMainImage($this->handleConstructionTypeMainImage($constructionType));
+                $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
+
+                foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
+                    $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
+                }
             }
 
             $this->entityManager->persist($existingProject);
@@ -47,9 +52,14 @@ class ProjectHandlerService extends AbstractHandlerService
 
         $model->map($model);
         $model->createSlug();
-        $model->setMainImage($this->handleProjectMainImage($model));
+        $model->setMainImage($this->handleMainImage($model->getMedia()));
+        $model->setMedia($this->handleMedia($model->getMedia()));
         foreach($model->getConstructionTypes() as $constructionType) {
-            $constructionType->setMainImage($this->handleConstructionTypeMainImage($constructionType));
+            $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
+
+            foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
+                $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
+            }
         }
 
         $this->entityManager->persist($model);
@@ -63,29 +73,63 @@ class ProjectHandlerService extends AbstractHandlerService
         $this->entityManager->flush();
     }
 
-    private function handleConstructionTypeMainImage(ConstructionType $constructionType): array
+    private function handleMainImage(array $mediaItems): array
     {
-        $mainImage = current(array_filter($constructionType->getMedia(), function ($media) {
+        $options = [
+            'sizes' => [
+                '1x' => '400x266',
+                '2x' => '800x532',
+            ],
+        ];
+
+        $mainImage = current(array_filter($mediaItems, function ($media) {
             return $media['soort'] === 'HOOFDFOTO';
         }));
 
-        if (!isset($mainImage)) {
+        if (!$mainImage) {
             return [];
         }
 
-        return $this->mediaService->buildObject($mainImage['link']);
+        return $this->mediaService->buildObject($mainImage['link'], $options);
     }
 
-    private function handleProjectMainImage(Project $project): array
+    private function handleMedia(?array $mediaInput): array
     {
-        $mainImage = current(array_filter($project->getMedia(), function ($media) {
-            return $media['soort'] === 'HOOFDFOTO';
-        }));
-
-        if (!isset($mainImage) || !$mainImage) {
+        if (!isset($mediaInput)) {
             return [];
         }
 
-        return $this->mediaService->buildObject($mainImage['link']);
+        $transformedItems = [];
+
+        foreach ($mediaInput as $key => $media) {
+            if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
+                $transformedItems[] = $this->transfromItem($media);
+
+                unset($mediaInput[$key]);
+            }
+        }
+
+        $mediaItems = array_merge($transformedItems, array_values($mediaInput));
+
+        return $mediaItems;
+    }
+
+    private function transfromItem(array $media): array
+    {
+        $options = [
+            'sizes' => [
+                '480w' => '580x387',
+                '768w' => '870x580',
+                '1280w' => '1450x967',
+            ],
+        ];
+
+        $transformedMedia['sizes'] = $this->mediaService->buildObject($media['link'], $options);
+        $transformedMedia['soort'] = $media['soort'];
+        $transformedMedia['title'] = $media['title'] ?? '';
+        $transformedMedia['omschrijving'] = $media['omschrijving'] ?? '';
+        $transformedMedia['mimetype'] = 'image/webp';
+
+        return $transformedMedia;
     }
 }

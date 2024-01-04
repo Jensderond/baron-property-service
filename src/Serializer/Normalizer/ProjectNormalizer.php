@@ -151,6 +151,7 @@ class ProjectNormalizer extends ObjectNormalizer implements DenormalizerInterfac
                 $constructionNumber->setTeksten($number['teksten']);
                 $constructionNumber->setDiversen($number['diversen']);
                 $constructionNumber->setDetail($number['detail']);
+                $constructionNumber->setMedia($number['media']);
 
                 $totalCNRooms = 0;
                 $totalCNBedrooms = 0;

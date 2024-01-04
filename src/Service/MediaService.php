@@ -14,41 +14,6 @@ class MediaService
     {
     }
 
-    // public function buildObject(string $url): array
-    // {
-    //     $relativeUrl = parse_url($url);
-    //     $path = $relativeUrl['path'];
-
-    //     $images = [];
-
-    //     if(!$this->fileExist("{$path}-400x266.webp")) {
-    //         $imageContent = $this->downloadFile($url);
-
-    //         if ($imageContent) {
-    //             $images = [
-    //                 '1x' => $this->resizeAndSaveImage($imageContent, '400x266', $path),
-    //                 '2x' => $this->resizeAndSaveImage($imageContent, '800x532', $path),
-    //                 'mainImage' => [
-    //                     '1x' => $this->resizeAndSaveImage($imageContent, '500x333', $path),
-    //                     '2x' => $this->resizeAndSaveImage($imageContent, '1000x666', $path),
-    //                     '3x' => $this->resizeAndSaveImage($imageContent, '2000x1333', $path),
-    //                 ]
-    //             ];
-    //         }
-    //     } else {
-    //         $images = [
-    //             '1x' => $this->publicUploadsStorage->publicUrl("{$path}-400x266.webp"),
-    //             '2x' => $this->publicUploadsStorage->publicUrl("{$path}-800x532.webp"),
-    //             'mainImage' => [
-    //                 '1x' => $this->publicUploadsStorage->publicUrl("{$path}-500x333.webp"),
-    //                 '2x' => $this->publicUploadsStorage->publicUrl("{$path}-1000x666.webp"),
-    //                 '3x' => $this->publicUploadsStorage->publicUrl("{$path}-2000x1333.webp"),
-    //             ]
-    //         ];
-    //     }
-
-    //     return $images;
-    // }
     public function buildObject(string $url, array $options = []): array
     {
         $defaultOptions = [
@@ -59,12 +24,11 @@ class MediaService
                     '480w' => '580x387',
                     '768w' => '870x580',
                     '1280w' => '1450x967',
-                    '1536w' => '1740x1160',
                 ],
             ],
         ];
 
-        $options = array_merge($defaultOptions, $options);
+        $options = !empty($options) ? $options : $defaultOptions;
 
         $relativeUrl = parse_url($url);
         $path = $relativeUrl['path'];
@@ -73,7 +37,7 @@ class MediaService
         foreach ($options['sizes'] as $key => $size) {
             if (is_array($size)) {
                 foreach ($size as $subKey => $subSize) {
-                    $images['mainImage'][$subKey] = $this->processImage($subSize, $path, $url);
+                    $images[$key][$subKey] = $this->processImage($subSize, $path, $url);
                 }
             } else {
                 $images[$key] = $this->processImage($size, $path, $url);
