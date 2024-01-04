@@ -6,16 +6,13 @@ use App\Entity\ConstructionNumber;
 use App\Entity\Project;
 use App\Entity\ConstructionType;
 use DateTimeImmutable;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProjectNormalizer extends ObjectNormalizer implements DenormalizerInterface, NormalizerInterface
+class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct()
-    {
-        parent::__construct(null, new CamelCaseToSnakeCaseNameConverter());
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
@@ -30,9 +27,6 @@ class ProjectNormalizer extends ObjectNormalizer implements DenormalizerInterfac
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        // Custom logic for denormalizing Project
-        // You can delegate to the parent method for properties you don't need to handle specially
-
         $data['externalId'] = $data['project']['id'];
         $data['algemeen'] = $data['project']['algemeen'];
         $data['status'] = $data['project']['algemeen']['status'];
@@ -192,22 +186,24 @@ class ProjectNormalizer extends ObjectNormalizer implements DenormalizerInterfac
     }
 
     /**
-     * @param Project $object
+     * @param Project $project
      */
-    public function normalize(mixed $object, ?string $format = null, array $context = [])
+    public function normalize($project, ?string $format = null, array $context = [])
     {
-        $data = parent::normalize($object, $format, $context);
+        $data = $this->objectNormalizer->normalize($project, $format, $context);
 
-        $data['algemeen'] = $object->getAlgemeen();
-        $data['diversen'] = $object->getDiversen();
-        $data['main_image'] = $object->getMainImage();
-
-        if(isset($context['groups'])) {
-            if(in_array('read', $context['groups'])) {
-                $data['construction_types'] = $data['construction_types']['hydra:member'];
-            }
-        }
+        $data['algemeen'] = $project->getAlgemeen();
+        $data['diversen'] = $project->getDiversen();
+        $data['main_image'] = $project->getMainImage();
 
         return $data;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => true,
+            Project::class => true,
+        ];
     }
 }

@@ -2,23 +2,31 @@
 
 declare(strict_types=1);
 
-use Rector\Core\Configuration\Option;
-use Rector\Set\ValueObject\SetList;
+use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
+use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Symfony\Set\SymfonySetList;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    // get parameters
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PATHS, [
-        __DIR__.'/src',
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml');
+
+    $rectorConfig->paths([
+        __DIR__ . '/config',
+        __DIR__ . '/public',
+        __DIR__ . '/src',
     ]);
 
-    // Define what rule sets will be applied
-    $containerConfigurator->import(SetList::DEAD_CODE);
-    $containerConfigurator->import(LevelSetList::UP_TO_PHP_81);
-
-    // get services (needed for register a single rule)
     // register a single rule
-    // $services->set(TypedPropertyRector::class);
+    $rectorConfig->rule(InlineConstructorDefaultToPropertyRector::class);
+
+    $rectorConfig->sets([
+        SymfonySetList::SYMFONY_64,
+        SymfonySetList::SYMFONY_CODE_QUALITY,
+        SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+    ]);
+
+    // define sets of rules
+    //    $rectorConfig->sets([
+    //        LevelSetList::UP_TO_PHP_81
+    //    ]);
 };

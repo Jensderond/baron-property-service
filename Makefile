@@ -35,8 +35,12 @@ composer: up
 lint: up
 	ddev exec php vendor/bin/php-cs-fixer fix src
 
+rector: up
+	ddev exec php vendor/bin/rector
+
 import:
 	$(SYMFONY) app:import-properties
+	$(SYMFONY) app:import-projects
 
 schema:
 	$(SYMFONY) api:openapi:export --yaml > schema.yaml

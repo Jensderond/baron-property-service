@@ -25,16 +25,6 @@
     "composer/xdebug-handler": {
         "version": "2.0.2"
     },
-    "doctrine/annotations": {
-        "version": "1.13",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.10",
-            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
-        },
-        "files": []
-    },
     "doctrine/cache": {
         "version": "2.1.1"
     },
@@ -127,18 +117,6 @@
         "files": [
             "config/packages/hautelook_alice.yaml",
             "fixtures/.gitignore"
-        ]
-    },
-    "jms/serializer-bundle": {
-        "version": "5.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "4.0",
-            "ref": "cc04e10cf7171525b50c18b36004edf64cb478be"
-        },
-        "files": [
-            "config/packages/jms_serializer.yaml"
         ]
     },
     "laminas/laminas-code": {

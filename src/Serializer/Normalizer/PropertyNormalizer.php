@@ -2,15 +2,12 @@
 
 namespace App\Serializer\Normalizer;
 
-use App\Entity\PropertyDetail;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
 class PropertyNormalizer implements DenormalizerInterface
 {
-    public function __construct(protected EntityManagerInterface $entityManager)
-    {
-    }
+    use NormalizerAwareTrait;
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
     {
@@ -81,19 +78,6 @@ class PropertyNormalizer implements DenormalizerInterface
         /** Price */
         $property->setPrice($data['financieel']['overdracht']['koopprijs']);
         $property->setRentalPrice($data['financieel']['overdracht']['huurprijs']);
-
-        /** @var PropertyDetailRepository $propertyDetailRepo */
-        $propertyDetailRepo = $this->entityManager->getRepository(PropertyDetail::class);
-
-        $propertyDetail = $propertyDetailRepo->findOneBy(['id' => $property->getExternalId()]);
-        if (!$propertyDetail) {
-            $propertyDetail = new PropertyDetail($property->getExternalId());
-        }
-
-        $propertyDetail->setEtages($data['detail']['etages']);
-        $propertyDetail->setOverigOnroerendGoed($data['detail']['overigOnroerendGoed']);
-        $propertyDetail->setBuitenruimte($data['detail']['buitenruimte']);
-        $property->setDetail($propertyDetail);
         $property->setStatus($data['financieel']['overdracht']['status']);
 
         return $property;
@@ -106,12 +90,7 @@ class PropertyNormalizer implements DenormalizerInterface
 
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
-        return false;
-    }
-
-    public function hasCacheableSupportsMethod(): bool
-    {
-        return true;
+        return $data instanceof \App\Entity\Property;
     }
 
     public function getSupportedTypes(?string $format): array

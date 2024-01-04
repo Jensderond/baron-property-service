@@ -27,5 +27,26 @@ services:
         arguments:
             - '@App\Service\AddressService'
 
+    Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor: ~
+    Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor: ~
+
+    Symfony\Component\PropertyInfo\PropertyInfoExtractor:
+        arguments:
+            $listExtractors: [ ]
+            $typeExtractors: [ '@Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor', '@Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor' ]
+
+    Symfony\Component\Serializer\Mapping\Loader\AttributeLoader: ~
+
+    Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory:
+        arguments:
+            $loader: '@Symfony\Component\Serializer\Mapping\Loader\AttributeLoader'
+
+    app.object_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        arguments:
+            $classMetadataFactory: '@Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory'
+            $nameConverter: '@Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'
+            $propertyTypeExtractor: '@Symfony\Component\PropertyInfo\PropertyInfoExtractor'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

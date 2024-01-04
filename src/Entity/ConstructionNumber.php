@@ -17,9 +17,8 @@ use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use ReflectionClass;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
-use Symfony\Component\Serializer\Annotation\SerializedPath;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedPath;
 
 #[ORM\Entity(repositoryClass: ConstructionNumberRepository::class)]
 #[ApiResource(
@@ -68,7 +67,6 @@ class ConstructionNumber
 
     #[ORM\ManyToOne(inversedBy: 'constructionNumbers')]
     #[ORM\JoinColumn(nullable: false)]
-    #[MaxDepth(1)]
     private ?ConstructionType $constructionType = null;
 
     #[Groups('read')]
