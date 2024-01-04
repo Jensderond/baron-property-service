@@ -36,7 +36,7 @@ class OfferProvider implements ProviderInterface
 
         $projects = array_map(
             fn (Project $item) => new Offer(
-                $item->getCreatedAt(),
+                $item->getCreatedAt()->format('Y-m-d'),
                 'project',
                 $item->getTitle(),
                 $item->getMainImage(),
@@ -55,7 +55,7 @@ class OfferProvider implements ProviderInterface
 
         $properties = array_map(
             fn (Property $item) => new Offer(
-                $item->getCreatedAt(),
+                $item->getCreatedAt()->format('Y-m-d'),
                 'property',
                 $item->getTitle(),
                 $item->getImage(),

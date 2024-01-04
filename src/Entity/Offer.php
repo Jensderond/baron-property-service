@@ -18,7 +18,7 @@ use DateTimeImmutable;
 class Offer
 {
     public function __construct(
-        public readonly ?DateTimeImmutable $createdAt,
+        public readonly ?string $createdAt,
         public readonly ?string $itemType,
         public readonly ?string $title,
         public readonly ?array $image,
