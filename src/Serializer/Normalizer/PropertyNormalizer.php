@@ -75,6 +75,10 @@ class PropertyNormalizer implements DenormalizerInterface
 
         $property->setMedia($data['media']);
 
+        $property->setEtages($data['detail']['etages']);
+        $property->setOverigOnroerendGoed($data['detail']['overigOnroerendGoed']);
+        $property->setBuitenruimte($data['detail']['buitenruimte']);
+
         /** Price */
         $property->setPrice($data['financieel']['overdracht']['koopprijs']);
         $property->setRentalPrice($data['financieel']['overdracht']['huurprijs']);

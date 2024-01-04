@@ -18,8 +18,6 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PropertyRepository;
 use App\State\PropertyProvider;
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ReflectionClass;
 
@@ -69,9 +67,6 @@ class Property
 
     #[ORM\Column(length: 255)]
     private ?string $category = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?PropertyDetail $detail = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
@@ -129,6 +124,15 @@ class Property
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $etages = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $overigOnroerendGoed = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $buitenruimte = null;
 
     public function __construct()
     {
@@ -225,18 +229,6 @@ class Property
     public function setCategory(string $category): static
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    public function getDetail(): ?PropertyDetail
-    {
-        return $this->detail;
-    }
-
-    public function setDetail(?PropertyDetail $detail): static
-    {
-        $this->detail = $detail;
 
         return $this;
     }
@@ -473,7 +465,7 @@ class Property
     public function getBedrooms(): ?int
     {
         // array reduce to loop over each
-        $etages = $this->getDetail()->getEtages();
+        $etages = $this->getEtages();
 
         $slaapkamers = array_reduce($etages, function ($carry, $item) {
             return $carry + $item['aantalSlaapkamers'];
@@ -502,6 +494,42 @@ class Property
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getEtages(): ?array
+    {
+        return $this->etages;
+    }
+
+    public function setEtages(?array $etages): static
+    {
+        $this->etages = $etages;
+
+        return $this;
+    }
+
+    public function getOverigOnroerendGoed(): ?array
+    {
+        return $this->overigOnroerendGoed;
+    }
+
+    public function setOverigOnroerendGoed(?array $overigOnroerendGoed): static
+    {
+        $this->overigOnroerendGoed = $overigOnroerendGoed;
+
+        return $this;
+    }
+
+    public function getBuitenruimte(): ?array
+    {
+        return $this->buitenruimte;
+    }
+
+    public function setBuitenruimte(?array $buitenruimte): static
+    {
+        $this->buitenruimte = $buitenruimte;
 
         return $this;
     }

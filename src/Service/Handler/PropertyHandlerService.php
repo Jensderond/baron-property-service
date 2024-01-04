@@ -45,6 +45,7 @@ class PropertyHandlerService extends AbstractHandlerService
             }
 
             $property->setImage($this->handlePropertyMainImage($model));
+            $property->setMedia($this->handleMedia($property->getMedia()));
 
             $this->checkLatLong($property);
 
@@ -57,6 +58,7 @@ class PropertyHandlerService extends AbstractHandlerService
 
         $model->createSlug();
         $model->setImage($this->handlePropertyMainImage($model));
+        $model->setMedia($this->handleMedia($model->getMedia()));
         $this->checkLatLong($model);
         $this->entityManager->persist($model);
 
@@ -113,5 +115,26 @@ class PropertyHandlerService extends AbstractHandlerService
         }
 
         return $this->mediaService->buildObject($mainImage['link']);
+    }
+
+    private function handleMedia(?array $mediaInput): array
+    {
+        if (!isset($mediaInput)) {
+            return [];
+        }
+
+        $transformedItems = [];
+
+        foreach ($mediaInput as $key => $media) {
+            if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
+                $transformedItems[] = $this->mediaService->transfromItem($media);
+
+                unset($mediaInput[$key]);
+            }
+        }
+
+        $mediaItems = array_merge($transformedItems, array_values($mediaInput));
+
+        return $mediaItems;
     }
 }

@@ -47,6 +47,25 @@ class MediaService
         return $images;
     }
 
+    public function transfromItem(array $media): array
+    {
+        $options = [
+            'sizes' => [
+                '480w' => '580x387',
+                '768w' => '870x580',
+                '1280w' => '1450x967',
+            ],
+        ];
+
+        $transformedMedia['sizes'] = $this->buildObject($media['link'], $options);
+        $transformedMedia['soort'] = $media['soort'];
+        $transformedMedia['title'] = $media['title'] ?? '';
+        $transformedMedia['omschrijving'] = $media['omschrijving'] ?? '';
+        $transformedMedia['mimetype'] = 'image/webp';
+
+        return $transformedMedia;
+    }
+
     private function processImage(string $size, string $path, string $url): string
     {
         $imagePath = "{$path}-{$size}.webp";
