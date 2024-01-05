@@ -31,7 +31,10 @@ class PropertyHandlerService extends AbstractHandlerService
         $property = $propertyRepo->findBy(['externalId' => $model->getExternalId()], [], 1);
         $property = $property[0] ?? null;
 
-        if ($property) {
+        dump($property->getUpdatedAt() < $model->getUpdatedAt());
+        die();
+
+        if ($property && $property->getUpdatedAt() < $model->getUpdatedAt()) {
             $this->idsInImport[] = $property->getExternalId();
 
             $tmpLat = $property->getLat();
@@ -53,6 +56,10 @@ class PropertyHandlerService extends AbstractHandlerService
 
             $this->entityManager->persist($property);
             $output->writeln('<info>Updated Property: '.$model->getTitle().'</info>');
+            return;
+        } else {
+            $output->writeln('<info>No update needed for: '.$model->getTitle().'</info>');
+
             return;
         }
 

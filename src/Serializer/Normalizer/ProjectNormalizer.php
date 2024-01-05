@@ -146,6 +146,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $constructionNumber->setDiversen($number['diversen']);
                 $constructionNumber->setDetail($number['detail']);
                 $constructionNumber->setMedia($number['media']);
+                $constructionNumber->setUpdatedAt(new DateTimeImmutable($number['diversen']['diversen']['wijzigingsdatum']));
 
                 $totalCNRooms = 0;
                 $totalCNBedrooms = 0;

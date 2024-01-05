@@ -34,19 +34,37 @@ class ProjectHandlerService extends AbstractHandlerService
         if ($existingProject) {
             $existingProject->map($model);
             $existingProject->createSlug();
-            $existingProject->setMainImage($this->handleMainImage($existingProject->getMedia()));
-            $existingProject->setMedia($this->handleMedia($existingProject->getMedia()));
+
+            if($existingProject->getUpdatedAt() < $model->getUpdatedAt()) {
+                $existingProject->setMainImage($this->handleMainImage($existingProject->getMedia()));
+                $existingProject->setMedia($this->handleMedia($existingProject->getMedia()));
+            }
 
             foreach($existingProject->getConstructionTypes() as $constructionType) {
                 $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
+                $existingId = $constructionType->getExternalId();
+                $liveConstructionType = $model->getConstructionTypes()->filter(function($constructionType) use ($existingId) {
+                    return $constructionType->getExternalId() === $existingId;
+                })->first();
 
                 foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
-                    $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
+                    $existingCnId = $constructionNumber->getExternalId();
+                    $liveConstructionNumber = $liveConstructionType->getConstructionNumbers()->filter(function($constructionNumber) use ($existingCnId) {
+                        return $constructionNumber->getExternalId() === $existingCnId;
+                    })->first();
+
+                    if($constructionNumber->getUpdatedAt() < $liveConstructionNumber->getUpdatedAt()) {
+                        $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
+                        $constructionNumber->setUpdatedAt($liveConstructionNumber->getUpdatedAt());
+                    }
                 }
             }
 
             $this->entityManager->persist($existingProject);
             $output->writeln('<info>Updated Project: '.$model->getTitle().'</info>');
+            return;
+        } else {
+            $output->writeln('<info>No update needed for: '.$model->getTitle().'</info>');
             return;
         }
 

@@ -103,6 +103,9 @@ class ConstructionNumber
     #[ORM\Column(length: 255)]
     private ?string $priceCondition = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     public function map(ConstructionNumber $newProperties)
     {
         $reflectionClass = new ReflectionClass($this);
@@ -111,8 +114,13 @@ class ConstructionNumber
                 $propertyName = substr($method->getName(), 3);
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
-                if ($propertyName !== 'ConstructionType') {
+                if ($propertyName !== 'ConstructionType' && $propertyName !== 'Media' && $propertyName !== 'UpdatedAt') {
                     $this->{$setMethod}($newProperties->{$getMethod}());
+                }
+                if ($propertyName === 'Media') {
+                    if($this->getUpdatedAt() < $newProperties->getUpdatedAt()) {
+                        $this->{$setMethod}($newProperties->{$getMethod}());
+                    }
                 }
             }
         }
@@ -372,5 +380,17 @@ class ConstructionNumber
     public function getProjectSlug(): ?string
     {
         return $this->getConstructionType()?->getProject()?->getSlug();
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }
