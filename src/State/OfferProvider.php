@@ -74,14 +74,8 @@ class OfferProvider implements ProviderInterface
 
         $combined = array_merge($projects, $properties);
 
-        // dump($combined);
-
         // sort $combined by date
         usort($combined, function ($a, $b) {
-            // if($a->slug === 'villa-marehoek-0ong-oud-vossemeer-7505443') {
-            //     dump($a->title, $b->title);
-            //     dump($a->status === 'BESCHIKBAAR' && $b->status !== 'BESCHIKBAAR');
-            // }
             if ($a->status === 'BESCHIKBAAR' && $b->status !== 'BESCHIKBAAR') {
                 return -1;
             } elseif ($b->status === 'BESCHIKBAAR' && $a->status !== 'BESCHIKBAAR') {

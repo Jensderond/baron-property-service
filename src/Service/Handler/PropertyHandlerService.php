@@ -31,9 +31,6 @@ class PropertyHandlerService extends AbstractHandlerService
         $property = $propertyRepo->findBy(['externalId' => $model->getExternalId()], [], 1);
         $property = $property[0] ?? null;
 
-        dump($property->getUpdatedAt() < $model->getUpdatedAt());
-        die();
-
         if ($property && $property->getUpdatedAt() < $model->getUpdatedAt()) {
             $this->idsInImport[] = $property->getExternalId();
 

@@ -24,11 +24,6 @@ class ProjectProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): Project|NotFoundAction
     {
-        // dump($this->serializerContextBuilder);
-        // dump($operation);
-        // set the context to be group 'show_project'
-        // $context['groups'] = ['show_project'];
-
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
 
