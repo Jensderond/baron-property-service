@@ -71,7 +71,7 @@ class ConstructionNumber
     #[Ignore]
     private ?ConstructionType $constructionType = null;
 
-    #[Groups('read')]
+    #[Groups(['read', 'slug'])]
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
@@ -104,6 +104,7 @@ class ConstructionNumber
     private ?string $priceCondition = null;
 
     #[ORM\Column]
+    #[Ignore]
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function map(ConstructionNumber $newProperties)

@@ -31,33 +31,35 @@ class PropertyHandlerService extends AbstractHandlerService
         $property = $propertyRepo->findBy(['externalId' => $model->getExternalId()], [], 1);
         $property = $property[0] ?? null;
 
-        if ($property && $property->getUpdatedAt() < $model->getUpdatedAt()) {
-            $this->idsInImport[] = $property->getExternalId();
+        if ($property) {
+            if ($property->getUpdatedAt() < $model->getUpdatedAt()) {
+                $this->idsInImport[] = $property->getExternalId();
 
-            $tmpLat = $property->getLat();
-            $tmpLng = $property->getLng();
+                $tmpLat = $property->getLat();
+                $tmpLng = $property->getLng();
 
-            $property->map($model);
+                $property->map($model);
 
-            if (!$property->getLat() && !$property->getLng()) {
-                $property->setLat($tmpLat);
-                $property->setLng($tmpLng);
+                if (!$property->getLat() && !$property->getLng()) {
+                    $property->setLat($tmpLat);
+                    $property->setLng($tmpLng);
+                }
+
+                $property->setImage($this->handlePropertyMainImage($model));
+                $property->setMedia($this->handleMedia($property->getMedia()));
+
+                $this->checkLatLong($property);
+
+                $property->createSlug();
+
+                $this->entityManager->persist($property);
+                $output->writeln('<info>Updated Property: '.$model->getTitle().'</info>');
+                return;
+            } else {
+                $output->writeln('<info>No update needed for: '.$model->getTitle().'</info>');
+
+                return;
             }
-
-            $property->setImage($this->handlePropertyMainImage($model));
-            $property->setMedia($this->handleMedia($property->getMedia()));
-
-            $this->checkLatLong($property);
-
-            $property->createSlug();
-
-            $this->entityManager->persist($property);
-            $output->writeln('<info>Updated Property: '.$model->getTitle().'</info>');
-            return;
-        } else {
-            $output->writeln('<info>No update needed for: '.$model->getTitle().'</info>');
-
-            return;
         }
 
         $model->createSlug();

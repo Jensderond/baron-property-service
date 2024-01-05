@@ -17,12 +17,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use ReflectionClass;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ApiResource(
     operations: [
         new Get(name: "getProjectItem"),
         new Get(name: "getExternalProjectItem", uriTemplate: '/projectExternal/{id}', provider: ProjectProvider::class, normalizationContext: ['groups' => ['read']]),
-        new GetCollection(name: "getProjectCollection")
+        new GetCollection(name: "getProjectCollection", provider: ProjectProvider::class, normalizationContext: ['groups' => ['slug']])
     ],
     graphQlOperations: [
         new Query(name: 'item_query'),
@@ -90,7 +91,7 @@ class Project
     #[ORM\Column]
     private array $algemeen = [];
 
-    #[Groups('read')]
+    #[Groups(['read', 'slug'])]
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
@@ -98,12 +99,12 @@ class Project
     #[ORM\Column(nullable: true)]
     private ?array $media = null;
 
-    #[Groups('read')]
     #[ORM\Column]
+    #[Ignore]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[Groups('read')]
     #[ORM\Column]
+    #[Ignore]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[Groups('read')]
@@ -166,9 +167,10 @@ class Project
                 $propertyName = substr($method->getName(), 3);
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
-                if ($propertyName !== 'ConstructionTypes') {
+                if ($propertyName !== 'ConstructionTypes' && $propertyName !== 'Media' && $propertyName !== 'MainImage' && $propertyName !== 'UpdatedAt') {
                     $this->{$setMethod}($newProperties->{$getMethod}());
-                } else {
+                }
+                if ($propertyName === 'ConstructionTypes') {
                     $this->updateConstructionTypes($newProperties->{$getMethod}());
                 }
             }

@@ -193,9 +193,19 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $data = $this->objectNormalizer->normalize($project, $format, $context);
 
-        $data['algemeen'] = $project->getAlgemeen();
-        $data['diversen'] = $project->getDiversen();
-        $data['main_image'] = $project->getMainImage();
+        if(isset($data['construction_types']) && isset($data['construction_types']['hydra:member'])) {
+            $data['construction_types'] = $data['construction_types']['hydra:member'];
+        }
+        if(isset($data['algemeen'])) {
+            $data['algemeen'] = $project->getAlgemeen();
+        }
+        if(isset($data['diversen'])) {
+            $data['diversen'] = $project->getDiversen();
+        }
+        if(isset($data['main_image'])) {
+            $data['main_image'] = $project->getMainImage();
+        }
+
 
         return $data;
     }

@@ -28,11 +28,19 @@ class ConstructionNumberNormalizer implements NormalizerInterface
     {
         $data = $this->objectNormalizer->normalize($number, $format, $context);
 
-        if(!in_array('read', $context['groups'])) {
+        if(isset($data['algemeen'])) {
             $data['algemeen'] = $number->getAlgemeen();
+        }
+        if(isset($data['diversen'])) {
             $data['diversen'] = $number->getDiversen();
+        }
+        if(isset($data['address'])){
             $data['address'] = $number->getAddress();
+        }
+        if(isset($data['detail'])){
             $data['detail'] = $number->getDetail();
+        }
+        if(isset($data['teksten'])){
             $data['teksten'] = $number->getTeksten();
         }
 

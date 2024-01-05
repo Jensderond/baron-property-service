@@ -38,6 +38,7 @@ class ProjectHandlerService extends AbstractHandlerService
             if($existingProject->getUpdatedAt() < $model->getUpdatedAt()) {
                 $existingProject->setMainImage($this->handleMainImage($existingProject->getMedia()));
                 $existingProject->setMedia($this->handleMedia($existingProject->getMedia()));
+                $existingProject->setUpdatedAt($model->getUpdatedAt());
             }
 
             foreach($existingProject->getConstructionTypes() as $constructionType) {
@@ -62,9 +63,6 @@ class ProjectHandlerService extends AbstractHandlerService
 
             $this->entityManager->persist($existingProject);
             $output->writeln('<info>Updated Project: '.$model->getTitle().'</info>');
-            return;
-        } else {
-            $output->writeln('<info>No update needed for: '.$model->getTitle().'</info>');
             return;
         }
 

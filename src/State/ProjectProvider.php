@@ -9,7 +9,8 @@ use ApiPlatform\State\SerializerAwareProviderTrait;
 use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Project;
-use App\Repository\PropertyRepository;
+use App\Repository\ProjectRepository;
+use Doctrine\Common\Collections\Collection;
 
 class ProjectProvider implements ProviderInterface
 {
@@ -22,16 +23,31 @@ class ProjectProvider implements ProviderInterface
         $this->entityManager = $entityManager;
     }
 
-    public function provide(Operation $operation, array $uriVariables = [], array $context = []): Project|NotFoundAction
+    public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|Project|NotFoundAction
+    {
+
+        switch ($operation->getName()) {
+            case 'getExternalProjectItem':
+                return $this->getItemById($uriVariables['id']);
+            case 'getProjectCollection':
+                return $this->getCollection();
+        }
+    }
+
+    private function getCollection()
     {
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
 
-        $project = $projectRepo->findOneBy(['externalId' => $uriVariables['id'] ?? null]);
+        return $projectRepo->findAll();
+    }
 
-        if(!$project) {
-            return new NotFoundAction();
-        }
+    private function getItemById(int $id): ?Project
+    {
+        /** @var ProjectRepository $projectRepo */
+        $projectRepo = $this->entityManager->getRepository(Project::class);
+
+        $project = $projectRepo->findOneBy(['externalId' => $id]);
 
         return $project;
     }
