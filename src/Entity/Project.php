@@ -167,7 +167,7 @@ class Project
                 $propertyName = substr($method->getName(), 3);
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
-                if ($propertyName !== 'ConstructionTypes' && $propertyName !== 'Media' && $propertyName !== 'MainImage' && $propertyName !== 'UpdatedAt') {
+                if ($propertyName !== 'ConstructionTypes' && $propertyName !== 'Media' && $propertyName !== 'MainImage') {
                     $this->{$setMethod}($newProperties->{$getMethod}());
                 }
                 if ($propertyName === 'ConstructionTypes') {

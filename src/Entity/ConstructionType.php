@@ -261,7 +261,7 @@ class ConstructionType
         if (isset($minPrice) && isset($maxPrice)) {
             return match($this->getAlgemeen()['koopHuur']) {
                 'KOOP' => "Van {$moneyFormatter->format(new Money($minPrice * 100, new Currency('EUR')))} tot {$moneyFormatter->format(new Money($maxPrice * 100, new Currency('EUR')))} v.o.n.",
-                'HUUR' => "Vanaf {$moneyFormatter->format(new Money($minPrice * 100, new Currency('EUR')))} per maand",
+                'HUUR' => "Vanaf {$moneyFormatter->format(new Money($minPrice * 100, new Currency('EUR')))} p.m.", // TODO: Check rent conditions
             };
         }
 

@@ -57,12 +57,14 @@ class PropertyRepository extends ServiceEntityRepository
 
         $count = $qb->select('count(p.externalId)')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
+            ->andWhere('p.archived = 0 OR p.archived is null')
             ->getQuery()
             ->getSingleScalarResult();
 
         $qb->update()
             ->set('p.archived', true)
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
+            ->andWhere('p.archived = 0 OR p.archived is null')
             ->getQuery()
             ->execute();
 

@@ -39,7 +39,7 @@ class PropertyNormalizer implements DenormalizerInterface
         }
 
         /** Generic */
-        $property->setCreatedAt(new \DateTimeImmutable($data['diversen']['diversen']['invoerdatum']));
+        $property->setCreatedAt(new \DateTimeImmutable($data['marketing']['publicatiedatum']));
         $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
         $property->setExternalId($data['id']);
         $property->setCategory($data['object']['type']['objecttype']);

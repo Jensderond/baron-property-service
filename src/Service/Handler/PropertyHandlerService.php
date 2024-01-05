@@ -27,13 +27,12 @@ class PropertyHandlerService extends AbstractHandlerService
         /** @var PropertyRepository $propertyRepo */
         $propertyRepo = $this->entityManager->getRepository(Property::class);
 
-        /** @var list<Property> $property */
-        $property = $propertyRepo->findBy(['externalId' => $model->getExternalId()], [], 1);
-        $property = $property[0] ?? null;
+        $property = $propertyRepo->findOneBy(['externalId' => $model->getExternalId()], [], 1);
+        $existingPropertyUpdatedAt = $property ? $property->getUpdatedAt() : null;
+        $this->idsInImport[] = $model->getExternalId();
 
-        if ($property) {
-            if ($property->getUpdatedAt() < $model->getUpdatedAt()) {
-                $this->idsInImport[] = $property->getExternalId();
+        if ($property && $existingPropertyUpdatedAt !== null) {
+            if ($existingPropertyUpdatedAt->format('Y-m-d H:i:s') !== $model->getUpdatedAt()->format('Y-m-d H:i:s')) {
 
                 $tmpLat = $property->getLat();
                 $tmpLng = $property->getLng();
@@ -45,6 +44,7 @@ class PropertyHandlerService extends AbstractHandlerService
                     $property->setLng($tmpLng);
                 }
 
+                $output->writeln('<info>Handling media existing property</info>');
                 $property->setImage($this->handlePropertyMainImage($model));
                 $property->setMedia($this->handleMedia($property->getMedia()));
 
@@ -63,6 +63,7 @@ class PropertyHandlerService extends AbstractHandlerService
         }
 
         $model->createSlug();
+        $output->writeln('<info>Handling media for new property</info>');
         $model->setImage($this->handlePropertyMainImage($model));
         $model->setMedia($this->handleMedia($model->getMedia()));
         $this->checkLatLong($model);
@@ -99,7 +100,6 @@ class PropertyHandlerService extends AbstractHandlerService
         /** @var PropertyRepository $propertyRepo */
         $propertyRepo = $this->entityManager->getRepository(Property::class);
 
-
         $count = $propertyRepo->archiveProperties($this->idsInImport);
 
         $output->writeln("<info>Archived ${count} properties </info>");
@@ -123,7 +123,7 @@ class PropertyHandlerService extends AbstractHandlerService
             return $media['soort'] === 'HOOFDFOTO';
         }));
 
-        if (!$mainImage) {
+        if (!$mainImage || !isset($mainImage['link'])) {
             return [];
         }
 
@@ -140,9 +140,11 @@ class PropertyHandlerService extends AbstractHandlerService
 
         foreach ($mediaInput as $key => $media) {
             if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
-                $transformedItems[] = $this->mediaService->transfromItem($media);
+                if(isset($media['link']) && $media['link'] !== null) {
+                    $transformedItems[] = $this->mediaService->transfromItem($media);
 
-                unset($mediaInput[$key]);
+                    unset($mediaInput[$key]);
+                }
             }
         }
 

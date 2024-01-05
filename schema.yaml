@@ -2,601 +2,1035 @@ openapi: 3.1.0
 info:
   title: 'Baron property service'
   description: ''
+  terms_of_service: null
+  contact: null
+  license: null
   version: 1.0.1
+  summary: null
+  extension_properties: []
 servers:
   -
     url: /
     description: ''
+    variables: null
+    extension_properties: []
 paths:
-  '/api/constructionNumberExternal/{id}':
-    get:
-      operationId: getExternalConstructionNumberItem
-      tags:
-        - ConstructionNumber
-      responses:
-        200:
-          description: 'ConstructionNumber resource'
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/ConstructionNumber.jsonld'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConstructionNumber'
-        404:
-          description: 'Resource not found'
-      summary: 'Retrieves a ConstructionNumber resource.'
-      description: 'Retrieves a ConstructionNumber resource.'
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'ConstructionNumber identifier'
-          required: true
-          deprecated: false
-          allowEmptyValue: false
-          schema:
-            type: string
-          style: simple
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  /api/construction_numbers:
-    get:
-      operationId: getConstructionNumberCollection
-      tags:
-        - ConstructionNumber
-      responses:
-        200:
-          description: 'ConstructionNumber collection'
-          content:
-            application/ld+json:
-              schema:
-                type: object
-                properties:
-                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/ConstructionNumber.jsonld' } }
-                  'hydra:totalItems': { type: integer, minimum: 0 }
-                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } }
-                required:
-                  - 'hydra:member'
-            application/json:
-              schema:
-                type: array
-                items:
+  paths:
+    '/api/constructionNumberExternal/{id}':
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getExternalConstructionNumberItem
+        tags:
+          - ConstructionNumber
+        responses:
+          200:
+            description: 'ConstructionNumber resource'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/ConstructionNumber.jsonld'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
                   $ref: '#/components/schemas/ConstructionNumber'
-      summary: 'Retrieves the collection of ConstructionNumber resources.'
-      description: 'Retrieves the collection of ConstructionNumber resources.'
-      parameters:
-        -
-          name: page
-          in: query
-          description: 'The collection page number'
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: integer
-            default: 1
-          style: form
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  '/api/construction_numbers/{id}':
-    get:
-      operationId: getConstructionNumberItem
-      tags:
-        - ConstructionNumber
-      responses:
-        200:
-          description: 'ConstructionNumber resource'
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/ConstructionNumber.jsonld'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConstructionNumber'
-        404:
-          description: 'Resource not found'
-      summary: 'Retrieves a ConstructionNumber resource.'
-      description: 'Retrieves a ConstructionNumber resource.'
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'ConstructionNumber identifier'
-          required: true
-          deprecated: false
-          allowEmptyValue: false
-          schema:
-            type: string
-          style: simple
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  /api/construction_types:
-    get:
-      operationId: getConstructionTypeCollection
-      tags:
-        - ConstructionType
-      responses:
-        200:
-          description: 'ConstructionType collection'
-          content:
-            application/ld+json:
-              schema:
-                type: object
-                properties:
-                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/ConstructionType.jsonld' } }
-                  'hydra:totalItems': { type: integer, minimum: 0 }
-                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } }
-                required:
-                  - 'hydra:member'
-            application/json:
-              schema:
-                type: array
-                items:
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+          404:
+            description: 'Resource not found'
+            content: null
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves a ConstructionNumber resource.'
+        description: 'Retrieves a ConstructionNumber resource.'
+        external_docs: null
+        parameters:
+          -
+            name: id
+            in: path
+            description: 'ConstructionNumber identifier'
+            required: true
+            deprecated: false
+            allow_empty_value: false
+            schema:
+              type: string
+            style: simple
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    /api/construction_numbers:
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getConstructionNumberCollection
+        tags:
+          - ConstructionNumber
+        responses:
+          200:
+            description: 'ConstructionNumber collection'
+            content:
+              application/ld+json:
+                schema:
+                  type: object
+                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/ConstructionNumber.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
+                  required: ['hydra:member']
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  type: array
+                  items: { $ref: '#/components/schemas/ConstructionNumber' }
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves the collection of ConstructionNumber resources.'
+        description: 'Retrieves the collection of ConstructionNumber resources.'
+        external_docs: null
+        parameters:
+          -
+            name: page
+            in: query
+            description: 'The collection page number'
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: integer
+              default: 1
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    '/api/construction_numbers/{id}':
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getConstructionNumberItem
+        tags:
+          - ConstructionNumber
+        responses:
+          200:
+            description: 'ConstructionNumber resource'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/ConstructionNumber.jsonld'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ConstructionNumber'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+          404:
+            description: 'Resource not found'
+            content: null
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves a ConstructionNumber resource.'
+        description: 'Retrieves a ConstructionNumber resource.'
+        external_docs: null
+        parameters:
+          -
+            name: id
+            in: path
+            description: 'ConstructionNumber identifier'
+            required: true
+            deprecated: false
+            allow_empty_value: false
+            schema:
+              type: string
+            style: simple
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    /api/construction_types:
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getConstructionTypeCollection
+        tags:
+          - ConstructionType
+        responses:
+          200:
+            description: 'ConstructionType collection'
+            content:
+              application/ld+json:
+                schema:
+                  type: object
+                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/ConstructionType.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
+                  required: ['hydra:member']
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  type: array
+                  items: { $ref: '#/components/schemas/ConstructionType' }
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves the collection of ConstructionType resources.'
+        description: 'Retrieves the collection of ConstructionType resources.'
+        external_docs: null
+        parameters:
+          -
+            name: page
+            in: query
+            description: 'The collection page number'
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: integer
+              default: 1
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    '/api/construction_types/{id}':
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getConstructionTypeItem
+        tags:
+          - ConstructionType
+        responses:
+          200:
+            description: 'ConstructionType resource'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/ConstructionType.jsonld'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
                   $ref: '#/components/schemas/ConstructionType'
-      summary: 'Retrieves the collection of ConstructionType resources.'
-      description: 'Retrieves the collection of ConstructionType resources.'
-      parameters:
-        -
-          name: page
-          in: query
-          description: 'The collection page number'
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: integer
-            default: 1
-          style: form
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  '/api/construction_types/{id}':
-    get:
-      operationId: getConstructionTypeItem
-      tags:
-        - ConstructionType
-      responses:
-        200:
-          description: 'ConstructionType resource'
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/ConstructionType.jsonld'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ConstructionType'
-        404:
-          description: 'Resource not found'
-      summary: 'Retrieves a ConstructionType resource.'
-      description: 'Retrieves a ConstructionType resource.'
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'ConstructionType identifier'
-          required: true
-          deprecated: false
-          allowEmptyValue: false
-          schema:
-            type: string
-          style: simple
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  /api/offers:
-    get:
-      operationId: getOfferCollection
-      tags:
-        - Offer
-      responses:
-        200:
-          description: 'Offer collection'
-          content:
-            application/ld+json:
-              schema:
-                type: object
-                properties:
-                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/Offer.jsonld' } }
-                  'hydra:totalItems': { type: integer, minimum: 0 }
-                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } }
-                required:
-                  - 'hydra:member'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Offer'
-      summary: 'Retrieves the collection of Offer resources.'
-      description: 'Retrieves the collection of Offer resources.'
-      parameters:
-        -
-          name: page
-          in: query
-          description: 'The collection page number'
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: integer
-            default: 1
-          style: form
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  '/api/projectExternal/{id}':
-    get:
-      operationId: getExternalProjectItem
-      tags:
-        - Project
-      responses:
-        200:
-          description: 'Project resource'
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/Project.jsonld-read'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Project-read'
-        404:
-          description: 'Resource not found'
-      summary: 'Retrieves a Project resource.'
-      description: 'Retrieves a Project resource.'
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'Project identifier'
-          required: true
-          deprecated: false
-          allowEmptyValue: false
-          schema:
-            type: string
-          style: simple
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  /api/projects:
-    get:
-      operationId: getProjectCollection
-      tags:
-        - Project
-      responses:
-        200:
-          description: 'Project collection'
-          content:
-            application/ld+json:
-              schema:
-                type: object
-                properties:
-                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/Project.jsonld' } }
-                  'hydra:totalItems': { type: integer, minimum: 0 }
-                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } }
-                required:
-                  - 'hydra:member'
-            application/json:
-              schema:
-                type: array
-                items:
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+          404:
+            description: 'Resource not found'
+            content: null
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves a ConstructionType resource.'
+        description: 'Retrieves a ConstructionType resource.'
+        external_docs: null
+        parameters:
+          -
+            name: id
+            in: path
+            description: 'ConstructionType identifier'
+            required: true
+            deprecated: false
+            allow_empty_value: false
+            schema:
+              type: string
+            style: simple
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    /api/offers:
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getOfferCollection
+        tags:
+          - Offer
+        responses:
+          200:
+            description: 'Offer collection'
+            content:
+              application/ld+json:
+                schema:
+                  type: object
+                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/Offer.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
+                  required: ['hydra:member']
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  type: array
+                  items: { $ref: '#/components/schemas/Offer' }
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves the collection of Offer resources.'
+        description: 'Retrieves the collection of Offer resources.'
+        external_docs: null
+        parameters:
+          -
+            name: page
+            in: query
+            description: 'The collection page number'
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: integer
+              default: 1
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    '/api/projectExternal/{id}':
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getExternalProjectItem
+        tags:
+          - Project
+        responses:
+          200:
+            description: 'Project resource'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/Project.jsonld-read'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Project-read'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+          404:
+            description: 'Resource not found'
+            content: null
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves a Project resource.'
+        description: 'Retrieves a Project resource.'
+        external_docs: null
+        parameters:
+          -
+            name: id
+            in: path
+            description: 'Project identifier'
+            required: true
+            deprecated: false
+            allow_empty_value: false
+            schema:
+              type: string
+            style: simple
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    /api/projects:
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getProjectCollection
+        tags:
+          - Project
+        responses:
+          200:
+            description: 'Project collection'
+            content:
+              application/ld+json:
+                schema:
+                  type: object
+                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/Project.jsonld-slug' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
+                  required: ['hydra:member']
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  type: array
+                  items: { $ref: '#/components/schemas/Project-slug' }
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves the collection of Project resources.'
+        description: 'Retrieves the collection of Project resources.'
+        external_docs: null
+        parameters:
+          -
+            name: page
+            in: query
+            description: 'The collection page number'
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: integer
+              default: 1
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    '/api/projects/{id}':
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getProjectItem
+        tags:
+          - Project
+        responses:
+          200:
+            description: 'Project resource'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/Project.jsonld'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
                   $ref: '#/components/schemas/Project'
-      summary: 'Retrieves the collection of Project resources.'
-      description: 'Retrieves the collection of Project resources.'
-      parameters:
-        -
-          name: page
-          in: query
-          description: 'The collection page number'
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: integer
-            default: 1
-          style: form
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  '/api/projects/{id}':
-    get:
-      operationId: getProjectItem
-      tags:
-        - Project
-      responses:
-        200:
-          description: 'Project resource'
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/Project.jsonld'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Project'
-        404:
-          description: 'Resource not found'
-      summary: 'Retrieves a Project resource.'
-      description: 'Retrieves a Project resource.'
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'Project identifier'
-          required: true
-          deprecated: false
-          allowEmptyValue: false
-          schema:
-            type: string
-          style: simple
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  /api/properties:
-    get:
-      operationId: getPropertyCollection
-      tags:
-        - Property
-      responses:
-        200:
-          description: 'Property collection'
-          content:
-            application/ld+json:
-              schema:
-                type: object
-                properties:
-                  'hydra:member': { type: array, items: { $ref: '#/components/schemas/Property.jsonld' } }
-                  'hydra:totalItems': { type: integer, minimum: 0 }
-                  'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }
-                  'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } }
-                required:
-                  - 'hydra:member'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Property'
-      summary: 'Retrieves the collection of Property resources.'
-      description: 'Retrieves the collection of Property resources.'
-      parameters:
-        -
-          name: page
-          in: query
-          description: 'The collection page number'
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: integer
-            default: 1
-          style: form
-          explode: false
-          allowReserved: false
-        -
-          name: city
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: string
-          style: form
-          explode: false
-          allowReserved: false
-        -
-          name: 'city[]'
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: array
-            items:
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+          404:
+            description: 'Resource not found'
+            content: null
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves a Project resource.'
+        description: 'Retrieves a Project resource.'
+        external_docs: null
+        parameters:
+          -
+            name: id
+            in: path
+            description: 'Project identifier'
+            required: true
+            deprecated: false
+            allow_empty_value: false
+            schema:
               type: string
-          style: form
-          explode: true
-          allowReserved: false
-        -
-          name: category
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: string
-          style: form
-          explode: false
-          allowReserved: false
-        -
-          name: 'category[]'
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: array
-            items:
+            style: simple
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    /api/properties:
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getPropertyCollection
+        tags:
+          - Property
+        responses:
+          200:
+            description: 'Property collection'
+            content:
+              application/ld+json:
+                schema:
+                  type: object
+                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/Property.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
+                  required: ['hydra:member']
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  type: array
+                  items: { $ref: '#/components/schemas/Property' }
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves the collection of Property resources.'
+        description: 'Retrieves the collection of Property resources.'
+        external_docs: null
+        parameters:
+          -
+            name: page
+            in: query
+            description: 'The collection page number'
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: integer
+              default: 1
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: city
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
               type: string
-          style: form
-          explode: true
-          allowReserved: false
-        -
-          name: archived
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: boolean
-          style: form
-          explode: false
-          allowReserved: false
-        -
-          name: 'archived[]'
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: array
-            items:
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: 'city[]'
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: array
+              items:
+                type: string
+            style: form
+            explode: true
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: category
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: string
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: 'category[]'
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: array
+              items:
+                type: string
+            style: form
+            explode: true
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: archived
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
               type: boolean
-          style: form
-          explode: true
-          allowReserved: false
-        -
-          name: status
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: string
-          style: form
-          explode: false
-          allowReserved: false
-        -
-          name: 'status[]'
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: array
-            items:
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: 'archived[]'
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: array
+              items:
+                type: boolean
+            style: form
+            explode: true
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: status
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
               type: string
-          style: form
-          explode: true
-          allowReserved: false
-        -
-          name: address
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: string
-          style: form
-          explode: false
-          allowReserved: false
-        -
-          name: 'order[status]'
-          in: query
-          description: ''
-          required: false
-          deprecated: false
-          allowEmptyValue: true
-          schema:
-            type: string
-            enum:
-              - asc
-              - desc
-          style: form
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  '/api/properties/external/{id}':
-    get:
-      operationId: getByExternalId
-      tags:
-        - Property
-      responses:
-        200:
-          description: 'Property resource'
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/Property.jsonld'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Property'
-        404:
-          description: 'Resource not found'
-      summary: 'Retrieves a Property resource.'
-      description: 'Retrieves a Property resource.'
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'Property identifier'
-          required: true
-          deprecated: false
-          allowEmptyValue: false
-          schema:
-            type: string
-          style: simple
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
-  '/api/properties/{id}':
-    get:
-      operationId: getPropertyItem
-      tags:
-        - Property
-      responses:
-        200:
-          description: 'Property resource'
-          content:
-            application/ld+json:
-              schema:
-                $ref: '#/components/schemas/Property.jsonld'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Property'
-        404:
-          description: 'Resource not found'
-      summary: 'Retrieves a Property resource.'
-      description: 'Retrieves a Property resource.'
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'Property identifier'
-          required: true
-          deprecated: false
-          allowEmptyValue: false
-          schema:
-            type: string
-          style: simple
-          explode: false
-          allowReserved: false
-      deprecated: false
-    parameters: []
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: 'status[]'
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: array
+              items:
+                type: string
+            style: form
+            explode: true
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: address
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: string
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+          -
+            name: 'order[status]'
+            in: query
+            description: ''
+            required: false
+            deprecated: false
+            allow_empty_value: true
+            schema:
+              type: string
+              enum:
+                - asc
+                - desc
+            style: form
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    '/api/properties/external/{id}':
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getByExternalId
+        tags:
+          - Property
+        responses:
+          200:
+            description: 'Property resource'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/Property.jsonld'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Property'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+          404:
+            description: 'Resource not found'
+            content: null
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves a Property resource.'
+        description: 'Retrieves a Property resource.'
+        external_docs: null
+        parameters:
+          -
+            name: id
+            in: path
+            description: 'Property identifier'
+            required: true
+            deprecated: false
+            allow_empty_value: false
+            schema:
+              type: string
+            style: simple
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
+    '/api/properties/{id}':
+      ref: null
+      summary: null
+      description: null
+      get:
+        operation_id: getPropertyItem
+        tags:
+          - Property
+        responses:
+          200:
+            description: 'Property resource'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/Property.jsonld'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Property'
+                example: null
+                examples: null
+                encoding: null
+                extension_properties: []
+            headers: null
+            links: null
+            extension_properties: []
+          404:
+            description: 'Resource not found'
+            content: null
+            headers: null
+            links: null
+            extension_properties: []
+        summary: 'Retrieves a Property resource.'
+        description: 'Retrieves a Property resource.'
+        external_docs: null
+        parameters:
+          -
+            name: id
+            in: path
+            description: 'Property identifier'
+            required: true
+            deprecated: false
+            allow_empty_value: false
+            schema:
+              type: string
+            style: simple
+            explode: false
+            allow_reserved: false
+            example: null
+            examples: null
+            content: null
+            extension_properties: []
+        request_body: null
+        callbacks: null
+        deprecated: false
+        security: null
+        servers: null
+        extension_properties: []
+      put: null
+      post: null
+      delete: null
+      options: null
+      head: null
+      patch: null
+      trace: null
+      servers: null
+      parameters: []
+      extension_properties: []
 components:
   schemas:
-    Calculator:
-      type: object
-      description: ''
-      deprecated: false
-    Calculator.jsonld:
-      type: object
-      description: ''
-      deprecated: false
     ConstructionNumber:
       type: object
       description: ''
@@ -604,10 +1038,8 @@ components:
       properties:
         id:
           readOnly: true
-          type: integer
-        title:
           type:
-            - string
+            - integer
             - 'null'
         algemeen:
           type:
@@ -623,16 +1055,6 @@ components:
             - 'null'
           items:
             type: string
-        address:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-        description:
-          type:
-            - string
-            - 'null'
         teksten:
           type:
             - array
@@ -645,12 +1067,24 @@ components:
             - 'null'
           items:
             type: string
-        construction_type:
-          'owl:maxCardinality': 1
-          type: string
-          format: iri-reference
+        title:
+          type:
+            - string
+            - 'null'
+        address:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+        description:
+          type:
+            - string
+            - 'null'
         slug:
-          type: string
+          type:
+            - string
+            - 'null'
         detail:
           type:
             - array
@@ -677,12 +1111,10 @@ components:
           type:
             - integer
             - 'null'
-        price:
-          $ref: '#/components/schemas/Money'
-        price_condition:
-          type: string
         formatted_price:
           readOnly: true
+          type: string
+        price_condition:
           type: string
         project_slug:
           readOnly: true
@@ -699,7 +1131,9 @@ components:
             - string
             - 'null'
         slug:
-          type: string
+          type:
+            - string
+            - 'null'
         rooms:
           type:
             - integer
@@ -743,10 +1177,8 @@ components:
               additionalProperties: true
         id:
           readOnly: true
-          type: integer
-        title:
           type:
-            - string
+            - integer
             - 'null'
         algemeen:
           type:
@@ -762,16 +1194,6 @@ components:
             - 'null'
           items:
             type: string
-        address:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-        description:
-          type:
-            - string
-            - 'null'
         teksten:
           type:
             - array
@@ -784,12 +1206,24 @@ components:
             - 'null'
           items:
             type: string
-        construction_type:
-          'owl:maxCardinality': 1
-          type: string
-          format: iri-reference
+        title:
+          type:
+            - string
+            - 'null'
+        address:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+        description:
+          type:
+            - string
+            - 'null'
         slug:
-          type: string
+          type:
+            - string
+            - 'null'
         detail:
           type:
             - array
@@ -816,12 +1250,10 @@ components:
           type:
             - integer
             - 'null'
-        price:
-          $ref: '#/components/schemas/Money.jsonld'
-        price_condition:
-          type: string
         formatted_price:
           readOnly: true
+          type: string
+        price_condition:
           type: string
         project_slug:
           readOnly: true
@@ -838,7 +1270,9 @@ components:
             - string
             - 'null'
         slug:
-          type: string
+          type:
+            - string
+            - 'null'
         rooms:
           type:
             - integer
@@ -859,13 +1293,11 @@ components:
       properties:
         id:
           readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         external_id:
           type: integer
-        title:
-          type:
-            - string
-            - 'null'
         media:
           type:
             - array
@@ -883,12 +1315,17 @@ components:
           items:
             type: string
             format: iri-reference
-        project:
-          'owl:maxCardinality': 1
-          type: string
-          format: iri-reference
+        title:
+          type:
+            - string
+            - 'null'
         living_area:
           type: string
+        price_range:
+          readOnly: true
+          type:
+            - string
+            - 'null'
         algemeen:
           type:
             - array
@@ -907,26 +1344,26 @@ components:
           type: array
           items:
             type: string
-        price_range:
-          readOnly: true
-          type:
-            - string
-            - 'null'
     ConstructionType-read:
       type: object
       description: ''
       deprecated: false
       properties:
-        title:
-          type:
-            - string
-            - 'null'
         construction_numbers:
           type: array
           items:
             $ref: '#/components/schemas/ConstructionNumber-read'
+        title:
+          type:
+            - string
+            - 'null'
         living_area:
           type: string
+        price_range:
+          readOnly: true
+          type:
+            - string
+            - 'null'
         type:
           type:
             - string
@@ -939,11 +1376,6 @@ components:
           type: array
           items:
             type: string
-        price_range:
-          readOnly: true
-          type:
-            - string
-            - 'null'
     ConstructionType.jsonld:
       type: object
       description: ''
@@ -974,13 +1406,11 @@ components:
               additionalProperties: true
         id:
           readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         external_id:
           type: integer
-        title:
-          type:
-            - string
-            - 'null'
         media:
           type:
             - array
@@ -998,12 +1428,17 @@ components:
           items:
             type: string
             format: iri-reference
-        project:
-          'owl:maxCardinality': 1
-          type: string
-          format: iri-reference
+        title:
+          type:
+            - string
+            - 'null'
         living_area:
           type: string
+        price_range:
+          readOnly: true
+          type:
+            - string
+            - 'null'
         algemeen:
           type:
             - array
@@ -1022,26 +1457,26 @@ components:
           type: array
           items:
             type: string
-        price_range:
-          readOnly: true
-          type:
-            - string
-            - 'null'
     ConstructionType.jsonld-read:
       type: object
       description: ''
       deprecated: false
       properties:
-        title:
-          type:
-            - string
-            - 'null'
         construction_numbers:
           type: array
           items:
             $ref: '#/components/schemas/ConstructionNumber.jsonld-read'
+        title:
+          type:
+            - string
+            - 'null'
         living_area:
           type: string
+        price_range:
+          readOnly: true
+          type:
+            - string
+            - 'null'
         type:
           type:
             - string
@@ -1054,91 +1489,6 @@ components:
           type: array
           items:
             type: string
-        price_range:
-          readOnly: true
-          type:
-            - string
-            - 'null'
-    Currency:
-      type: object
-      description: ''
-      deprecated: false
-      properties:
-        code:
-          description: 'Currency code.'
-          type: string
-    Currency.jsonld:
-      type: object
-      description: ''
-      deprecated: false
-      properties:
-        code:
-          description: 'Currency code.'
-          type: string
-    Money:
-      type: object
-      description: ''
-      deprecated: false
-      properties:
-        amount:
-          description: 'Internal value.'
-          type: string
-        currency:
-          description: 'Returns the currency of this object.'
-          $ref: '#/components/schemas/Currency'
-        calculator:
-          readOnly: true
-          default: Money\Calculator\BcMathCalculator
-          example: Money\Calculator\BcMathCalculator
-          $ref: '#/components/schemas/Calculator'
-        same_currency:
-          readOnly: true
-          description: 'Checks whether a Money has the same Currency as this.'
-          type: boolean
-        zero:
-          readOnly: true
-          description: 'Checks if the value represented by this object is zero.'
-          type: boolean
-        positive:
-          readOnly: true
-          description: 'Checks if the value represented by this object is positive.'
-          type: boolean
-        negative:
-          readOnly: true
-          description: 'Checks if the value represented by this object is negative.'
-          type: boolean
-    Money.jsonld:
-      type: object
-      description: ''
-      deprecated: false
-      properties:
-        amount:
-          description: 'Internal value.'
-          type: string
-        currency:
-          description: 'Returns the currency of this object.'
-          $ref: '#/components/schemas/Currency.jsonld'
-        calculator:
-          readOnly: true
-          default: Money\Calculator\BcMathCalculator
-          example: Money\Calculator\BcMathCalculator
-          $ref: '#/components/schemas/Calculator.jsonld'
-        same_currency:
-          readOnly: true
-          description: 'Checks whether a Money has the same Currency as this.'
-          type: boolean
-        zero:
-          readOnly: true
-          description: 'Checks if the value represented by this object is zero.'
-          type: boolean
-        positive:
-          readOnly: true
-          description: 'Checks if the value represented by this object is positive.'
-          type: boolean
-        negative:
-          readOnly: true
-          description: 'Checks if the value represented by this object is negative.'
-          type: boolean
     Offer:
       type: object
       description: ''
@@ -1148,7 +1498,6 @@ components:
           type:
             - string
             - 'null'
-          format: date-time
         item_type:
           type:
             - string
@@ -1214,7 +1563,6 @@ components:
           type:
             - string
             - 'null'
-          format: date-time
         item_type:
           type:
             - string
@@ -1272,19 +1620,19 @@ components:
       properties:
         id:
           readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         external_id:
           type: integer
-        title:
-          type: string
-        description:
-          type:
-            - string
-            - 'null'
-        description_site:
-          type:
-            - string
-            - 'null'
+        algemeen:
+          type: array
+          items:
+            type: string
+        diversen:
+          type: array
+          items:
+            type: string
         city:
           type: string
         zipcode:
@@ -1295,37 +1643,46 @@ components:
           type:
             - string
             - 'null'
-        construction_types:
-          type: array
-          items:
-            type: string
-            format: iri-reference
-        category:
-          default: Nieuwbouw
-          example: Nieuwbouw
-          type: string
-        diversen:
-          type: array
-          items:
-            type: string
-        algemeen:
-          type: array
-          items:
-            type: string
         slug:
+          type:
+            - string
+            - 'null'
+        title:
           type: string
+        description:
+          type:
+            - string
+            - 'null'
+        description_site:
+          type:
+            - string
+            - 'null'
         media:
           type:
             - array
             - 'null'
           items:
             type: string
-        created_at:
+        construction_types:
+          type: array
+          items:
+            type: string
+            format: iri-reference
+        number_of_objects:
+          readOnly: true
+          type: integer
+        number_of_objects_available:
+          readOnly: true
+          type: integer
+        build_year:
+          readOnly: true
+          type:
+            - string
+            - 'null'
+        category:
+          default: Nieuwbouw
+          example: Nieuwbouw
           type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         living_area:
           type: string
         main_image:
@@ -1335,17 +1692,6 @@ components:
           items:
             type: string
         plot:
-          type:
-            - string
-            - 'null'
-        number_of_objects:
-          readOnly: true
-          type: integer
-        number_of_objects_available:
-          readOnly: true
-          type: integer
-        build_year:
-          readOnly: true
           type:
             - string
             - 'null'
@@ -1356,19 +1702,19 @@ components:
       properties:
         id:
           readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         external_id:
           type: integer
-        title:
-          type: string
-        description:
-          type:
-            - string
-            - 'null'
-        description_site:
-          type:
-            - string
-            - 'null'
+        algemeen:
+          type: array
+          items:
+            type: string
+        diversen:
+          type: array
+          items:
+            type: string
         city:
           type: string
         zipcode:
@@ -1379,36 +1725,45 @@ components:
           type:
             - string
             - 'null'
-        construction_types:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConstructionType-read'
-        category:
-          default: Nieuwbouw
-          example: Nieuwbouw
-          type: string
-        diversen:
-          type: array
-          items:
-            type: string
-        algemeen:
-          type: array
-          items:
-            type: string
         slug:
+          type:
+            - string
+            - 'null'
+        title:
           type: string
+        description:
+          type:
+            - string
+            - 'null'
+        description_site:
+          type:
+            - string
+            - 'null'
         media:
           type:
             - array
             - 'null'
           items:
             type: string
-        created_at:
+        construction_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConstructionType-read'
+        number_of_objects:
+          readOnly: true
+          type: integer
+        number_of_objects_available:
+          readOnly: true
+          type: integer
+        build_year:
+          readOnly: true
+          type:
+            - string
+            - 'null'
+        category:
+          default: Nieuwbouw
+          example: Nieuwbouw
           type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         living_area:
           type: string
         main_image:
@@ -1421,14 +1776,12 @@ components:
           type:
             - string
             - 'null'
-        number_of_objects:
-          readOnly: true
-          type: integer
-        number_of_objects_available:
-          readOnly: true
-          type: integer
-        build_year:
-          readOnly: true
+    Project-slug:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        slug:
           type:
             - string
             - 'null'
@@ -1437,12 +1790,6 @@ components:
       description: ''
       deprecated: false
       properties:
-        '@id':
-          readOnly: true
-          type: string
-        '@type':
-          readOnly: true
-          type: string
         '@context':
           readOnly: true
           oneOf:
@@ -1460,21 +1807,27 @@ components:
                 - '@vocab'
                 - hydra
               additionalProperties: true
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
         id:
           readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         external_id:
           type: integer
-        title:
-          type: string
-        description:
-          type:
-            - string
-            - 'null'
-        description_site:
-          type:
-            - string
-            - 'null'
+        algemeen:
+          type: array
+          items:
+            type: string
+        diversen:
+          type: array
+          items:
+            type: string
         city:
           type: string
         zipcode:
@@ -1485,37 +1838,46 @@ components:
           type:
             - string
             - 'null'
-        construction_types:
-          type: array
-          items:
-            type: string
-            format: iri-reference
-        category:
-          default: Nieuwbouw
-          example: Nieuwbouw
-          type: string
-        diversen:
-          type: array
-          items:
-            type: string
-        algemeen:
-          type: array
-          items:
-            type: string
         slug:
+          type:
+            - string
+            - 'null'
+        title:
           type: string
+        description:
+          type:
+            - string
+            - 'null'
+        description_site:
+          type:
+            - string
+            - 'null'
         media:
           type:
             - array
             - 'null'
           items:
             type: string
-        created_at:
+        construction_types:
+          type: array
+          items:
+            type: string
+            format: iri-reference
+        number_of_objects:
+          readOnly: true
+          type: integer
+        number_of_objects_available:
+          readOnly: true
+          type: integer
+        build_year:
+          readOnly: true
+          type:
+            - string
+            - 'null'
+        category:
+          default: Nieuwbouw
+          example: Nieuwbouw
           type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         living_area:
           type: string
         main_image:
@@ -1525,17 +1887,6 @@ components:
           items:
             type: string
         plot:
-          type:
-            - string
-            - 'null'
-        number_of_objects:
-          readOnly: true
-          type: integer
-        number_of_objects_available:
-          readOnly: true
-          type: integer
-        build_year:
-          readOnly: true
           type:
             - string
             - 'null'
@@ -1569,19 +1920,19 @@ components:
           type: string
         id:
           readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         external_id:
           type: integer
-        title:
-          type: string
-        description:
-          type:
-            - string
-            - 'null'
-        description_site:
-          type:
-            - string
-            - 'null'
+        algemeen:
+          type: array
+          items:
+            type: string
+        diversen:
+          type: array
+          items:
+            type: string
         city:
           type: string
         zipcode:
@@ -1592,36 +1943,45 @@ components:
           type:
             - string
             - 'null'
-        construction_types:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConstructionType.jsonld-read'
-        category:
-          default: Nieuwbouw
-          example: Nieuwbouw
-          type: string
-        diversen:
-          type: array
-          items:
-            type: string
-        algemeen:
-          type: array
-          items:
-            type: string
         slug:
+          type:
+            - string
+            - 'null'
+        title:
           type: string
+        description:
+          type:
+            - string
+            - 'null'
+        description_site:
+          type:
+            - string
+            - 'null'
         media:
           type:
             - array
             - 'null'
           items:
             type: string
-        created_at:
+        construction_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConstructionType.jsonld-read'
+        number_of_objects:
+          readOnly: true
+          type: integer
+        number_of_objects_available:
+          readOnly: true
+          type: integer
+        build_year:
+          readOnly: true
+          type:
+            - string
+            - 'null'
+        category:
+          default: Nieuwbouw
+          example: Nieuwbouw
           type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         living_area:
           type: string
         main_image:
@@ -1634,14 +1994,18 @@ components:
           type:
             - string
             - 'null'
-        number_of_objects:
+    Project.jsonld-slug:
+      type: object
+      description: ''
+      deprecated: false
+      properties:
+        '@id':
           readOnly: true
-          type: integer
-        number_of_objects_available:
+          type: string
+        '@type':
           readOnly: true
-          type: integer
-        build_year:
-          readOnly: true
+          type: string
+        slug:
           type:
             - string
             - 'null'
@@ -1651,8 +2015,9 @@ components:
       deprecated: false
       properties:
         id:
-          readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         title:
           type: string
         algemeen:
@@ -1671,12 +2036,6 @@ components:
           type: string
         category:
           type: string
-        detail:
-          anyOf:
-            -
-              $ref: '#/components/schemas/PropertyDetail'
-            -
-              type: 'null'
         address:
           type:
             - string
@@ -1706,7 +2065,9 @@ components:
             - string
             - 'null'
         slug:
-          type: string
+          type:
+            - string
+            - 'null'
         external_id:
           type: integer
         street:
@@ -1745,12 +2106,6 @@ components:
             - 'null'
           items:
             type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         condition:
           readOnly: true
           type: string
@@ -1759,6 +2114,30 @@ components:
           type:
             - integer
             - 'null'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        etages:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+        overig_onroerend_goed:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+        buitenruimte:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
     Property.jsonld:
       type: object
       description: 'A property.'
@@ -1788,8 +2167,9 @@ components:
           readOnly: true
           type: string
         id:
-          readOnly: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         title:
           type: string
         algemeen:
@@ -1808,12 +2188,6 @@ components:
           type: string
         category:
           type: string
-        detail:
-          anyOf:
-            -
-              $ref: '#/components/schemas/PropertyDetail.jsonld'
-            -
-              type: 'null'
         address:
           type:
             - string
@@ -1843,7 +2217,9 @@ components:
             - string
             - 'null'
         slug:
-          type: string
+          type:
+            - string
+            - 'null'
         external_id:
           type: integer
         street:
@@ -1882,12 +2258,6 @@ components:
             - 'null'
           items:
             type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         condition:
           readOnly: true
           type: string
@@ -1896,19 +2266,12 @@ components:
           type:
             - integer
             - 'null'
-    PropertyDetail:
-      type: object
-      description: ''
-      deprecated: false
-      properties:
-        id:
-          type: integer
-        buitenruimte:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         etages:
           type:
             - array
@@ -1921,37 +2284,26 @@ components:
             - 'null'
           items:
             type: string
-    PropertyDetail.jsonld:
-      type: object
-      description: ''
-      deprecated: false
-      properties:
-        id:
-          type: integer
         buitenruimte:
           type:
             - array
             - 'null'
           items:
             type: string
-        etages:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-        overig_onroerend_goed:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-  responses: {  }
-  parameters: {  }
-  examples: {  }
-  requestBodies: {  }
-  headers: {  }
-  securitySchemes: {  }
+  responses: []
+  parameters: []
+  examples: []
+  request_bodies: []
+  headers: []
+  security_schemes: []
+  links: null
+  callbacks: null
+  path_items: null
+  extension_properties: []
 security: []
 tags: []
+external_docs: null
+json_schema_dialect: null
+webhooks: null
+extension_properties: []
 

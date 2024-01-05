@@ -34,6 +34,7 @@ class ImportProjectsCommand extends Command
         $data = $this->propertyService->getProjects();
 
         foreach ($data as $project) {
+            $output->writeln('<info>Importing project: '.$project->getTitle().'</info>');
             $this->projectHandlerService->handle($project, $output);
         }
 

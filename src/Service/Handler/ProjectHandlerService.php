@@ -2,9 +2,10 @@
 
 namespace App\Service\Handler;
 
-use App\Entity\ConstructionType;
+use App\Entity\ConstructionNumber;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
+use App\Repository\ConstructionNumberRepository;
 use App\Service\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,37 +27,42 @@ class ProjectHandlerService extends AbstractHandlerService
     {
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
+        /** @var ConstructionNumberRepository $cnRepo */
+        $cnRepo = $this->entityManager->getRepository(ConstructionNumber::class);
 
-        /** @var list<Project> $existingProject */
-        $existingProject = $projectRepo->findBy(['externalId' => $model->getExternalId()], [], 1);
-        $existingProject = $existingProject[0] ?? null;
+        $existingProject = $projectRepo->findOneBy(['externalId' => $model->getExternalId()], [], 1);
+        $existingProjectUpdatedAt = $existingProject ? $existingProject->getUpdatedAt()->format('Y-m-d H:i:s') : null;
 
-        if ($existingProject) {
+        if ($existingProject && $existingProjectUpdatedAt !== null) {
             $existingProject->map($model);
             $existingProject->createSlug();
 
-            if($existingProject->getUpdatedAt() < $model->getUpdatedAt()) {
+            if($existingProjectUpdatedAt !== $existingProject->getUpdatedAt()->format('Y-m-d H:i:s')) {
+                $output->writeln('<info>Handling media existing project</info>');
                 $existingProject->setMainImage($this->handleMainImage($existingProject->getMedia()));
                 $existingProject->setMedia($this->handleMedia($existingProject->getMedia()));
                 $existingProject->setUpdatedAt($model->getUpdatedAt());
+            } else {
+                $output->writeln('<info>Skipping media existing project</info>');
             }
 
             foreach($existingProject->getConstructionTypes() as $constructionType) {
                 $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
-                $existingId = $constructionType->getExternalId();
-                $liveConstructionType = $model->getConstructionTypes()->filter(function($constructionType) use ($existingId) {
-                    return $constructionType->getExternalId() === $existingId;
-                })->first();
 
                 foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
-                    $existingCnId = $constructionNumber->getExternalId();
-                    $liveConstructionNumber = $liveConstructionType->getConstructionNumbers()->filter(function($constructionNumber) use ($existingCnId) {
-                        return $constructionNumber->getExternalId() === $existingCnId;
-                    })->first();
+                    $existingItem = $cnRepo->findOneBy(['externalId' => $constructionNumber->getExternalId()]);
 
-                    if($constructionNumber->getUpdatedAt() < $liveConstructionNumber->getUpdatedAt()) {
+                    if($existingItem) {
+                        $existingUpdatedAt = $existingItem->getUpdatedAt()->format('Y-m-d H:i:s');
+                    } else {
+                        $existingUpdatedAt = null;
+                    }
+
+                    if($existingUpdatedAt !== $constructionNumber->getUpdatedAt()->format('Y-m-d H:i:s') || $existingUpdatedAt === null) {
+                        $output->writeln('<info>Handling media for: '.$constructionNumber->getTitle().'</info>');
                         $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
-                        $constructionNumber->setUpdatedAt($liveConstructionNumber->getUpdatedAt());
+                    } else {
+                        $output->writeln('<info>Skipping media for: '.$constructionNumber->getTitle().'</info>');
                     }
                 }
             }
@@ -69,11 +75,13 @@ class ProjectHandlerService extends AbstractHandlerService
         $model->map($model);
         $model->createSlug();
         $model->setMainImage($this->handleMainImage($model->getMedia()));
+        $output->writeln('<info>Handling media for new project</info>');
         $model->setMedia($this->handleMedia($model->getMedia()));
         foreach($model->getConstructionTypes() as $constructionType) {
             $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
 
             foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
+                $output->writeln('<info>Handling media for new item: '.$constructionNumber->getTitle().'</info>');
                 $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
             }
         }
@@ -102,7 +110,7 @@ class ProjectHandlerService extends AbstractHandlerService
             return $media['soort'] === 'HOOFDFOTO';
         }));
 
-        if (!$mainImage) {
+        if (!$mainImage || !isset($mainImage['link'])) {
             return [];
         }
 
@@ -119,9 +127,11 @@ class ProjectHandlerService extends AbstractHandlerService
 
         foreach ($mediaInput as $key => $media) {
             if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
-                $transformedItems[] = $this->mediaService->transfromItem($media);
+                if(isset($media['link']) && $media['link'] !== null) {
+                    $transformedItems[] = $this->mediaService->transfromItem($media);
 
-                unset($mediaInput[$key]);
+                    unset($mediaInput[$key]);
+                }
             }
         }
 

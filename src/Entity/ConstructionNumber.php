@@ -115,7 +115,7 @@ class ConstructionNumber
                 $propertyName = substr($method->getName(), 3);
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
-                if ($propertyName !== 'ConstructionType' && $propertyName !== 'Media' && $propertyName !== 'UpdatedAt') {
+                if ($propertyName !== 'ConstructionType' && $propertyName !== 'Media') {
                     $this->{$setMethod}($newProperties->{$getMethod}());
                 }
                 if ($propertyName === 'Media') {

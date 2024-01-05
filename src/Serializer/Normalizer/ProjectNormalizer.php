@@ -42,8 +42,6 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
             $data['media'] = [];
         }
         $data['diversen'] = $data['project']['diversen'];
-        $data['created_at'] = $data['marketing']['publicatiedatum'];
-        $data['updated_at'] = $data['tijdstipLaatsteWijziging'];
 
         if (isset($data['project']['algemeen']['woonoppervlakteVanaf'])) {
             if(isset($data['project']['algemeen']['woonoppervlakteTot'])) {
@@ -73,8 +71,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project->setTitle($data['title']);
         $project->setMedia($data['media']);
         $project->setDiversen($data['diversen']);
-        $project->setCreatedAt(new DateTimeImmutable($data['created_at']));
-        $project->setUpdatedAt(new DateTimeImmutable($data['updated_at']));
+        $project->setCreatedAt(new DateTimeImmutable($data['marketing']['publicatiedatum']));
+        $project->setUpdatedAt(new DateTimeImmutable($data['tijdstipLaatsteWijziging']));
         $project->setLivingArea($data['woonoppervlakte']);
         $project->setPlot($data['perceeloppervlakte'] ?? null);
 
@@ -164,8 +162,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 if(isset($number['financieel']['overdracht']['koopconditie']) || isset($number['financieel']['overdracht']['huurconditie'])) {
                     $constructionNumber->setPriceCondition(match($number['financieel']['overdracht']['koopconditie'] ?? $number['financieel']['overdracht']['huurconditie']) {
                         // huur: PER_JAAR, PER_MAAND
-                        'PER_JAAR' => 'Per jaar',
-                        'PER_MAAND' => 'Per maand',
+                        'PER_JAAR' => 'p.j.',
+                        'PER_MAAND' => 'p.m.',
                         // Koop: KOSTEN_KOPER, VRIJ_OP_NAAM
                         'KOSTEN_KOPER' => 'k.k.',
                         'VRIJ_OP_NAAM' => 'v.o.n.',

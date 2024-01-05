@@ -14,8 +14,12 @@ class MediaService
     {
     }
 
-    public function buildObject(string $url, array $options = []): array
+    public function buildObject(?string $url, array $options = []): array
     {
+        if(!$url) {
+            return [];
+        }
+
         $defaultOptions = [
             'sizes' => [
                 '1x' => '400x266',
