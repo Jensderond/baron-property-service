@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 
 class MediaService
 {
-    public function __construct(protected FilesystemOperator $publicUploadsStorage, private readonly LoggerInterface $logger)
+    public function __construct(protected FilesystemOperator $assetsStorage, private readonly LoggerInterface $logger)
     {
     }
 
@@ -75,7 +75,7 @@ class MediaService
                 return $this->resizeAndSaveImage($imageContent, $size, $path);
             }
         } else {
-            return $this->publicUploadsStorage->publicUrl($imagePath);
+            return $this->assetsStorage->publicUrl($imagePath);
         }
 
         return '';
@@ -100,7 +100,7 @@ class MediaService
 
     private function fileExist(string $path): bool
     {
-        return $this->publicUploadsStorage->fileExists($path);
+        return $this->assetsStorage->fileExists($path);
     }
 
     private function resizeAndSaveImage(string $imageContent, string $size, string $path): string
@@ -110,9 +110,9 @@ class MediaService
         $image = $imagine->load($imageContent);
         $resizedImage = $image->resize(new Box($width, $height));
 
-        $this->publicUploadsStorage->write("{$path}-{$width}x{$height}.webp", $resizedImage->get('webp'));
+        $this->assetsStorage->write("{$path}-{$width}x{$height}.webp", $resizedImage->get('webp'));
 
-        return $this->publicUploadsStorage->publicUrl("{$path}-{$width}x{$height}.webp");
+        return $this->assetsStorage->publicUrl("{$path}-{$width}x{$height}.webp");
     }
 
     private function isValidUrl(string $url): bool

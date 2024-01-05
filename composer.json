@@ -15,6 +15,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.12",
         "imagine/imagine": "^1.3",
+        "league/flysystem-async-aws-s3": "^3.22",
         "league/flysystem-bundle": "^3.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.16",

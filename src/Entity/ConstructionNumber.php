@@ -18,6 +18,7 @@ use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use ReflectionClass;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 
 #[ORM\Entity(repositoryClass: ConstructionNumberRepository::class)]
@@ -67,6 +68,7 @@ class ConstructionNumber
 
     #[ORM\ManyToOne(inversedBy: 'constructionNumbers')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?ConstructionType $constructionType = null;
 
     #[Groups('read')]
@@ -95,6 +97,7 @@ class ConstructionNumber
     private ?int $livingArea = null;
 
     #[ORM\Embedded]
+    #[Ignore]
     private Money $price;
 
     #[ORM\Column(length: 255)]

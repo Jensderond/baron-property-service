@@ -1,3 +1,20 @@
+services:
+    cloudflare_r2_client:
+        class: 'AsyncAws\S3\S3Client'
+        arguments:
+            -  endpoint: '%env(CLOUDFLARE_R2_ENDPOINT)%'
+               region: 'auto'
+               accessKeyId: '%env(CLOUDFLARE_ACCESS_KEY_ID)%'
+               accessKeySecret: '%env(CLOUDFLARE_ACCESS_KEY_SECRET)%'
+        # arguments:
+        #     $configuration:
+        #         region: 'auto'
+        #         endpoint: '%env(CLOUDFLARE_R2_ENDPOINT)%'
+        #         version: 'latest'
+        #         credentials:
+        #             key: '%env(CLOUDFLARE_ACCESS_KEY_ID)%'
+        #             secret: '%env(CLOUDFLARE_ACCESS_KEY_SECRET)%'
+
 flysystem:
     storages:
         public_uploads.storage:
@@ -5,3 +22,9 @@ flysystem:
             public_url: '%env(APP_BASE_URL)%uploads/'
             options:
                 directory: '%kernel.project_dir%/public/uploads'
+        assets.storage:
+            adapter: 'asyncaws'
+            public_url: '%env(CLOUDFLARE_ASSETS_URL)%/'
+            options:
+                client: 'cloudflare_r2_client'
+                bucket: '%env(CLOUDFLARE_ASSETS_BUCKET)%'

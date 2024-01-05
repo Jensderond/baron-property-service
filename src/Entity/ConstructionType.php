@@ -17,6 +17,7 @@ use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: ConstructionTypeRepository::class)]
 #[ApiResource(operations: [new Get(name: "getConstructionTypeItem"), new GetCollection(name: "getConstructionTypeCollection")], graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')])]
@@ -47,6 +48,7 @@ class ConstructionType
 
     #[ORM\ManyToOne(inversedBy: 'constructionTypes')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?Project $project = null;
 
     #[Groups('read')]
