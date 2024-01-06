@@ -77,6 +77,9 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project->setLivingArea($data['woonoppervlakte']);
         $project->setPlot($data['perceeloppervlakte'] ?? null);
 
+        $lowestNumberOfRooms = 0;
+        $highestNumberOfRooms = 0;
+
         foreach ($data['bouwtypen'] as $bouwType) {
             $type = new ConstructionType();
             $type->setExternalId($bouwType['id']);
@@ -179,7 +182,21 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $type->addConstructionNumber($constructionNumber);
             }
 
+            if($type->getRooms() > $highestNumberOfRooms) {
+                $highestNumberOfRooms = $type->getRooms();
+            }
+
+            if($lowestNumberOfRooms === 0 || $type->getRooms() < $lowestNumberOfRooms) {
+                $lowestNumberOfRooms = $type->getRooms();
+            }
+
             $project->addConstructionType($type);
+        }
+
+        if($lowestNumberOfRooms !== $highestNumberOfRooms) {
+            $project->setRooms($lowestNumberOfRooms . ' tot ' . $highestNumberOfRooms);
+        } else {
+            $project->setRooms($lowestNumberOfRooms);
         }
 
         return $project;

@@ -116,6 +116,10 @@ class Project
     private ?string $livingArea = null;
 
     #[Groups('read')]
+    #[ORM\Column(length: 255)]
+    private ?string $rooms = null;
+
+    #[Groups('read')]
     #[ORM\Column(nullable: true)]
     private ?array $mainImage = null;
 
@@ -460,6 +464,18 @@ class Project
     public function setLivingArea(string $livingArea): static
     {
         $this->livingArea = $livingArea;
+
+        return $this;
+    }
+
+    public function getRooms(): ?string
+    {
+        return $this->rooms;
+    }
+
+    public function setRooms(string $rooms): static
+    {
+        $this->rooms = $rooms;
 
         return $this;
     }

@@ -1697,6 +1697,8 @@ components:
           type: string
         living_area:
           type: string
+        rooms:
+          type: string
         main_image:
           type:
             - array
@@ -1782,6 +1784,8 @@ components:
           example: Nieuwbouw
           type: string
         living_area:
+          type: string
+        rooms:
           type: string
         main_image:
           type:
@@ -1902,6 +1906,8 @@ components:
           type: string
         living_area:
           type: string
+        rooms:
+          type: string
         main_image:
           type:
             - array
@@ -2010,6 +2016,8 @@ components:
           example: Nieuwbouw
           type: string
         living_area:
+          type: string
+        rooms:
           type: string
         main_image:
           type:
