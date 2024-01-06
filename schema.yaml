@@ -1542,7 +1542,7 @@ components:
             - 'null'
         bedrooms:
           type:
-            - integer
+            - string
             - 'null'
         number_of_objects:
           type:
@@ -1607,7 +1607,7 @@ components:
             - 'null'
         bedrooms:
           type:
-            - integer
+            - string
             - 'null'
         number_of_objects:
           type:
@@ -2179,6 +2179,10 @@ components:
           type: string
         price_condition:
           type: string
+        plot:
+          type:
+            - string
+            - 'null'
     Property.jsonld:
       type: object
       description: 'A property.'
@@ -2332,6 +2336,10 @@ components:
           type: string
         price_condition:
           type: string
+        plot:
+          type:
+            - string
+            - 'null'
   responses: []
   parameters: []
   examples: []

@@ -77,6 +77,7 @@ class PropertyNormalizer implements DenormalizerInterface
         $property->setEtages($data['detail']['etages']);
         $property->setOverigOnroerendGoed($data['detail']['overigOnroerendGoed']);
         $property->setBuitenruimte($data['detail']['buitenruimte']);
+        $property->setPlot($data['algemeen']['totaleWoonkameroppervlakte'] ?: $data['algemeen']['totaleKadestraleOppervlakte']);
 
         /** Price */
         $condition = $data['financieel']['overdracht']['koopconditie'] ?? $data['financieel']['overdracht']['huurconditie'];

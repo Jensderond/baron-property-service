@@ -26,7 +26,7 @@ class Offer
         public readonly ?string $status,
         public readonly ?string $address,
         public readonly ?string $slug,
-        public readonly ?int $bedrooms,
+        public readonly ?string $bedrooms,
         public readonly ?int $numberOfObjects,
         public readonly ?int $plotSurface,
         public readonly ?string $buildYear,

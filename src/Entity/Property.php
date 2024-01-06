@@ -137,6 +137,9 @@ class Property
     #[ORM\Column(length: 255)]
     private ?string $priceCondition = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $plot = null;
+
     public function __construct()
     {
     }
@@ -547,6 +550,18 @@ class Property
     public function setPriceCondition(string $priceCondition): static
     {
         $this->priceCondition = $priceCondition;
+
+        return $this;
+    }
+
+    public function getPlot(): ?string
+    {
+        return $this->plot;
+    }
+
+    public function setPlot(?string $plot): static
+    {
+        $this->plot = $plot;
 
         return $this;
     }
