@@ -30,7 +30,7 @@ class Offer
         public readonly ?int $numberOfObjects,
         public readonly ?int $plotSurface,
         public readonly ?string $buildYear,
-        public readonly ?float $price,
+        public readonly ?string $price,
     ) {
     }
 }

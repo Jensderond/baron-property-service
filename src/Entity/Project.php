@@ -15,6 +15,10 @@ use Doctrine\Common\Collections\Collection;
 use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
 use Symfony\Component\Serializer\Attribute\Groups;
 use ReflectionClass;
 use Symfony\Component\Serializer\Attribute\Ignore;
@@ -482,5 +486,41 @@ class Project
         $this->plot = $plot;
 
         return $this;
+    }
+
+    #[Groups('read')]
+    public function getPriceRange(): ?string
+    {
+        $minPrice = null;
+        $maxPrice = null;
+
+        $currencies = new ISOCurrencies();
+
+        $numberFormatter = new \NumberFormatter('nl_NL', \NumberFormatter::CURRENCY);
+        $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 0);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
+
+        $minPrice = match ($this->getAlgemeen()['koopOfHuur']) {
+            'KOOP' => $this->getAlgemeen()['koopaanneemsomVanaf'],
+            'HUUR' => $this->getAlgemeen()['huurprijsVanaf'],
+        };
+
+        $maxPrice = match ($this->getAlgemeen()['koopOfHuur']) {
+            'KOOP' => $this->getAlgemeen()['koopaanneemsomTot'],
+            'HUUR' => $this->getAlgemeen()['huurprijsTot'],
+        };
+
+        if (isset($minPrice) && isset($maxPrice) && $minPrice === $maxPrice) {
+            return $moneyFormatter->format(Money::EUR($minPrice * 100));
+        }
+
+        if (isset($minPrice) && isset($maxPrice)) {
+            return match($this->getAlgemeen()['koopOfHuur']) {
+                'KOOP' => "Van {$moneyFormatter->format(Money::EUR($minPrice * 100))} tot {$moneyFormatter->format(Money::EUR($maxPrice * 100))} v.o.n.",
+                'HUUR' => "Van {$moneyFormatter->format(Money::EUR($minPrice * 100))} tot {$moneyFormatter->format(Money::EUR($maxPrice * 100))} p.m.",
+            };
+        }
+
+        return null;
     }
 }

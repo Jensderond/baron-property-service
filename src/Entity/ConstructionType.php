@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
+use App\Model\Status;
 use App\Repository\ConstructionTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -321,5 +322,13 @@ class ConstructionType
         $this->mainImage = $mainImage;
 
         return $this;
+    }
+
+    #[Groups('read')]
+    public function getAvailbleItems(): bool
+    {
+        return $this->getConstructionNumbers()->findFirst(function ($key, $number) {
+            return $number->getStatus() === Status::AVAILABLE->value;
+        }) !== null;
     }
 }

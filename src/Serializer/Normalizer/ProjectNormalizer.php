@@ -5,6 +5,7 @@ namespace App\Serializer\Normalizer;
 use App\Entity\ConstructionNumber;
 use App\Entity\Project;
 use App\Entity\ConstructionType;
+use App\Model\Status;
 use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -193,7 +194,28 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
         if(isset($data['construction_types']) && isset($data['construction_types']['hydra:member'])) {
             $data['construction_types'] = $data['construction_types']['hydra:member'];
+
+            usort($data['construction_types'], function($a, $b) {
+                $aAvailable = array_values(array_filter($a['construction_numbers'], function($item) {
+                    return $item['status'] === Status::AVAILABLE->value;
+                }))[0] ?? null;
+
+                $bAvailable = array_values(array_filter($b['construction_numbers'], function($item) {
+                    return $item['status'] === Status::AVAILABLE->value;
+                }))[0] ?? null;
+
+                if ($aAvailable !== null && $bAvailable === null) {
+                    return -1;
+                }
+
+                if ($aAvailable === null && $bAvailable !== null) {
+                    return 1;
+                }
+
+                return 0;
+            });
         }
+
         if(isset($data['algemeen'])) {
             $data['algemeen'] = $project->getAlgemeen();
         }

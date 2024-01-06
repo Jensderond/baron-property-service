@@ -19,6 +19,9 @@ use App\Repository\PropertyRepository;
 use App\State\PropertyProvider;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Money\Currencies\ISOCurrencies;
+use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
 use ReflectionClass;
 
 /**
@@ -107,9 +110,6 @@ class Property
     #[ORM\Column(nullable: true)]
     private ?int $price = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $rental_price = null;
-
     #[ORM\Column(length: 25, nullable: true)]
     private ?string $energyClass = null;
 
@@ -134,6 +134,9 @@ class Property
     #[ORM\Column(nullable: true)]
     private ?array $buitenruimte = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $priceCondition = null;
+
     public function __construct()
     {
     }
@@ -156,7 +159,10 @@ class Property
                 $propertyName = substr($method->getName(), 3);
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
-                $this->{$setMethod}($newProperties->{$getMethod}());
+
+                if ($propertyName !== 'Media' && $propertyName !== 'Image') {
+                    $this->{$setMethod}($newProperties->{$getMethod}());
+                }
             }
         }
     }
@@ -401,18 +407,6 @@ class Property
         return $this;
     }
 
-    public function getRentalPrice(): ?int
-    {
-        return $this->rental_price;
-    }
-
-    public function setRentalPrice(?int $rental_price): static
-    {
-        $this->rental_price = $rental_price;
-
-        return $this;
-    }
-
     public function getEnergyClass(): ?string
     {
         return $this->energyClass;
@@ -530,6 +524,29 @@ class Property
     public function setBuitenruimte(?array $buitenruimte): static
     {
         $this->buitenruimte = $buitenruimte;
+
+        return $this;
+    }
+
+    public function getFormattedPrice(): string
+    {
+        $currencies = new ISOCurrencies();
+
+        $numberFormatter = new \NumberFormatter('nl_NL', \NumberFormatter::CURRENCY);
+        $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 0);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
+
+        return "{$moneyFormatter->format(Money::EUR($this->price * 100))} {$this->priceCondition}";
+    }
+
+    public function getPriceCondition(): ?string
+    {
+        return $this->priceCondition;
+    }
+
+    public function setPriceCondition(string $priceCondition): static
+    {
+        $this->priceCondition = $priceCondition;
 
         return $this;
     }

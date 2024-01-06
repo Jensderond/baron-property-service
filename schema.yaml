@@ -1344,6 +1344,9 @@ components:
           type: array
           items:
             type: string
+        availble_items:
+          readOnly: true
+          type: boolean
     ConstructionType-read:
       type: object
       description: ''
@@ -1376,6 +1379,9 @@ components:
           type: array
           items:
             type: string
+        availble_items:
+          readOnly: true
+          type: boolean
     ConstructionType.jsonld:
       type: object
       description: ''
@@ -1457,6 +1463,9 @@ components:
           type: array
           items:
             type: string
+        availble_items:
+          readOnly: true
+          type: boolean
     ConstructionType.jsonld-read:
       type: object
       description: ''
@@ -1489,6 +1498,9 @@ components:
           type: array
           items:
             type: string
+        availble_items:
+          readOnly: true
+          type: boolean
     Offer:
       type: object
       description: ''
@@ -1546,7 +1558,7 @@ components:
             - 'null'
         price:
           type:
-            - number
+            - string
             - 'null'
     Offer.jsonld:
       type: object
@@ -1611,7 +1623,7 @@ components:
             - 'null'
         price:
           type:
-            - number
+            - string
             - 'null'
     Project:
       type: object
@@ -1695,6 +1707,11 @@ components:
           type:
             - string
             - 'null'
+        price_range:
+          readOnly: true
+          type:
+            - string
+            - 'null'
     Project-read:
       type: object
       description: ''
@@ -1773,6 +1790,11 @@ components:
           items:
             type: string
         plot:
+          type:
+            - string
+            - 'null'
+        price_range:
+          readOnly: true
           type:
             - string
             - 'null'
@@ -1890,6 +1912,11 @@ components:
           type:
             - string
             - 'null'
+        price_range:
+          readOnly: true
+          type:
+            - string
+            - 'null'
     Project.jsonld-read:
       type: object
       description: ''
@@ -1994,6 +2021,11 @@ components:
           type:
             - string
             - 'null'
+        price_range:
+          readOnly: true
+          type:
+            - string
+            - 'null'
     Project.jsonld-slug:
       type: object
       description: ''
@@ -2086,10 +2118,6 @@ components:
           type:
             - integer
             - 'null'
-        rental_price:
-          type:
-            - integer
-            - 'null'
         energy_class:
           type:
             - string
@@ -2138,6 +2166,11 @@ components:
             - 'null'
           items:
             type: string
+        formatted_price:
+          readOnly: true
+          type: string
+        price_condition:
+          type: string
     Property.jsonld:
       type: object
       description: 'A property.'
@@ -2238,10 +2271,6 @@ components:
           type:
             - integer
             - 'null'
-        rental_price:
-          type:
-            - integer
-            - 'null'
         energy_class:
           type:
             - string
@@ -2290,6 +2319,11 @@ components:
             - 'null'
           items:
             type: string
+        formatted_price:
+          readOnly: true
+          type: string
+        price_condition:
+          type: string
   responses: []
   parameters: []
   examples: []

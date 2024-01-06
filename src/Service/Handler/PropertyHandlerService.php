@@ -32,34 +32,30 @@ class PropertyHandlerService extends AbstractHandlerService
         $this->idsInImport[] = $model->getExternalId();
 
         if ($property && $existingPropertyUpdatedAt !== null) {
+            $property->map($model);
+
             if ($existingPropertyUpdatedAt->format('Y-m-d H:i:s') !== $model->getUpdatedAt()->format('Y-m-d H:i:s')) {
-
-                $tmpLat = $property->getLat();
-                $tmpLng = $property->getLng();
-
-                $property->map($model);
-
-                if (!$property->getLat() && !$property->getLng()) {
-                    $property->setLat($tmpLat);
-                    $property->setLng($tmpLng);
-                }
-
                 $output->writeln('<info>Handling media existing property</info>');
                 $property->setImage($this->handlePropertyMainImage($model));
                 $property->setMedia($this->handleMedia($property->getMedia()));
 
-                $this->checkLatLong($property);
-
-                $property->createSlug();
-
-                $this->entityManager->persist($property);
-                $output->writeln('<info>Updated Property: '.$model->getTitle().'</info>');
-                return;
+                $output->writeln('<info>Updated media for Property: '.$model->getTitle().'</info>');
             } else {
-                $output->writeln('<info>No update needed for: '.$model->getTitle().'</info>');
-
-                return;
+                $output->writeln('<info>No media update needed for: '.$model->getTitle().'</info>');
             }
+
+            $tmpLat = $property->getLat();
+            $tmpLng = $property->getLng();
+
+            if (!$property->getLat() && !$property->getLng()) {
+                $property->setLat($tmpLat);
+                $property->setLng($tmpLng);
+            }
+
+            $this->checkLatLong($property);
+            $property->createSlug();
+            $this->entityManager->persist($property);
+            return;
         }
 
         $model->createSlug();

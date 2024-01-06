@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Model;
+
+enum Status: string
+{
+    case PROSPECT = "PROSPECT";
+    case SOON = "IN_AANMELDING";
+    case AVAILABLE = "BESCHIKBAAR";
+    case UNDER_OFFER = "ONDER_BOD";
+    case UNDER_OPTION = "ONDER_OPTIE";
+    case SOLD_UNDER_CONDITION = "VERKOCHT_ONDER_VOORBEHOUD";
+    case RENTED_UNDER_CONDITION = "VERHUURD_ONDER_VOORBEHOUD";
+    case SOLD = "VERKOCHT";
+    case RENTED = "VERHUURD";
+    case AUCTIONED = "GEVEILD";
+    case CANCELLED = "GEANNULEERD";
+    case SOLD_BY_REGISTRATION = "VERKOCHT_BIJ_INSCHRIJVING";
+}
+

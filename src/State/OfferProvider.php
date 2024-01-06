@@ -48,7 +48,7 @@ class OfferProvider implements ProviderInterface
                 $item->getNumberOfObjects(),
                 null,
                 $item->getBuildYear(),
-                null,
+                $item->getPriceRange(),
             ),
             $projects
         );
@@ -67,7 +67,7 @@ class OfferProvider implements ProviderInterface
                 null,
                 null,
                 null,
-                $item->getPrice(),
+                $item->getFormattedPrice(),
             ),
             $properties
         );

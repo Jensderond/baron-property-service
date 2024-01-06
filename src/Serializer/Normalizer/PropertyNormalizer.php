@@ -70,18 +70,27 @@ class PropertyNormalizer implements DenormalizerInterface
         if (isset($mainImage[0])) {
             $property->setImage([$mainImage[0]]);
         } else {
-            $property->setImage($data['media']);
+            $property->setImage($data['media'][0] ?: null);
         }
 
         $property->setMedia($data['media']);
-
         $property->setEtages($data['detail']['etages']);
         $property->setOverigOnroerendGoed($data['detail']['overigOnroerendGoed']);
         $property->setBuitenruimte($data['detail']['buitenruimte']);
 
         /** Price */
-        $property->setPrice($data['financieel']['overdracht']['koopprijs']);
-        $property->setRentalPrice($data['financieel']['overdracht']['huurprijs']);
+        $condition = $data['financieel']['overdracht']['koopconditie'] ?? $data['financieel']['overdracht']['huurconditie'];
+        if(isset($condition)) {
+            $property->setPriceCondition(match($condition) {
+                // huur: PER_JAAR, PER_MAAND
+                'PER_JAAR' => 'p.j.',
+                'PER_MAAND' => 'p.m.',
+                // Koop: KOSTEN_KOPER, VRIJ_OP_NAAM
+                'KOSTEN_KOPER' => 'k.k.',
+                'VRIJ_OP_NAAM' => 'v.o.n.',
+            });
+        }
+        $property->setPrice($data['financieel']['overdracht']['koopprijs'] ?? $data['financieel']['overdracht']['huurprijs']);
         $property->setStatus($data['financieel']['overdracht']['status']);
 
         return $property;
