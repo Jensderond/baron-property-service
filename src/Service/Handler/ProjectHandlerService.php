@@ -33,6 +33,16 @@ class ProjectHandlerService extends AbstractHandlerService
         $existingProject = $projectRepo->findOneBy(['externalId' => $model->getExternalId()], [], 1);
         $existingProjectUpdatedAt = $existingProject ? $existingProject->getUpdatedAt()->format('Y-m-d H:i:s') : null;
 
+        /**
+         * Array with existing construction numbers and their updated at date
+         */
+        $constructionNumbers = [];
+        foreach($existingProject->getConstructionTypes() as $constructionType) {
+            foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
+                $constructionNumbers[$constructionNumber->getExternalId()] = $constructionNumber->getUpdatedAt()->format('Y-m-d H:i:s');
+            }
+        }
+
         if ($existingProject && $existingProjectUpdatedAt !== null) {
             $existingProject->map($model);
             $existingProject->createSlug();
@@ -50,13 +60,7 @@ class ProjectHandlerService extends AbstractHandlerService
                 $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
 
                 foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
-                    $existingItem = $cnRepo->findOneBy(['externalId' => $constructionNumber->getExternalId()]);
-
-                    if($existingItem) {
-                        $existingUpdatedAt = $existingItem->getUpdatedAt()->format('Y-m-d H:i:s');
-                    } else {
-                        $existingUpdatedAt = null;
-                    }
+                    $existingUpdatedAt = $constructionNumbers[$constructionNumber->getExternalId()] ?? null;
 
                     if($existingUpdatedAt !== $constructionNumber->getUpdatedAt()->format('Y-m-d H:i:s') || $existingUpdatedAt === null) {
                         $output->writeln('<info>Handling media for: '.$constructionNumber->getTitle().'</info>');

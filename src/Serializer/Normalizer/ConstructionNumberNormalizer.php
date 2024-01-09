@@ -37,6 +37,9 @@ class ConstructionNumberNormalizer implements NormalizerInterface
         if(isset($data['address'])){
             $data['address'] = $number->getAddress();
         }
+        if(isset($data['financieel'])){
+            $data['financieel'] = $number->getFinancieel();
+        }
         if(isset($data['detail'])){
             $data['detail'] = $number->getDetail();
         }
