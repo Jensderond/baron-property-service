@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 
 class ProjectProvider implements ProviderInterface
 {
@@ -42,12 +43,24 @@ class ProjectProvider implements ProviderInterface
         return $projectRepo->findAll();
     }
 
-    private function getItemById(int $id): ?Project
+    private function getItemById(int $id): NotFoundAction|Project
     {
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
 
-        $project = $projectRepo->findOneBy(['externalId' => $id]);
+        $criteria = new Criteria();
+        $criteria->where(Criteria::expr()->eq('externalId', $id));
+        $criteria->andWhere(Criteria::expr()->orX(
+            Criteria::expr()->eq('archived', false),
+            Criteria::expr()->isNull('archived')
+        ));
+        $criteria->setMaxResults(1);
+
+        $project = $projectRepo->matching($criteria)->first();
+
+        if(!$project) {
+            return new NotFoundAction();
+        }
 
         return $project;
     }

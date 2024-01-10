@@ -21,6 +21,14 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
+    public function findAll()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByFilters(array $filters)
     {
         $qb = $this->createQueryBuilder('p');
@@ -35,7 +43,42 @@ class ProjectRepository extends ServiceEntityRepository
                ->setParameter('category', $filters['category']);
         }
 
+        $qb->andWhere('p.archived = 0 OR p.archived is null');
+
         return $qb->getQuery()->getResult();
+    }
+
+    public function archiveOther(array $idsInImport): int
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if (empty($idsInImport)) {
+            $count = $qb->select('count(p.externalId)')
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $qb->update()
+                ->set('p.archived', true)
+                ->getQuery()
+                ->execute();
+
+            return $count;
+        }
+
+        $count = $qb->select('count(p.externalId)')
+            ->where($qb->expr()->notIn('p.externalId', $idsInImport))
+            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $qb->update()
+            ->set('p.archived', true)
+            ->where($qb->expr()->notIn('p.externalId', $idsInImport))
+            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->getQuery()
+            ->execute();
+
+        return $count;
     }
 
     //    /**

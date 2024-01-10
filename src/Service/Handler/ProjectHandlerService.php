@@ -12,10 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProjectHandlerService extends AbstractHandlerService
 {
+    /** @var array<int> */
+    private array $idsInImport = [];
+
     public function __construct(
         protected EntityManagerInterface $entityManager,
         protected MediaService $mediaService
-        // , protected FilesystemOperator $publicUploadsStorage, private readonly LoggerInterface $logger
     ) {
     }
 
@@ -27,11 +29,9 @@ class ProjectHandlerService extends AbstractHandlerService
     {
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
-        /** @var ConstructionNumberRepository $cnRepo */
-        $cnRepo = $this->entityManager->getRepository(ConstructionNumber::class);
-
         $existingProject = $projectRepo->findOneBy(['externalId' => $model->getExternalId()], [], 1);
         $existingProjectUpdatedAt = $existingProject ? $existingProject->getUpdatedAt()->format('Y-m-d H:i:s') : null;
+        $this->idsInImport[] = $model->getExternalId();
 
         /**
          * Array with existing construction numbers and their updated at date
@@ -99,6 +99,19 @@ class ProjectHandlerService extends AbstractHandlerService
     public function persist(): void
     {
         $this->entityManager->flush();
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    public function archiveProjects($output): void
+    {
+        /** @var ProjectRepository $projectRepo */
+        $projectRepo = $this->entityManager->getRepository(Project::class);
+
+        $count = $projectRepo->archiveOther($this->idsInImport);
+
+        $output->writeln("<info>Archived ${count} projects </info>");
     }
 
     private function handleMainImage(array $mediaItems): array

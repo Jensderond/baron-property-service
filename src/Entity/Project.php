@@ -127,6 +127,9 @@ class Project
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $plot = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
     public function __construct()
     {
         $this->constructionTypes = new ArrayCollection();
@@ -538,5 +541,17 @@ class Project
         }
 
         return null;
+    }
+
+    public function getArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): static
+    {
+        $this->archived = $archived;
+
+        return $this;
     }
 }

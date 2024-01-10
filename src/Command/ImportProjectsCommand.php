@@ -38,6 +38,8 @@ class ImportProjectsCommand extends Command
             $this->projectHandlerService->handle($project, $output);
         }
 
+        $this->projectHandlerService->archiveProjects($output);
+
         $this->projectHandlerService->persist();
 
         return Command::SUCCESS;
