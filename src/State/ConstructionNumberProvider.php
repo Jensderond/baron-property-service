@@ -10,6 +10,7 @@ use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\ConstructionNumber;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ConstructionNumberRepository;
+use Doctrine\Common\Collections\Criteria;
 
 class ConstructionNumberProvider implements ProviderInterface
 {
@@ -27,7 +28,18 @@ class ConstructionNumberProvider implements ProviderInterface
         /** @var ConstructionNumberRepository $constructionNumberRepository */
         $constructionNumberRepository = $this->entityManager->getRepository(ConstructionNumber::class);
 
-        $number = $constructionNumberRepository->findOneBy(['externalId' => $uriVariables['id'] ?? null]);
+        if(!is_numeric($uriVariables['id'])) {
+            return new NotFoundAction();
+        }
+
+        $criteria = new Criteria();
+        $criteria->where(Criteria::expr()->eq('externalId', $uriVariables['id']));
+        $criteria->andWhere(Criteria::expr()->orX(
+            Criteria::expr()->eq('archived', false),
+            Criteria::expr()->isNull('archived')
+        ));
+
+        $number = $constructionNumberRepository->matching($criteria)->first();
 
         if(!$number) {
             return new NotFoundAction();
