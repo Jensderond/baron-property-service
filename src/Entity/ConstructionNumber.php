@@ -57,7 +57,6 @@ class ConstructionNumber
     private ?array $address = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[SerializedPath('[teksten][aanbiedingstekst]')]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
