@@ -50,10 +50,6 @@ class ProjectProvider implements ProviderInterface
 
         $criteria = new Criteria();
         $criteria->where(Criteria::expr()->eq('externalId', $id));
-        $criteria->andWhere(Criteria::expr()->orX(
-            Criteria::expr()->eq('archived', false),
-            Criteria::expr()->isNull('archived')
-        ));
         $criteria->setMaxResults(1);
 
         $project = $projectRepo->matching($criteria)->first();

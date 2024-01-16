@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Service\PropertyService;
 use App\Service\Handler\ProjectHandlerService;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:import-projects')]
 class ImportProjectsCommand extends Command
 {
-    public function __construct(protected PropertyService $propertyService, protected ProjectHandlerService $projectHandlerService, private readonly LoggerInterface $logger)
+    public function __construct(protected PropertyService $propertyService, protected ProjectHandlerService $projectHandlerService)
     {
         parent::__construct();
     }

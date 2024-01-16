@@ -2,6 +2,7 @@
 
 namespace App\Serializer\Normalizer;
 
+use App\Helpers\ArrayHelper;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
@@ -42,6 +43,7 @@ class PropertyNormalizer implements DenormalizerInterface
         $property->setCreatedAt(new \DateTimeImmutable($data['marketing']['publicatiedatum']));
         $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
         $property->setExternalId($data['id']);
+        $property->setArchived(false);
         $property->setCategory($data['object']['type']['objecttype']);
         if($numberIsZero) {
             $property->setTitle("{$property->getStreet()}, {$property->getCity()}");
@@ -74,6 +76,8 @@ class PropertyNormalizer implements DenormalizerInterface
         }
 
         $property->setMedia($data['media']);
+        ArrayHelper::sort($data['media']);
+        $property->setMediaHash(md5(json_encode($data['media'])));
         $property->setEtages($data['detail']['etages']);
         $property->setOverigOnroerendGoed($data['detail']['overigOnroerendGoed']);
         $property->setBuitenruimte($data['detail']['buitenruimte']);

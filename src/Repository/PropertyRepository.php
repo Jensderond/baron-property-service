@@ -49,6 +49,8 @@ class PropertyRepository extends ServiceEntityRepository
 
             $qb->update()
                 ->set('p.archived', true)
+                ->set('p.status', ':status')
+                ->setParameter('status', "VERLOPEN")
                 ->getQuery()
                 ->execute();
 
@@ -57,14 +59,16 @@ class PropertyRepository extends ServiceEntityRepository
 
         $count = $qb->select('count(p.externalId)')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->andWhere('p.archived = 0')
             ->getQuery()
             ->getSingleScalarResult();
 
         $qb->update()
             ->set('p.archived', true)
+            ->set('p.status', ':status')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->andWhere('p.archived = 0')
+            ->setParameter('status', "VERLOPEN")
             ->getQuery()
             ->execute();
 

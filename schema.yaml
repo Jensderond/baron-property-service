@@ -1121,6 +1121,9 @@ components:
           type:
             - string
             - 'null'
+        amount_of_seperate_toilets:
+          readOnly: true
+          type: integer
     ConstructionNumber-read:
       type: object
       description: ''
@@ -1260,6 +1263,9 @@ components:
           type:
             - string
             - 'null'
+        amount_of_seperate_toilets:
+          readOnly: true
+          type: integer
     ConstructionNumber.jsonld-read:
       type: object
       description: ''
@@ -1714,6 +1720,10 @@ components:
           type:
             - string
             - 'null'
+        archived:
+          type:
+            - boolean
+            - 'null'
     Project-read:
       type: object
       description: ''
@@ -1922,6 +1932,10 @@ components:
           readOnly: true
           type:
             - string
+            - 'null'
+        archived:
+          type:
+            - boolean
             - 'null'
     Project.jsonld-read:
       type: object
@@ -2183,6 +2197,8 @@ components:
           type:
             - string
             - 'null'
+        media_hash:
+          type: string
     Property.jsonld:
       type: object
       description: 'A property.'
@@ -2340,6 +2356,8 @@ components:
           type:
             - string
             - 'null'
+        media_hash:
+          type: string
   responses: []
   parameters: []
   examples: []

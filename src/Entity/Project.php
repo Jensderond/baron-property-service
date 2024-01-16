@@ -127,8 +127,12 @@ class Project
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $plot = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $archived = null;
+    #[ORM\Column]
+    private bool $archived = false;
+
+    #[ORM\Column(length: 32, columnDefinition: 'CHAR(32) NOT NULL')]
+    #[Ignore]
+    private ?string $mediaHash = null;
 
     public function __construct()
     {
@@ -551,6 +555,18 @@ class Project
     public function setArchived(?bool $archived): static
     {
         $this->archived = $archived;
+
+        return $this;
+    }
+
+    public function getMediaHash(): ?string
+    {
+        return $this->mediaHash;
+    }
+
+    public function setMediaHash(string $mediaHash): static
+    {
+        $this->mediaHash = $mediaHash;
 
         return $this;
     }

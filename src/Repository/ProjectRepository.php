@@ -24,7 +24,7 @@ class ProjectRepository extends ServiceEntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->orderBy('p.archived', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -43,8 +43,6 @@ class ProjectRepository extends ServiceEntityRepository
                ->setParameter('category', $filters['category']);
         }
 
-        $qb->andWhere('p.archived = 0 OR p.archived is null');
-
         return $qb->getQuery()->getResult();
     }
 
@@ -59,6 +57,8 @@ class ProjectRepository extends ServiceEntityRepository
 
             $qb->update()
                 ->set('p.archived', true)
+                ->set('p.status', ':status')
+                ->setParameter('status', '"VERLOPEN"')
                 ->getQuery()
                 ->execute();
 
@@ -67,14 +67,16 @@ class ProjectRepository extends ServiceEntityRepository
 
         $count = $qb->select('count(p.externalId)')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->andWhere('p.archived = 0')
             ->getQuery()
             ->getSingleScalarResult();
 
         $qb->update()
             ->set('p.archived', true)
+            ->set('p.status', ':status')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0 OR p.archived is null')
+            ->andWhere('p.archived = 0')
+            ->setParameter('status', '"VERLOPEN"')
             ->getQuery()
             ->execute();
 

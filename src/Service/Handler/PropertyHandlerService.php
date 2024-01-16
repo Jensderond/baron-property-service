@@ -28,13 +28,13 @@ class PropertyHandlerService extends AbstractHandlerService
         $propertyRepo = $this->entityManager->getRepository(Property::class);
 
         $property = $propertyRepo->findOneBy(['externalId' => $model->getExternalId()], [], 1);
-        $existingPropertyUpdatedAt = $property ? $property->getUpdatedAt() : null;
+        $existingPropertyMediaHash = $property ? $property->getMediaHash() : null;
         $this->idsInImport[] = $model->getExternalId();
 
-        if ($property && $existingPropertyUpdatedAt !== null) {
+        if ($property) {
             $property->map($model);
 
-            if ($existingPropertyUpdatedAt->format('Y-m-d H:i:s') !== $model->getUpdatedAt()->format('Y-m-d H:i:s')) {
+            if ($existingPropertyMediaHash === null || $existingPropertyMediaHash !== $model->getMediaHash()) {
                 $output->writeln('<info>Handling media existing property</info>');
                 $property->setImage($this->handlePropertyMainImage($model));
                 $property->setMedia($this->handleMedia($property->getMedia()));

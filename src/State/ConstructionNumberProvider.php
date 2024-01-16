@@ -10,6 +10,7 @@ use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\ConstructionNumber;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ConstructionNumberRepository;
+use Doctrine\Common\Collections\Criteria;
 
 class ConstructionNumberProvider implements ProviderInterface
 {
@@ -31,7 +32,11 @@ class ConstructionNumberProvider implements ProviderInterface
             return new NotFoundAction();
         }
 
-        $number = $constructionNumberRepository->findNonArchivedConstructionNumberById($uriVariables['id']);
+        $criteria = new Criteria();
+        $criteria->where(Criteria::expr()->eq('externalId', $uriVariables['id']));
+        $criteria->setMaxResults(1);
+
+        $number = $constructionNumberRepository->matching($criteria)->first();
 
         if(!$number) {
             return new NotFoundAction();

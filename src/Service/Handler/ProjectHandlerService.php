@@ -30,24 +30,24 @@ class ProjectHandlerService extends AbstractHandlerService
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
         $existingProject = $projectRepo->findOneBy(['externalId' => $model->getExternalId()], [], 1);
-        $existingProjectUpdatedAt = $existingProject ? $existingProject->getUpdatedAt()->format('Y-m-d H:i:s') : null;
+        $existingProjectMediaHash = $existingProject ? $existingProject->getMediaHash() : null;
         $this->idsInImport[] = $model->getExternalId();
 
-        /**
-         * Array with existing construction numbers and their updated at date
-         */
-        $constructionNumbers = [];
-        foreach($existingProject->getConstructionTypes() as $constructionType) {
-            foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
-                $constructionNumbers[$constructionNumber->getExternalId()] = $constructionNumber->getUpdatedAt()->format('Y-m-d H:i:s');
-            }
-        }
 
-        if ($existingProject && $existingProjectUpdatedAt !== null) {
+        if ($existingProject) {
+            /**
+             * Array with existing construction numbers and their updated at date
+             */
+            $constructionNumbers = [];
+            foreach($existingProject->getConstructionTypes() as $constructionType) {
+                foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
+                    $constructionNumbers[$constructionNumber->getExternalId()] = $constructionNumber->getMediaHash();
+                }
+            }
             $existingProject->map($model);
             $existingProject->createSlug();
 
-            if($existingProjectUpdatedAt !== $existingProject->getUpdatedAt()->format('Y-m-d H:i:s')) {
+            if($existingProjectMediaHash === null || $existingProjectMediaHash !== $existingProject->getMediaHash()) {
                 $output->writeln('<info>Handling media existing project</info>');
                 $existingProject->setMainImage($this->handleMainImage($existingProject->getMedia()));
                 $existingProject->setMedia($this->handleMedia($existingProject->getMedia()));
@@ -60,9 +60,9 @@ class ProjectHandlerService extends AbstractHandlerService
                 $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
 
                 foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
-                    $existingUpdatedAt = $constructionNumbers[$constructionNumber->getExternalId()] ?? null;
+                    $existingMediaHash = $constructionNumbers[$constructionNumber->getExternalId()] ?? null;
 
-                    if($existingUpdatedAt !== $constructionNumber->getUpdatedAt()->format('Y-m-d H:i:s') || $existingUpdatedAt === null) {
+                    if($existingMediaHash !== $constructionNumber->getMediaHash() || $existingMediaHash === null) {
                         $output->writeln('<info>Handling media for: '.$constructionNumber->getTitle().'</info>');
                         $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
                     } else {

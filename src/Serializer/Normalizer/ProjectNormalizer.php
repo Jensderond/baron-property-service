@@ -6,6 +6,7 @@ use App\Entity\ConstructionNumber;
 use App\Entity\Project;
 use App\Entity\ConstructionType;
 use App\Model\Status;
+use App\Helpers\ArrayHelper;
 use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -63,6 +64,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project = new Project();
         $project->setExternalId($data['externalId']);
         $project->setAlgemeen($data['algemeen']);
+        $project->setArchived(false);
         $project->setStatus($data['status']);
         $project->setProvince($data['province']);
         $project->setZipcode($data['zipcode']);
@@ -71,6 +73,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project->setDescription($data['description']);
         $project->setTitle($data['title']);
         $project->setMedia($data['media']);
+        ArrayHelper::sort($data['media']);
+        $project->setMediaHash(md5(json_encode($data['media'])));
         $project->setDiversen($data['diversen']);
         $project->setCreatedAt(new DateTimeImmutable($data['marketing']['publicatiedatum']));
         $project->setUpdatedAt(new DateTimeImmutable($data['tijdstipLaatsteWijziging']));
@@ -147,7 +151,9 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $constructionNumber->setTeksten($number['teksten']);
                 $constructionNumber->setDiversen($number['diversen']);
                 $constructionNumber->setDetail($number['detail']);
+                ArrayHelper::sort($number['media']);
                 $constructionNumber->setMedia($number['media']);
+                $constructionNumber->setMediaHash(md5(json_encode($number['media'])));
                 $constructionNumber->setUpdatedAt(new DateTimeImmutable($number['diversen']['diversen']['wijzigingsdatum']));
 
                 $totalCNRooms = 0;

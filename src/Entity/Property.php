@@ -101,8 +101,8 @@ class Property
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $archived = null;
+    #[ORM\Column]
+    private bool $archived = false;
 
     #[ORM\Column(nullable: true)]
     private ?int $build_year = null;
@@ -140,6 +140,9 @@ class Property
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $plot = null;
 
+    #[ORM\Column(length: 32, columnDefinition: 'CHAR(32) NOT NULL')]
+    private ?string $mediaHash = null;
+
     public function __construct()
     {
     }
@@ -157,6 +160,7 @@ class Property
     public function map(Property $newProperties)
     {
         $reflectionClass = new ReflectionClass($this);
+
         foreach ($reflectionClass->getMethods() as $method) {
             if (str_starts_with($method->getName(), 'set')) {
                 $propertyName = substr($method->getName(), 3);
@@ -562,6 +566,18 @@ class Property
     public function setPlot(?string $plot): static
     {
         $this->plot = $plot;
+
+        return $this;
+    }
+
+    public function getMediaHash(): ?string
+    {
+        return $this->mediaHash;
+    }
+
+    public function setMediaHash(string $mediaHash): static
+    {
+        $this->mediaHash = $mediaHash;
 
         return $this;
     }

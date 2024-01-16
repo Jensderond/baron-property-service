@@ -13,13 +13,11 @@ use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currencies\ISOCurrencies;
-use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use ReflectionClass;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
-use Symfony\Component\Serializer\Attribute\SerializedPath;
 
 #[ORM\Entity(repositoryClass: ConstructionNumberRepository::class)]
 #[ApiResource(
@@ -105,6 +103,10 @@ class ConstructionNumber
     #[ORM\Column]
     #[Ignore]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(length: 32, columnDefinition: 'CHAR(32) NOT NULL')]
+    #[Ignore]
+    private ?string $mediaHash = null;
 
     public function map(ConstructionNumber $newProperties)
     {
@@ -392,5 +394,30 @@ class ConstructionNumber
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function getMediaHash(): ?string
+    {
+        return $this->mediaHash;
+    }
+
+    public function setMediaHash(string $mediaHash): static
+    {
+        $this->mediaHash = $mediaHash;
+
+        return $this;
+    }
+
+    public function getAmountOfSeperateToilets(): int
+    {
+        $bathrooms = 0;
+
+        foreach($this->getDetail()['etages'] as $etage) {
+            if(is_array($etage['etagegegevens']['overigeRuimtes']) && in_array('TOILET', $etage['etagegegevens']['overigeRuimtes'])) {
+                $bathrooms++;
+            }
+        }
+
+        return $bathrooms;
     }
 }

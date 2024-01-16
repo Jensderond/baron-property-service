@@ -21,26 +21,6 @@ class ConstructionNumberRepository extends ServiceEntityRepository
         parent::__construct($registry, ConstructionNumber::class);
     }
 
-    public function findAll()
-    {
-        return $this->createQueryBuilder('cn')
-            ->andWhere('cn.archived = 0 OR cn.archived is null')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findNonArchivedConstructionNumberById(int $constructionNumberId)
-    {
-        return $this->createQueryBuilder('cn')
-            ->innerJoin('cn.constructionType', 'ct')
-            ->innerJoin('ct.project', 'p')
-            ->where('cn.externalId = :id')
-            ->andWhere('p.archived = 0 OR p.archived IS null')
-            ->setParameter('id', $constructionNumberId)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
     //    /**
     //     * @return ConstructionNumber[] Returns an array of ConstructionNumber objects
     //     */
