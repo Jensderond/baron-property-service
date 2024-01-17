@@ -28,7 +28,7 @@ use ReflectionClass;
  * A property.
  */
 #[ApiFilter(filterClass: DateFilter::class, properties: ['created', 'updated'])]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'address' => 'partial'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'archived' => 'exact', 'status' => 'exact', 'title' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['created', 'status'], arguments: ['orderParameterName' => 'order'])]
 #[ApiResource(

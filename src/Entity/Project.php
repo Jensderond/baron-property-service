@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
@@ -16,7 +18,6 @@ use Cocur\Slugify\Slugify;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currencies\ISOCurrencies;
-use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -34,8 +35,8 @@ use Symfony\Component\Serializer\Attribute\Ignore;
         new QueryCollection(name: 'collection_query', paginationType: 'page')
     ]
 )]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-#[ORM\HasLifecycleCallbacks]
 class Project
 {
     #[ORM\Id]
@@ -85,7 +86,7 @@ class Project
 
     #[Groups('read')]
     #[ORM\Column(length: 255)]
-    private ?string $category = 'Nieuwbouw';
+    private string $category = 'Nieuwbouw';
 
     #[Groups('read')]
     #[ORM\Column]
@@ -427,7 +428,7 @@ class Project
         return null;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): string
     {
         return $this->category;
     }

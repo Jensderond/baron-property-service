@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "api-platform/core",
-            "version": "v3.2.7",
+            "version": "v3.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "f297d2192652a3acd2a644707740de8cb5069221"
+                "reference": "227c85871b00613f427ea985b54f4af24ce56a29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/f297d2192652a3acd2a644707740de8cb5069221",
-                "reference": "f297d2192652a3acd2a644707740de8cb5069221",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/227c85871b00613f427ea985b54f4af24ce56a29",
+                "reference": "227c85871b00613f427ea985b54f4af24ce56a29",
                 "shasum": ""
             },
             "require": {
@@ -69,9 +69,11 @@
                 "phpstan/phpstan-doctrine": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpstan/phpstan-symfony": "^1.0",
+                "phpunit/phpunit": "^9.5",
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^3.9.7 || ^4.0",
                 "ramsey/uuid-doctrine": "^1.4 || ^2.0",
+                "sebastian/comparator": "<5.0",
                 "soyuka/contexts": "v3.3.9",
                 "soyuka/stubs-mongodb": "^1.0",
                 "symfony/asset": "^6.1 || ^7.0",
@@ -165,9 +167,9 @@
             ],
             "support": {
                 "issues": "https://github.com/api-platform/core/issues",
-                "source": "https://github.com/api-platform/core/tree/v3.2.7"
+                "source": "https://github.com/api-platform/core/tree/v3.2.11"
             },
-            "time": "2023-11-30T13:51:25+00:00"
+            "time": "2024-01-12T13:17:28+00:00"
         },
         {
             "name": "async-aws/core",

@@ -7,14 +7,13 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\State\OfferProvider;
-use DateTimeImmutable;
 
 #[ApiResource(
     operations: [
-        new GetCollection(name: "getOfferCollection", provider: OfferProvider::class)
+        new GetCollection(name: "getOfferCollection", provider: OfferProvider::class, filters: ['annotated_app_entity_offer_api_platform_doctrine_orm_filter_search_filter'])
     ]
 )]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
 class Offer
 {
     public function __construct(

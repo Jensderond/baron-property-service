@@ -2,6 +2,7 @@
 
 namespace App\State;
 
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
@@ -10,29 +11,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Project;
 use App\Entity\Property;
 use App\Pagination\OfferPaginator;
-use App\Repository\ProjectRepository;
-use App\Repository\PropertyRepository;
 
 class OfferProvider implements ProviderInterface
 {
     use SerializerAwareProviderTrait;
 
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private ProviderInterface $collectionProvider, private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): iterable
     {
-        /** @var ProjectRepository $projectRepo */
-        $projectRepo = $this->entityManager->getRepository(Project::class);
-        /** @var PropertyRepository $propertyRepo */
-        $propertyRepo = $this->entityManager->getRepository(Property::class);
+        $projectOperation = new GetCollection(name: "getProjectCollection", class: Project::class, filters: ['annotated_app_entity_project_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
+        $propertyOperation = new GetCollection(name: "getPropertyCollection", class: Property::class, filters: ['annotated_app_entity_property_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
+        /** @var Project[] $projects*/
+        $projects = $this->collectionProvider->provide($projectOperation, $uriVariables, $context);
 
-        $projects = $projectRepo->findByFilters($context['filters'] ?? []);
-        $properties = $propertyRepo->findByFilters($context['filters'] ?? []);
+        /** @var Property[] $properties */
+        $properties = $this->collectionProvider->provide($propertyOperation, $uriVariables, $context);
 
         $projects = array_map(
             fn (Project $item) => new Offer(

@@ -27,6 +27,10 @@ services:
         arguments:
             - '@App\Service\AddressService'
 
+    App\State\OfferProvider:
+        bind:
+            $collectionProvider: '@api_platform.doctrine.orm.state.collection_provider'
+
     Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor: ~
     Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor: ~
 

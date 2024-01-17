@@ -9,1026 +9,1160 @@ info:
   summary: null
   extension_properties: []
 servers:
-  -
-    url: /
+  - url: /
     description: ''
     variables: null
     extension_properties: []
 paths:
-  paths:
-    '/api/constructionNumberExternal/{id}':
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getExternalConstructionNumberItem
-        tags:
-          - ConstructionNumber
-        responses:
-          200:
-            description: 'ConstructionNumber resource'
-            content:
-              application/ld+json:
-                schema:
-                  $ref: '#/components/schemas/ConstructionNumber.jsonld'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ConstructionNumber'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-          404:
-            description: 'Resource not found'
-            content: null
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves a ConstructionNumber resource.'
-        description: 'Retrieves a ConstructionNumber resource.'
-        external_docs: null
-        parameters:
-          -
-            name: id
-            in: path
-            description: 'ConstructionNumber identifier'
-            required: true
-            deprecated: false
-            allow_empty_value: false
-            schema:
+  '/api/constructionNumberExternal/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getExternalConstructionNumberItem
+      tags:
+        - ConstructionNumber
+      responses:
+        200:
+          description: 'ConstructionNumber resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstructionNumber.jsonld'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstructionNumber'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a ConstructionNumber resource.'
+      description: 'Retrieves a ConstructionNumber resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'ConstructionNumber identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
+      servers: null
+      extension_properties: []
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  /api/construction_numbers:
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getConstructionNumberCollection
+      tags:
+        - ConstructionNumber
+      responses:
+        200:
+          description: 'ConstructionNumber collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties: {'hydra:member': {type: array, items: {$ref: '#/components/schemas/ConstructionNumber.jsonld'}}, 'hydra:totalItems': {type: integer, minimum: 0}, 'hydra:view': {type: object, properties: {'@id': {type: string, format: iri-reference}, '@type': {type: string}, 'hydra:first': {type: string, format: iri-reference}, 'hydra:last': {type: string, format: iri-reference}, 'hydra:previous': {type: string, format: iri-reference}, 'hydra:next': {type: string, format: iri-reference}}, example: {'@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string}}, 'hydra:search': {type: object, properties: {'@type': {type: string}, 'hydra:template': {type: string}, 'hydra:variableRepresentation': {type: string}, 'hydra:mapping': {type: array, items: {type: object, properties: {'@type': {type: string}, variable: {type: string}, property: {type: [string, 'null']}, required: {type: boolean}}}}}}}
+                required: ['hydra:member']
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/ConstructionNumber'}
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves the collection of ConstructionNumber resources.'
+      description: 'Retrieves the collection of ConstructionNumber resources.'
+      external_docs: null
+      parameters:
+        - name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
+      servers: null
+      extension_properties: []
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  '/api/construction_numbers/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getConstructionNumberItem
+      tags:
+        - ConstructionNumber
+      responses:
+        200:
+          description: 'ConstructionNumber resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstructionNumber.jsonld'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstructionNumber'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a ConstructionNumber resource.'
+      description: 'Retrieves a ConstructionNumber resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'ConstructionNumber identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
+      servers: null
+      extension_properties: []
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  /api/construction_types:
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getConstructionTypeCollection
+      tags:
+        - ConstructionType
+      responses:
+        200:
+          description: 'ConstructionType collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties: {'hydra:member': {type: array, items: {$ref: '#/components/schemas/ConstructionType.jsonld'}}, 'hydra:totalItems': {type: integer, minimum: 0}, 'hydra:view': {type: object, properties: {'@id': {type: string, format: iri-reference}, '@type': {type: string}, 'hydra:first': {type: string, format: iri-reference}, 'hydra:last': {type: string, format: iri-reference}, 'hydra:previous': {type: string, format: iri-reference}, 'hydra:next': {type: string, format: iri-reference}}, example: {'@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string}}, 'hydra:search': {type: object, properties: {'@type': {type: string}, 'hydra:template': {type: string}, 'hydra:variableRepresentation': {type: string}, 'hydra:mapping': {type: array, items: {type: object, properties: {'@type': {type: string}, variable: {type: string}, property: {type: [string, 'null']}, required: {type: boolean}}}}}}}
+                required: ['hydra:member']
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/ConstructionType'}
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves the collection of ConstructionType resources.'
+      description: 'Retrieves the collection of ConstructionType resources.'
+      external_docs: null
+      parameters:
+        - name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
+      servers: null
+      extension_properties: []
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  '/api/construction_types/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getConstructionTypeItem
+      tags:
+        - ConstructionType
+      responses:
+        200:
+          description: 'ConstructionType resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstructionType.jsonld'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstructionType'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a ConstructionType resource.'
+      description: 'Retrieves a ConstructionType resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'ConstructionType identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
+      servers: null
+      extension_properties: []
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  /api/offers:
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getOfferCollection
+      tags:
+        - Offer
+      responses:
+        200:
+          description: 'Offer collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties: {'hydra:member': {type: array, items: {$ref: '#/components/schemas/Offer.jsonld'}}, 'hydra:totalItems': {type: integer, minimum: 0}, 'hydra:view': {type: object, properties: {'@id': {type: string, format: iri-reference}, '@type': {type: string}, 'hydra:first': {type: string, format: iri-reference}, 'hydra:last': {type: string, format: iri-reference}, 'hydra:previous': {type: string, format: iri-reference}, 'hydra:next': {type: string, format: iri-reference}}, example: {'@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string}}, 'hydra:search': {type: object, properties: {'@type': {type: string}, 'hydra:template': {type: string}, 'hydra:variableRepresentation': {type: string}, 'hydra:mapping': {type: array, items: {type: object, properties: {'@type': {type: string}, variable: {type: string}, property: {type: [string, 'null']}, required: {type: boolean}}}}}}}
+                required: ['hydra:member']
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Offer'}
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves the collection of Offer resources.'
+      description: 'Retrieves the collection of Offer resources.'
+      external_docs: null
+      parameters:
+        - name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: city
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'city[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: string
-            style: simple
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
-      servers: null
-      parameters: []
-      extension_properties: []
-    /api/construction_numbers:
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getConstructionNumberCollection
-        tags:
-          - ConstructionNumber
-        responses:
-          200:
-            description: 'ConstructionNumber collection'
-            content:
-              application/ld+json:
-                schema:
-                  type: object
-                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/ConstructionNumber.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
-                  required: ['hydra:member']
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  type: array
-                  items: { $ref: '#/components/schemas/ConstructionNumber' }
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves the collection of ConstructionNumber resources.'
-        description: 'Retrieves the collection of ConstructionNumber resources.'
-        external_docs: null
-        parameters:
-          -
-            name: page
-            in: query
-            description: 'The collection page number'
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: integer
-              default: 1
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
-      servers: null
-      parameters: []
-      extension_properties: []
-    '/api/construction_numbers/{id}':
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getConstructionNumberItem
-        tags:
-          - ConstructionNumber
-        responses:
-          200:
-            description: 'ConstructionNumber resource'
-            content:
-              application/ld+json:
-                schema:
-                  $ref: '#/components/schemas/ConstructionNumber.jsonld'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ConstructionNumber'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-          404:
-            description: 'Resource not found'
-            content: null
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves a ConstructionNumber resource.'
-        description: 'Retrieves a ConstructionNumber resource.'
-        external_docs: null
-        parameters:
-          -
-            name: id
-            in: path
-            description: 'ConstructionNumber identifier'
-            required: true
-            deprecated: false
-            allow_empty_value: false
-            schema:
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: category
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'category[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: string
-            style: simple
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: title
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
       servers: null
-      parameters: []
       extension_properties: []
-    /api/construction_types:
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getConstructionTypeCollection
-        tags:
-          - ConstructionType
-        responses:
-          200:
-            description: 'ConstructionType collection'
-            content:
-              application/ld+json:
-                schema:
-                  type: object
-                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/ConstructionType.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
-                  required: ['hydra:member']
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  type: array
-                  items: { $ref: '#/components/schemas/ConstructionType' }
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves the collection of ConstructionType resources.'
-        description: 'Retrieves the collection of ConstructionType resources.'
-        external_docs: null
-        parameters:
-          -
-            name: page
-            in: query
-            description: 'The collection page number'
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: integer
-              default: 1
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  '/api/projectExternal/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getExternalProjectItem
+      tags:
+        - Project
+      responses:
+        200:
+          description: 'Project resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Project.jsonld-read'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project-read'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a Project resource.'
+      description: 'Retrieves a Project resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'Project identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
       servers: null
-      parameters: []
       extension_properties: []
-    '/api/construction_types/{id}':
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getConstructionTypeItem
-        tags:
-          - ConstructionType
-        responses:
-          200:
-            description: 'ConstructionType resource'
-            content:
-              application/ld+json:
-                schema:
-                  $ref: '#/components/schemas/ConstructionType.jsonld'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ConstructionType'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-          404:
-            description: 'Resource not found'
-            content: null
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves a ConstructionType resource.'
-        description: 'Retrieves a ConstructionType resource.'
-        external_docs: null
-        parameters:
-          -
-            name: id
-            in: path
-            description: 'ConstructionType identifier'
-            required: true
-            deprecated: false
-            allow_empty_value: false
-            schema:
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  /api/projects:
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getProjectCollection
+      tags:
+        - Project
+      responses:
+        200:
+          description: 'Project collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties: {'hydra:member': {type: array, items: {$ref: '#/components/schemas/Project.jsonld-slug'}}, 'hydra:totalItems': {type: integer, minimum: 0}, 'hydra:view': {type: object, properties: {'@id': {type: string, format: iri-reference}, '@type': {type: string}, 'hydra:first': {type: string, format: iri-reference}, 'hydra:last': {type: string, format: iri-reference}, 'hydra:previous': {type: string, format: iri-reference}, 'hydra:next': {type: string, format: iri-reference}}, example: {'@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string}}, 'hydra:search': {type: object, properties: {'@type': {type: string}, 'hydra:template': {type: string}, 'hydra:variableRepresentation': {type: string}, 'hydra:mapping': {type: array, items: {type: object, properties: {'@type': {type: string}, variable: {type: string}, property: {type: [string, 'null']}, required: {type: boolean}}}}}}}
+                required: ['hydra:member']
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Project-slug'}
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves the collection of Project resources.'
+      description: 'Retrieves the collection of Project resources.'
+      external_docs: null
+      parameters:
+        - name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: city
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'city[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: string
-            style: simple
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
-      servers: null
-      parameters: []
-      extension_properties: []
-    /api/offers:
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getOfferCollection
-        tags:
-          - Offer
-        responses:
-          200:
-            description: 'Offer collection'
-            content:
-              application/ld+json:
-                schema:
-                  type: object
-                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/Offer.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
-                  required: ['hydra:member']
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  type: array
-                  items: { $ref: '#/components/schemas/Offer' }
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves the collection of Offer resources.'
-        description: 'Retrieves the collection of Offer resources.'
-        external_docs: null
-        parameters:
-          -
-            name: page
-            in: query
-            description: 'The collection page number'
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: integer
-              default: 1
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
-      servers: null
-      parameters: []
-      extension_properties: []
-    '/api/projectExternal/{id}':
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getExternalProjectItem
-        tags:
-          - Project
-        responses:
-          200:
-            description: 'Project resource'
-            content:
-              application/ld+json:
-                schema:
-                  $ref: '#/components/schemas/Project.jsonld-read'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Project-read'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-          404:
-            description: 'Resource not found'
-            content: null
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves a Project resource.'
-        description: 'Retrieves a Project resource.'
-        external_docs: null
-        parameters:
-          -
-            name: id
-            in: path
-            description: 'Project identifier'
-            required: true
-            deprecated: false
-            allow_empty_value: false
-            schema:
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: category
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'category[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: string
-            style: simple
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: title
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
       servers: null
-      parameters: []
       extension_properties: []
-    /api/projects:
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getProjectCollection
-        tags:
-          - Project
-        responses:
-          200:
-            description: 'Project collection'
-            content:
-              application/ld+json:
-                schema:
-                  type: object
-                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/Project.jsonld-slug' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
-                  required: ['hydra:member']
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  type: array
-                  items: { $ref: '#/components/schemas/Project-slug' }
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves the collection of Project resources.'
-        description: 'Retrieves the collection of Project resources.'
-        external_docs: null
-        parameters:
-          -
-            name: page
-            in: query
-            description: 'The collection page number'
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: integer
-              default: 1
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  '/api/projects/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getProjectItem
+      tags:
+        - Project
+      responses:
+        200:
+          description: 'Project resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Project.jsonld'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a Project resource.'
+      description: 'Retrieves a Project resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'Project identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
       servers: null
-      parameters: []
       extension_properties: []
-    '/api/projects/{id}':
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getProjectItem
-        tags:
-          - Project
-        responses:
-          200:
-            description: 'Project resource'
-            content:
-              application/ld+json:
-                schema:
-                  $ref: '#/components/schemas/Project.jsonld'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Project'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-          404:
-            description: 'Resource not found'
-            content: null
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves a Project resource.'
-        description: 'Retrieves a Project resource.'
-        external_docs: null
-        parameters:
-          -
-            name: id
-            in: path
-            description: 'Project identifier'
-            required: true
-            deprecated: false
-            allow_empty_value: false
-            schema:
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  /api/properties:
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getPropertyCollection
+      tags:
+        - Property
+      responses:
+        200:
+          description: 'Property collection'
+          content:
+            application/ld+json:
+              schema:
+                type: object
+                properties: {'hydra:member': {type: array, items: {$ref: '#/components/schemas/Property.jsonld'}}, 'hydra:totalItems': {type: integer, minimum: 0}, 'hydra:view': {type: object, properties: {'@id': {type: string, format: iri-reference}, '@type': {type: string}, 'hydra:first': {type: string, format: iri-reference}, 'hydra:last': {type: string, format: iri-reference}, 'hydra:previous': {type: string, format: iri-reference}, 'hydra:next': {type: string, format: iri-reference}}, example: {'@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string}}, 'hydra:search': {type: object, properties: {'@type': {type: string}, 'hydra:template': {type: string}, 'hydra:variableRepresentation': {type: string}, 'hydra:mapping': {type: array, items: {type: object, properties: {'@type': {type: string}, variable: {type: string}, property: {type: [string, 'null']}, required: {type: boolean}}}}}}}
+                required: ['hydra:member']
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Property'}
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves the collection of Property resources.'
+      description: 'Retrieves the collection of Property resources.'
+      external_docs: null
+      parameters:
+        - name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: integer
+            default: 1
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: city
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'city[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: string
-            style: simple
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
-      servers: null
-      parameters: []
-      extension_properties: []
-    /api/properties:
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getPropertyCollection
-        tags:
-          - Property
-        responses:
-          200:
-            description: 'Property collection'
-            content:
-              application/ld+json:
-                schema:
-                  type: object
-                  properties: { 'hydra:member': { type: array, items: { $ref: '#/components/schemas/Property.jsonld' } }, 'hydra:totalItems': { type: integer, minimum: 0 }, 'hydra:view': { type: object, properties: { '@id': { type: string, format: iri-reference }, '@type': { type: string }, 'hydra:first': { type: string, format: iri-reference }, 'hydra:last': { type: string, format: iri-reference }, 'hydra:previous': { type: string, format: iri-reference }, 'hydra:next': { type: string, format: iri-reference } }, example: { '@id': string, type: string, 'hydra:first': string, 'hydra:last': string, 'hydra:previous': string, 'hydra:next': string } }, 'hydra:search': { type: object, properties: { '@type': { type: string }, 'hydra:template': { type: string }, 'hydra:variableRepresentation': { type: string }, 'hydra:mapping': { type: array, items: { type: object, properties: { '@type': { type: string }, variable: { type: string }, property: { type: [string, 'null'] }, required: { type: boolean } } } } } } }
-                  required: ['hydra:member']
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  type: array
-                  items: { $ref: '#/components/schemas/Property' }
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves the collection of Property resources.'
-        description: 'Retrieves the collection of Property resources.'
-        external_docs: null
-        parameters:
-          -
-            name: page
-            in: query
-            description: 'The collection page number'
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: integer
-              default: 1
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: city
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: category
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'category[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: string
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: 'city[]'
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: array
-              items:
-                type: string
-            style: form
-            explode: true
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: category
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: string
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: 'category[]'
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: array
-              items:
-                type: string
-            style: form
-            explode: true
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: archived
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: archived
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: boolean
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'archived[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: boolean
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: 'archived[]'
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: array
-              items:
-                type: boolean
-            style: form
-            explode: true
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: status
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: status
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'status[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
               type: string
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: 'status[]'
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: array
-              items:
-                type: string
-            style: form
-            explode: true
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: address
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: string
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-          -
-            name: 'order[status]'
-            in: query
-            description: ''
-            required: false
-            deprecated: false
-            allow_empty_value: true
-            schema:
-              type: string
-              enum:
-                - asc
-                - desc
-            style: form
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: address
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'order[status]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
       servers: null
-      parameters: []
       extension_properties: []
-    '/api/properties/external/{id}':
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getByExternalId
-        tags:
-          - Property
-        responses:
-          200:
-            description: 'Property resource'
-            content:
-              application/ld+json:
-                schema:
-                  $ref: '#/components/schemas/Property.jsonld'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Property'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-          404:
-            description: 'Resource not found'
-            content: null
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves a Property resource.'
-        description: 'Retrieves a Property resource.'
-        external_docs: null
-        parameters:
-          -
-            name: id
-            in: path
-            description: 'Property identifier'
-            required: true
-            deprecated: false
-            allow_empty_value: false
-            schema:
-              type: string
-            style: simple
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  '/api/properties/external/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getByExternalId
+      tags:
+        - Property
+      responses:
+        200:
+          description: 'Property resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Property.jsonld'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a Property resource.'
+      description: 'Retrieves a Property resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'Property identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
       servers: null
-      parameters: []
       extension_properties: []
-    '/api/properties/{id}':
-      ref: null
-      summary: null
-      description: null
-      get:
-        operation_id: getPropertyItem
-        tags:
-          - Property
-        responses:
-          200:
-            description: 'Property resource'
-            content:
-              application/ld+json:
-                schema:
-                  $ref: '#/components/schemas/Property.jsonld'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Property'
-                example: null
-                examples: null
-                encoding: null
-                extension_properties: []
-            headers: null
-            links: null
-            extension_properties: []
-          404:
-            description: 'Resource not found'
-            content: null
-            headers: null
-            links: null
-            extension_properties: []
-        summary: 'Retrieves a Property resource.'
-        description: 'Retrieves a Property resource.'
-        external_docs: null
-        parameters:
-          -
-            name: id
-            in: path
-            description: 'Property identifier'
-            required: true
-            deprecated: false
-            allow_empty_value: false
-            schema:
-              type: string
-            style: simple
-            explode: false
-            allow_reserved: false
-            example: null
-            examples: null
-            content: null
-            extension_properties: []
-        request_body: null
-        callbacks: null
-        deprecated: false
-        security: null
-        servers: null
-        extension_properties: []
-      put: null
-      post: null
-      delete: null
-      options: null
-      head: null
-      patch: null
-      trace: null
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
+  '/api/properties/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getPropertyItem
+      tags:
+        - Property
+      responses:
+        200:
+          description: 'Property resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Property.jsonld'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a Property resource.'
+      description: 'Retrieves a Property resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'Property identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
       servers: null
-      parameters: []
       extension_properties: []
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
 components:
   schemas:
     ConstructionNumber:
@@ -1164,10 +1298,8 @@ components:
         '@context':
           readOnly: true
           oneOf:
-            -
-              type: string
-            -
-              type: object
+            - type: string
+            - type: object
               properties:
                 '@vocab':
                   type: string
@@ -1271,6 +1403,27 @@ components:
       description: ''
       deprecated: false
       properties:
+        '@context':
+          readOnly: true
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                '@vocab':
+                  type: string
+                hydra:
+                  type: string
+                  enum: ['http://www.w3.org/ns/hydra/core#']
+              required:
+                - '@vocab'
+                - hydra
+              additionalProperties: true
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
         title:
           type:
             - string
@@ -1321,6 +1474,7 @@ components:
           items:
             type: string
             format: iri-reference
+            example: 'https://example.com/'
         title:
           type:
             - string
@@ -1402,10 +1556,8 @@ components:
         '@context':
           readOnly: true
           oneOf:
-            -
-              type: string
-            -
-              type: object
+            - type: string
+            - type: object
               properties:
                 '@vocab':
                   type: string
@@ -1440,6 +1592,7 @@ components:
           items:
             type: string
             format: iri-reference
+            example: 'https://example.com/'
         title:
           type:
             - string
@@ -1477,6 +1630,27 @@ components:
       description: ''
       deprecated: false
       properties:
+        '@context':
+          readOnly: true
+          oneOf:
+            - type: string
+            - type: object
+              properties:
+                '@vocab':
+                  type: string
+                hydra:
+                  type: string
+                  enum: ['http://www.w3.org/ns/hydra/core#']
+              required:
+                - '@vocab'
+                - hydra
+              additionalProperties: true
+        '@id':
+          readOnly: true
+          type: string
+        '@type':
+          readOnly: true
+          type: string
         construction_numbers:
           type: array
           items:
@@ -1686,6 +1860,7 @@ components:
           items:
             type: string
             format: iri-reference
+            example: 'https://example.com/'
         number_of_objects:
           readOnly: true
           type: integer
@@ -1829,10 +2004,8 @@ components:
         '@context':
           readOnly: true
           oneOf:
-            -
-              type: string
-            -
-              type: object
+            - type: string
+            - type: object
               properties:
                 '@vocab':
                   type: string
@@ -1899,6 +2072,7 @@ components:
           items:
             type: string
             format: iri-reference
+            example: 'https://example.com/'
         number_of_objects:
           readOnly: true
           type: integer
@@ -1945,10 +2119,8 @@ components:
         '@context':
           readOnly: true
           oneOf:
-            -
-              type: string
-            -
-              type: object
+            - type: string
+            - type: object
               properties:
                 '@vocab':
                   type: string
@@ -2207,10 +2379,8 @@ components:
         '@context':
           readOnly: true
           oneOf:
-            -
-              type: string
-            -
-              type: object
+            - type: string
+            - type: object
               properties:
                 '@vocab':
                   type: string
@@ -2374,4 +2544,3 @@ external_docs: null
 json_schema_dialect: null
 webhooks: null
 extension_properties: []
-

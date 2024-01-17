@@ -43,7 +43,7 @@ import:
 	$(SYMFONY) app:import-projects
 
 schema:
-	$(SYMFONY) api:openapi:export --yaml > schema.yaml
+	$(SYMFONY) api:openapi:export --yaml > schema.yaml && bash ./fix-schema.sh
 
 .PHONY: migrations reset-db import lint schema up php composer
 

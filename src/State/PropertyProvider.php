@@ -6,7 +6,6 @@ use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
-use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
