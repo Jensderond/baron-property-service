@@ -72,6 +72,21 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project->setDescriptionSite($data['description_site']);
         $project->setDescription($data['description']);
         $project->setTitle($data['title']);
+
+        /** Media */
+        $mainImage = array_filter($data['media'], function ($media) {
+            return $media['soort'] === 'HOOFDFOTO';
+        });
+
+        // get first item in $mainImage array
+        $mainImage = array_values($mainImage);
+
+        if (isset($mainImage[0])) {
+            $project->setMainImage([$mainImage[0]]);
+        } else {
+            $project->setMainImage($data['media'][0] ?: null);
+        }
+
         $project->setMedia($data['media']);
         ArrayHelper::sort($data['media']);
         $project->setMediaHash(md5(json_encode($data['media'])));
@@ -248,7 +263,6 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         if(isset($data['main_image'])) {
             $data['main_image'] = $project->getMainImage();
         }
-
 
         return $data;
     }

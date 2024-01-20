@@ -29,23 +29,6 @@ class ProjectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByFilters(array $filters)
-    {
-        $qb = $this->createQueryBuilder('p');
-
-        if (isset($filters['city'])) {
-            $qb->andWhere('p.city = :city')
-               ->setParameter('city', $filters['city']);
-        }
-
-        if (isset($filters['category'])) {
-            $qb->andWhere('p.category = :category')
-               ->setParameter('category', $filters['category']);
-        }
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function archiveOther(array $idsInImport): int
     {
         $qb = $this->createQueryBuilder('p');

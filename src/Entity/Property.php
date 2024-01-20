@@ -10,19 +10,21 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
-use ApiPlatform\Metadata\GraphQl\QueryCollection;
-use ApiPlatform\Metadata\GraphQl\Query;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Repository\PropertyRepository;
 use App\State\PropertyProvider;
 use Cocur\Slugify\Slugify;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use ReflectionClass;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 /**
  * A property.
@@ -120,15 +122,18 @@ class Property
     private ?array $media = null;
 
     #[ORM\Column]
+    #[Ignore]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
+    #[Ignore]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $etages = null;
 
     #[ORM\Column(nullable: true)]
+    #[Ignore]
     private ?array $overigOnroerendGoed = null;
 
     #[ORM\Column(nullable: true)]
@@ -141,7 +146,20 @@ class Property
     private ?string $plot = null;
 
     #[ORM\Column(length: 32, columnDefinition: 'CHAR(32) NOT NULL')]
+    #[Ignore]
     private ?string $mediaHash = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $rooms = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $bedrooms = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $livingArea = null;
 
     public function __construct()
     {
@@ -463,18 +481,6 @@ class Property
         };
     }
 
-    public function getBedrooms(): ?int
-    {
-        // array reduce to loop over each
-        $etages = $this->getEtages();
-
-        $slaapkamers = array_reduce($etages, function ($carry, $item) {
-            return $carry + $item['aantalSlaapkamers'];
-        }, 0);
-
-        return $slaapkamers;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -578,6 +584,54 @@ class Property
     public function setMediaHash(string $mediaHash): static
     {
         $this->mediaHash = $mediaHash;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getRooms(): ?int
+    {
+        return $this->rooms;
+    }
+
+    public function setRooms(?int $rooms): static
+    {
+        $this->rooms = $rooms;
+
+        return $this;
+    }
+
+    public function getBedrooms(): ?int
+    {
+        return $this->bedrooms;
+    }
+
+    public function setBedrooms(?int $bedrooms): static
+    {
+        $this->bedrooms = $bedrooms;
+
+        return $this;
+    }
+
+    public function getLivingArea(): ?int
+    {
+        return $this->livingArea;
+    }
+
+    public function setLivingArea(?int $livingArea): static
+    {
+        $this->livingArea = $livingArea;
 
         return $this;
     }

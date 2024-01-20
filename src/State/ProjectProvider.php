@@ -26,8 +26,6 @@ class ProjectProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|Project|NotFoundAction
     {
-        dump($operation);
-
         switch ($operation->getName()) {
             case 'getExternalProjectItem':
                 return $this->getItemById($uriVariables['id']);

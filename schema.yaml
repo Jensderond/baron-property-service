@@ -974,7 +974,7 @@ paths:
           examples: null
           content: null
           extension_properties: []
-        - name: address
+        - name: title
           in: query
           description: ''
           required: false
@@ -2331,24 +2331,7 @@ components:
         condition:
           readOnly: true
           type: string
-        bedrooms:
-          readOnly: true
-          type:
-            - integer
-            - 'null'
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         etages:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-        overig_onroerend_goed:
           type:
             - array
             - 'null'
@@ -2369,8 +2352,22 @@ components:
           type:
             - string
             - 'null'
-        media_hash:
-          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        rooms:
+          type:
+            - integer
+            - 'null'
+        bedrooms:
+          type:
+            - integer
+            - 'null'
+        living_area:
+          type:
+            - integer
+            - 'null'
     Property.jsonld:
       type: object
       description: 'A property.'
@@ -2488,24 +2485,7 @@ components:
         condition:
           readOnly: true
           type: string
-        bedrooms:
-          readOnly: true
-          type:
-            - integer
-            - 'null'
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
         etages:
-          type:
-            - array
-            - 'null'
-          items:
-            type: string
-        overig_onroerend_goed:
           type:
             - array
             - 'null'
@@ -2526,8 +2506,22 @@ components:
           type:
             - string
             - 'null'
-        media_hash:
-          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        rooms:
+          type:
+            - integer
+            - 'null'
+        bedrooms:
+          type:
+            - integer
+            - 'null'
+        living_area:
+          type:
+            - integer
+            - 'null'
   responses: []
   parameters: []
   examples: []

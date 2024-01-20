@@ -3,12 +3,15 @@
 namespace App\Serializer\Normalizer;
 
 use App\Helpers\ArrayHelper;
+use \App\Entity\Property;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class PropertyNormalizer implements DenormalizerInterface
+class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    use NormalizerAwareTrait;
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {
+    }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
     {
@@ -52,6 +55,14 @@ class PropertyNormalizer implements DenormalizerInterface
         }
         $property->setAlgemeen($data['algemeen']);
         $property->setFinancieel($data['financieel']);
+
+        if (isset($data['teksten']['eigenSiteTekst'])) {
+            $property->setDescription($data['teksten']['eigenSiteTekst']);
+        }
+        if (!isset($data['teksten']['eigenSiteTekst']) && isset($data['teksten']['aanbiedingstekst'])) {
+            $property->setDescription($data['teksten']['aanbiedingstekst']);
+        }
+
         $property->setTeksten($data['teksten']);
 
         if (isset($data['algemeen']['bouwjaar'])) {
@@ -79,6 +90,24 @@ class PropertyNormalizer implements DenormalizerInterface
         ArrayHelper::sort($data['media']);
         $property->setMediaHash(md5(json_encode($data['media'])));
         $property->setEtages($data['detail']['etages']);
+
+        $etages = $data['detail']['etages'];
+
+        $slaapkamers = array_reduce($etages, function ($carry, $item) {
+            return $carry + $item['aantalSlaapkamers'];
+        }, 0);
+
+        $property->setBedrooms($slaapkamers);
+
+
+        $totalRooms = 0;
+        $etages = $data['detail']['etages'];
+        foreach ($etages as $etage) {
+            $totalRooms += $etage['aantalKamers'];
+        }
+        $property->setRooms($totalRooms);
+        $property->setLivingArea($data['algemeen']['woonoppervlakte']);
+
         $property->setOverigOnroerendGoed($data['detail']['overigOnroerendGoed']);
         $property->setBuitenruimte($data['detail']['buitenruimte']);
         $property->setPlot($data['algemeen']['totaleWoonkameroppervlakte'] ?: $data['algemeen']['totaleKadestraleOppervlakte']);
@@ -101,14 +130,46 @@ class PropertyNormalizer implements DenormalizerInterface
         return $property;
     }
 
+    /**
+     * @param Property $project
+     */
+    public function normalize($project, ?string $format = null, array $context = [])
+    {
+        $data = $this->objectNormalizer->normalize($project, $format, $context);
+
+        if(isset($data['algemeen'])) {
+            $data['algemeen'] = $project->getAlgemeen();
+        }
+        if(isset($data['financieel'])) {
+            $data['financieel'] = $project->getFinancieel();
+        }
+        if(isset($data['teksten'])) {
+            $data['teksten'] = $project->getTeksten();
+        }
+        if(isset($data['image'])) {
+            $data['image'] = $project->getImage();
+        }
+        if(isset($data['media'])) {
+            $data['media'] = $project->getMedia();
+        }
+        if(isset($data['etages'])) {
+            $data['etages'] = $project->getEtages();
+        }
+        if(isset($data['buitenruimte'])) {
+            $data['buitenruimte'] = $project->getBuitenruimte();
+        }
+
+        return $data;
+    }
+
     public function supportsDenormalization($data, string $type, ?string $format = null): bool
     {
-        return $type === \App\Entity\Property::class;
+        return $type === Property::class;
     }
 
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
-        return $data instanceof \App\Entity\Property;
+        return $data instanceof Property;
     }
 
     public function getSupportedTypes(?string $format): array

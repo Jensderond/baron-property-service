@@ -47,10 +47,10 @@ class ProjectHandlerService extends AbstractHandlerService
             $existingProject->map($model);
             $existingProject->createSlug();
 
-            if($existingProjectMediaHash === null || $existingProjectMediaHash !== $existingProject->getMediaHash()) {
+            if(empty($existingProjectMediaHash) || $existingProjectMediaHash !== $existingProject->getMediaHash()) {
                 $output->writeln('<info>Handling media existing project</info>');
-                $existingProject->setMainImage($this->handleMainImage($existingProject->getMedia()));
-                $existingProject->setMedia($this->handleMedia($existingProject->getMedia()));
+                $existingProject->setMainImage($this->handleMainImage($model->getMedia()));
+                $existingProject->setMedia($this->handleMedia($model->getMedia()));
                 $existingProject->setUpdatedAt($model->getUpdatedAt());
             } else {
                 $output->writeln('<info>Skipping media existing project</info>');
