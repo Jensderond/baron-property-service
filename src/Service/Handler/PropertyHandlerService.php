@@ -44,14 +44,6 @@ class PropertyHandlerService extends AbstractHandlerService
                 $output->writeln('<info>No media update needed for: '.$model->getTitle().'</info>');
             }
 
-            $tmpLat = $property->getLat();
-            $tmpLng = $property->getLng();
-
-            if (!$property->getLat() && !$property->getLng()) {
-                $property->setLat($tmpLat);
-                $property->setLng($tmpLng);
-            }
-
             $this->checkLatLong($property);
             $property->createSlug();
             $this->entityManager->persist($property);
@@ -73,7 +65,7 @@ class PropertyHandlerService extends AbstractHandlerService
     /**
      * This function checks if the lat and long are set for the given property
      */
-    public function checkLatLong(Property &$property): void
+    private function checkLatLong(Property &$property): void
     {
         $numberIsZero = $property->getHouseNumber() === 0 || null === $property->getHouseNumber();
 

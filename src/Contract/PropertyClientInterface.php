@@ -6,4 +6,5 @@ interface PropertyClientInterface
 {
     public function getProperties();
     public function getProjects();
+    public function getBogObjects();
 }

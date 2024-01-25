@@ -182,7 +182,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 }
 
                 $constructionNumber->setPrice(
-                    new \Money\Money(($number['financieel']['overdracht']['koopprijs'] ?? $number['financieel']['overdracht']['huurprijs']) * 100, new \Money\Currency('EUR'))
+                    new \Money\Money(($number['financieel']['overdracht']['koopprijs'] ?: $number['financieel']['overdracht']['huurprijs']) * 100, new \Money\Currency('EUR'))
                 );
                 if(isset($number['financieel']['overdracht']['koopconditie']) || isset($number['financieel']['overdracht']['huurconditie'])) {
                     $constructionNumber->setPriceCondition(match($number['financieel']['overdracht']['koopconditie'] ?? $number['financieel']['overdracht']['huurconditie']) {

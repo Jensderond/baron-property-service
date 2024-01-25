@@ -10,6 +10,7 @@ use App\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -21,7 +22,12 @@ use Symfony\Component\Serializer\Serializer;
 
 class PropertyService implements PropertyClientInterface
 {
-    public function __construct(private readonly PropertyClientInterface $client, private readonly EntityManagerInterface $entityManager)
+    public function __construct(
+        private readonly PropertyClientInterface $client,
+        private readonly EntityManagerInterface $entityManager,
+        private NormalizerInterface $propertyNormalizer,
+        private NormalizerInterface $bogObjectNormalizer
+    )
     {
     }
 
@@ -37,7 +43,7 @@ class PropertyService implements PropertyClientInterface
         }
 
         $serializer = new Serializer(
-            [new PropertyNormalizer($this->entityManager), new ArrayDenormalizer()],
+            [$this->propertyNormalizer, new ArrayDenormalizer()],
             [new JsonEncoder()]
         );
 
@@ -72,5 +78,26 @@ class PropertyService implements PropertyClientInterface
         $jsonProjects = json_decode($properties, true);
 
         return $serializer->deserialize(json_encode($jsonProjects['resultaten']), 'App\Entity\Project[]', 'json');
+    }
+
+    /**
+     * @return BogObject[]
+     */
+    public function getBogObjects(): array
+    {
+        if ($_ENV['APP_ENV'] === 'dev') {
+            $Objects = file_get_contents(__DIR__.'/../../fixtures/bog-objects.json');
+        } else {
+            $Objects = $this->client->getBogObjects();
+        }
+
+        $serializer = new Serializer(
+            [$this->bogObjectNormalizer, new ArrayDenormalizer()],
+            [new JsonEncoder()]
+        );
+
+        $jsonProjects = json_decode($Objects, true);
+
+        return $serializer->deserialize(json_encode($jsonProjects['resultaten']), 'App\Entity\BogObject[]', 'json');
     }
 }

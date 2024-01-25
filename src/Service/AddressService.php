@@ -12,8 +12,8 @@ class AddressService implements AddressClientInterface
 
     /**
      * @return array{
-     *   'lat': string,
-     *   'lng': string,
+     *   'lat': float,
+     *   'lng': float,
      * }
      */
     public function getLatLngFromAddress(int $housenumber, string $street, string $city): ?array
@@ -28,8 +28,8 @@ class AddressService implements AddressClientInterface
 
         try {
             $value = [
-                'lat' => $data[0]['lat'],
-                'lng' => $data[0]['lon'],
+                'lat' => (float) $data[0]['lat'],
+                'lng' => (float) $data[0]['lon'],
             ];
 
             return $value;

@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
+use App\Entity\BogObject;
 use App\Entity\Offer;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Project;
@@ -22,13 +23,36 @@ class OfferProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): iterable
     {
+        $bogObjectOperation = new GetCollection(name: "getBogObjectCollection", class: BogObject::class, filters: ['annotated_app_entity_bog_object_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
         $projectOperation = new GetCollection(name: "getProjectCollection", class: Project::class, filters: ['annotated_app_entity_project_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
         $propertyOperation = new GetCollection(name: "getPropertyCollection", class: Property::class, filters: ['annotated_app_entity_property_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
+        /** @var BogObject[] $bogObjects*/
+        $bogObjects = $this->collectionProvider->provide($bogObjectOperation, $uriVariables, $context);
+
         /** @var Project[] $projects*/
         $projects = $this->collectionProvider->provide($projectOperation, $uriVariables, $context);
 
         /** @var Property[] $properties */
         $properties = $this->collectionProvider->provide($propertyOperation, $uriVariables, $context);
+
+        $bogObjects = array_map(
+            fn (BogObject $item) => new Offer(
+                $item->getCreatedAt()->format('Y-m-d'),
+                'bogObject',
+                $item->getTitle(),
+                $item->getImage(),
+                null,
+                $item->getStatus(),
+                '',
+                $item->getSlug(),
+                null,
+                null,
+                $item->getPlot(),
+                $item->getBuildYear(),
+                $item->getFormattedPrice(),
+            ),
+            $bogObjects
+        );
 
         $projects = array_map(
             fn (Project $item) => new Offer(
@@ -68,7 +92,7 @@ class OfferProvider implements ProviderInterface
             $properties
         );
 
-        $combined = array_merge($projects, $properties);
+        $combined = array_merge($bogObjects, $projects, $properties);
 
         // sort $combined by date
         usort($combined, function ($a, $b) {

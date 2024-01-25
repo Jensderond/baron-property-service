@@ -26,13 +26,8 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ApiResource(
     operations: [
-        new Get(name: "getProjectItem"),
         new Get(name: "getExternalProjectItem", uriTemplate: '/projectExternal/{id}', provider: ProjectProvider::class, normalizationContext: ['groups' => ['read']]),
-        new GetCollection(name: "getProjectCollection", provider: ProjectProvider::class, normalizationContext: ['groups' => ['slug']])
-    ],
-    graphQlOperations: [
-        new Query(name: 'item_query'),
-        new QueryCollection(name: 'collection_query', paginationType: 'page')
+        new GetCollection(name: "getProjectCollection", normalizationContext: ['groups' => ['slug']])
     ]
 )]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]

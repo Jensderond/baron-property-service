@@ -88,11 +88,11 @@ class Property
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $zip = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $lat = null;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 7, nullable: true)]
+    private ?float $lat = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $lng = null;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 7, nullable: true)]
+    private ?float $lng = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
@@ -324,27 +324,25 @@ class Property
         return $this;
     }
 
-    public function getLat(): ?string
+    public function getLat(): ?float
     {
-        return $this->lat;
+        return $this->lat !== null ? (float) $this->lat : null;
     }
 
-    public function setLat(?string $lat): static
+    public function setLat(?float $lat): self
     {
         $this->lat = $lat;
-
         return $this;
     }
 
-    public function getLng(): ?string
+    public function getLng(): ?float
     {
-        return $this->lng;
+        return $this->lng !== null ? (float) $this->lng : null;
     }
 
-    public function setLng(?string $lng): static
+    public function setLng(?float $lng): self
     {
         $this->lng = $lng;
-
         return $this;
     }
 

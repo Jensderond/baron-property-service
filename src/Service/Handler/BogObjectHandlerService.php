@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Service\Handler;
+
+use App\Entity\BogObject;
+use App\Repository\BogObjectRepository;
+use App\Service\AddressService;
+use App\Service\MediaService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class BogObjectHandlerService extends AbstractHandlerService
+{
+    /** @var array<int> */
+    private array $idsInImport = [];
+
+    public function __construct(
+        protected EntityManagerInterface $entityManager,
+        protected AddressService $addressService,
+        protected MediaService $mediaService
+    ) {
+    }
+
+    /**
+     * @param BogObject $model
+     * @param OutputInterface $output
+     */
+    public function handle($model, $output): void
+    {
+        /** @var BogObjectRepository $projectRepo */
+        $projectRepo = $this->entityManager->getRepository(BogObject::class);
+        $existingObject = $projectRepo->findOneBy(['externalId' => $model->getExternalId()], [], 1);
+        $existingObjectMediaHash = $existingObject ? $existingObject->getMediaHash() : null;
+        $this->idsInImport[] = $model->getExternalId();
+
+
+        if ($existingObject) {
+            $existingObject->map($model);
+            $existingObject->createSlug();
+
+            $existingObject->setImage($this->handleMainImage($model->getImage()));
+            if(empty($existingObjectMediaHash) || $existingObjectMediaHash !== $existingObject->getMediaHash()) {
+                $output->writeln('<info>Handling media existing BOG Object</info>');
+                $existingObject->setMedia($this->handleMedia($model->getMedia()));
+                $existingObject->setUpdatedAt($model->getUpdatedAt());
+            } else {
+                $output->writeln('<info>Skipping media existing BOG Object</info>');
+            }
+
+            $this->checkLatLong($existingObject);
+
+            $this->entityManager->persist($existingObject);
+            $output->writeln('<info>Updated BOG Object: '.$model->getTitle().'</info>');
+            return;
+        }
+
+        $model->map($model);
+        $model->createSlug();
+        $this->checkLatLong($model);
+        $output->writeln('<info>Handling media for new bog object</info>');
+        $model->setMedia($this->handleMedia($model->getMedia()));
+
+        $this->entityManager->persist($model);
+
+        $output->writeln('<info>Added BOG Object: '.$model->getTitle().'</info>');
+        return;
+    }
+
+    public function persist(): void
+    {
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    public function archiveProjects($output): void
+    {
+        /** @var BogObjectRepository $projectRepo */
+        $projectRepo = $this->entityManager->getRepository(BogObject::class);
+
+        $count = $projectRepo->archiveOther($this->idsInImport);
+
+        $output->writeln("<info>Archived ${count} BOG Objects </info>");
+    }
+
+    /**
+     * This function checks if the lat and long are set for the given property
+     */
+    private function checkLatLong(BogObject &$object): void
+    {
+        $houseNumber = strtolower(str_replace(' ', '', $object->getHouseNumber()));
+        $numberIsZero = $houseNumber === "0" || null === $houseNumber || $houseNumber === "0ong";
+
+        if (!$numberIsZero && (!$object->getLat() || !$object->getLng())) {
+            if (($object->getHouseNumber() && !$numberIsZero) && $object->getStreet() && $object->getCity()) {
+                $geoData = $this->addressService->getLatLngFromAddress($object->getHouseNumber(), $object->getStreet(), $object->getCity());
+                if($geoData) {
+                    $object->setLat($geoData['lat']);
+                    $object->setLng($geoData['lng']);
+                }
+            }
+        }
+    }
+
+    private function handleMainImage(?array $mediaItems): array
+    {
+        $options = [
+            'sizes' => [
+                '1x' => '400x266',
+                '2x' => '800x532',
+            ],
+        ];
+
+        if (!$mediaItems || !isset($mediaItems['link'])) {
+            return [];
+        }
+
+        return $this->mediaService->buildObject($mediaItems['link'], $options);
+    }
+
+    private function handleMedia(?array $mediaInput): array
+    {
+        if (!isset($mediaInput)) {
+            return [];
+        }
+
+        $transformedItems = [];
+
+        foreach ($mediaInput as $key => $media) {
+            if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
+                if(isset($media['link']) && $media['link'] !== null) {
+                    $transformedItems[] = $this->mediaService->transfromItem($media);
+
+                    unset($mediaInput[$key]);
+                }
+            }
+        }
+
+        $mediaItems = array_merge($transformedItems, array_values($mediaInput));
+
+        return $mediaItems;
+    }
+}

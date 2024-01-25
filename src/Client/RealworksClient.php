@@ -56,4 +56,25 @@ class RealworksClient implements PropertyClientInterface
 
         return $req->getContent();
     }
+
+    /**
+     * @throws Exception\ServerExceptionInterface
+     * @throws Exception\RedirectionExceptionInterface
+     * @throws Exception\ClientExceptionInterface
+     * @throws Exception\TransportExceptionInterface
+     */
+    public function getBogObjects(): string
+    {
+        $this->realworksClient = $this->realworksClient->withOptions([
+            'base_uri' => 'https://api.realworks.nl',
+            'headers' => ['Authorization' => $_ENV['REALWORKS_BOG_TOKEN']],
+        ]);
+        try {
+            $req = $this->realworksClient->request('GET', '/bog/v2/objecten');
+        } catch (Exception\TransportExceptionInterface $e) {
+            throw new Error('Something went wrong with the request'.$e);
+        }
+
+        return $req->getContent();
+    }
 }

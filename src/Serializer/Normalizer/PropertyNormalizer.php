@@ -81,7 +81,7 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
         $mainImage = array_values($mainImage);
 
         if (isset($mainImage[0])) {
-            $property->setImage([$mainImage[0]]);
+            $property->setImage($mainImage[0]);
         } else {
             $property->setImage($data['media'][0] ?: null);
         }
@@ -124,7 +124,7 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
                 'VRIJ_OP_NAAM' => 'v.o.n.',
             });
         }
-        $property->setPrice($data['financieel']['overdracht']['koopprijs'] ?? $data['financieel']['overdracht']['huurprijs']);
+        $property->setPrice($data['financieel']['overdracht']['koopprijs'] ?: $data['financieel']['overdracht']['huurprijs']);
         $property->setStatus($data['financieel']['overdracht']['status']);
 
         return $property;
