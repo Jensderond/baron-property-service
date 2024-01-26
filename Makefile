@@ -41,6 +41,7 @@ rector: up
 import:
 	$(SYMFONY) app:import-properties
 	$(SYMFONY) app:import-projects
+	$(SYMFONY) app:import-bog-objects
 
 schema:
 	$(SYMFONY) api:openapi:export --yaml > schema.yaml && bash ./fix-schema.sh

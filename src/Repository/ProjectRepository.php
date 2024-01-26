@@ -40,8 +40,6 @@ class ProjectRepository extends ServiceEntityRepository
 
             $qb->update()
                 ->set('p.archived', true)
-                ->set('p.status', ':status')
-                ->setParameter('status', '"VERLOPEN"')
                 ->getQuery()
                 ->execute();
 
@@ -56,10 +54,8 @@ class ProjectRepository extends ServiceEntityRepository
 
         $qb->update()
             ->set('p.archived', true)
-            ->set('p.status', ':status')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
             ->andWhere('p.archived = 0')
-            ->setParameter('status', '"VERLOPEN"')
             ->getQuery()
             ->execute();
 
