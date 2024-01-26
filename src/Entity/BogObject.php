@@ -44,7 +44,7 @@ class BogObject
     private array $diversen = [];
 
     #[ORM\Column(length: 255)]
-    private string $category = 'OverigOG';
+    private string $category = 'BOG';
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;

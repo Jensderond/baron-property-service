@@ -26,7 +26,7 @@ class OverviewController extends ServiceEntityRepository
         $cities = $em->createQuery('SELECT DISTINCT p.city FROM App\Entity\Property p WHERE p.archived = 0 OR p.archived is null')->getResult();
         $statusses = $em->createQuery('SELECT DISTINCT p.status FROM App\Entity\Property p WHERE p.archived = 0 OR p.archived is null')->getResult();
 
-        $filteredCategories = ['NIEUWBOUW'];
+        $filteredCategories = ['NIEUWBOUW', 'BOG'];
         foreach ($propertyCategories as $category) {
             if (checkEmptyItem($category['category'])) {
                 $filteredCategories[] = $category['category'];
