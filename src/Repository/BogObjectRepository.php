@@ -21,6 +21,39 @@ class BogObjectRepository extends ServiceEntityRepository
         parent::__construct($registry, BogObject::class);
     }
 
+    public function archiveMissing(array $idsInImport): int
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if (empty($idsInImport)) {
+            $count = $qb->select('count(p.externalId)')
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $qb->update()
+                ->set('p.archived', true)
+                ->getQuery()
+                ->execute();
+
+            return $count;
+        }
+
+        $count = $qb->select('count(p.externalId)')
+            ->where($qb->expr()->notIn('p.externalId', $idsInImport))
+            ->andWhere('p.archived = 0')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $qb->update()
+            ->set('p.archived', true)
+            ->where($qb->expr()->notIn('p.externalId', $idsInImport))
+            ->andWhere('p.archived = 0')
+            ->getQuery()
+            ->execute();
+
+        return $count;
+    }
+
 //    /**
 //     * @return BogObject[] Returns an array of BogObject objects
 //     */

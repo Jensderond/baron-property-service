@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -20,6 +21,7 @@ use Money\Money;
 
 #[ORM\Entity(repositoryClass: BogObjectRepository::class)]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 #[ApiResource(
     operations: [
         new Get(name: "getExternalBogObject", uriTemplate: '/bogObjectExternal/{id}', provider: BogObjectProvider::class),
@@ -44,7 +46,7 @@ class BogObject
     private array $diversen = [];
 
     #[ORM\Column(length: 255)]
-    private string $category = 'BOG';
+    private string $category = '';
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;

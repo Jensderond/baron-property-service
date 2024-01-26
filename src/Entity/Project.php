@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
@@ -31,6 +32,7 @@ use Symfony\Component\Serializer\Attribute\Ignore;
     ]
 )]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {

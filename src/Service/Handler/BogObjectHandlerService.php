@@ -41,7 +41,7 @@ class BogObjectHandlerService extends AbstractHandlerService
             $existingObject->setImage($this->handleMainImage($model->getImage()));
             if(empty($existingObjectMediaHash) || $existingObjectMediaHash !== $existingObject->getMediaHash()) {
                 $output->writeln('<info>Handling media existing BOG Object</info>');
-                $existingObject->setMedia($this->handleMedia($model->getMedia()));
+                $existingObject->setMedia($this->mediaService->handleMedia($model->getMedia()));
                 $existingObject->setUpdatedAt($model->getUpdatedAt());
             } else {
                 $output->writeln('<info>Skipping media existing BOG Object</info>');
@@ -58,7 +58,7 @@ class BogObjectHandlerService extends AbstractHandlerService
         $model->createSlug();
         $this->checkLatLong($model);
         $output->writeln('<info>Handling media for new bog object</info>');
-        $model->setMedia($this->handleMedia($model->getMedia()));
+        $model->setMedia($this->mediaService->handleMedia($model->getMedia()));
 
         $this->entityManager->persist($model);
 
@@ -74,12 +74,12 @@ class BogObjectHandlerService extends AbstractHandlerService
     /**
      * @param OutputInterface $output
      */
-    public function archiveProjects($output): void
+    public function archiveItems($output): void
     {
         /** @var BogObjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(BogObject::class);
 
-        $count = $projectRepo->archiveOther($this->idsInImport);
+        $count = $projectRepo->archiveMissing($this->idsInImport);
 
         $output->writeln("<info>Archived ${count} BOG Objects </info>");
     }
@@ -117,28 +117,5 @@ class BogObjectHandlerService extends AbstractHandlerService
         }
 
         return $this->mediaService->buildObject($mediaItems['link'], $options);
-    }
-
-    private function handleMedia(?array $mediaInput): array
-    {
-        if (!isset($mediaInput)) {
-            return [];
-        }
-
-        $transformedItems = [];
-
-        foreach ($mediaInput as $key => $media) {
-            if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
-                if(isset($media['link']) && $media['link'] !== null) {
-                    $transformedItems[] = $this->mediaService->transfromItem($media);
-
-                    unset($mediaInput[$key]);
-                }
-            }
-        }
-
-        $mediaItems = array_merge($transformedItems, array_values($mediaInput));
-
-        return $mediaItems;
     }
 }

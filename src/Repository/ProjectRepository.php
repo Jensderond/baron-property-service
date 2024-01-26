@@ -29,7 +29,7 @@ class ProjectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function archiveOther(array $idsInImport): int
+    public function archiveMissing(array $idsInImport): int
     {
         $qb = $this->createQueryBuilder('p');
 

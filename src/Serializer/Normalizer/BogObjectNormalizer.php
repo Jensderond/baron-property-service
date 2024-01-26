@@ -52,9 +52,15 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
             $property->setCountry($data['land']);
         }
 
-        $numberIsZero = $data['huisnummer'] === "0" && null !== $property->getHouseNumber();
+        $numberIsZero = ($data['huisnummer'] === "0" || $data['huisnummer'] === 0) && null !== $property->getHouseNumber();
 
         /** Generic */
+        if($numberIsZero) {
+            $property->setHouseNumber(null);
+            $property->setTitle("{$property->getStreet()}, {$property->getCity()}");
+        } else {
+            $property->setTitle("{$property->getStreet()} {$property->getHouseNumber()}, {$property->getCity()}");
+        }
         if(isset($data['kenmerken']['hoofdfunctie'])) {
             $property->setMainFunction(KeyTranslationsHelper::mainFunction($data['kenmerken']['hoofdfunctie']));
         }
@@ -62,11 +68,6 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
         $property->setExternalId($data['id']);
         $property->setArchived(false);
-        if($numberIsZero) {
-            $property->setTitle("{$property->getStreet()}, {$property->getCity()}");
-        } else {
-            $property->setTitle("{$property->getStreet()} {$property->getHouseNumber()}, {$property->getCity()}");
-        }
         $property->setFinance($data['financieel']);
         $property->setDiversen($data['diversen']['diversen']);
 
@@ -233,6 +234,7 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
             });
         }
 
+        $property->setCategory($data['financieel']['overdracht']['koopEnOfHuur']['koopprijs'] ? 'Koop' : 'Huur');
         $property->setPrice($data['financieel']['overdracht']['koopEnOfHuur']['koopprijs'] ?: $data['financieel']['overdracht']['koopEnOfHuur']['huurprijs']);
         $property->setServiceCostPrice($data['financieel']['overdracht']['koopEnOfHuur']['servicekosten'] ?: null);
         $property->setServiceCostVAT($data['financieel']['overdracht']['koopEnOfHuur']['servicekostenBtwBelast'] ?: null);

@@ -104,12 +104,12 @@ class ProjectHandlerService extends AbstractHandlerService
     /**
      * @param OutputInterface $output
      */
-    public function archiveProjects($output): void
+    public function archiveItems($output): void
     {
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->entityManager->getRepository(Project::class);
 
-        $count = $projectRepo->archiveOther($this->idsInImport);
+        $count = $projectRepo->archiveMissing($this->idsInImport);
 
         $output->writeln("<info>Archived ${count} projects </info>");
     }

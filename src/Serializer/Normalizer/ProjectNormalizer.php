@@ -99,6 +99,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $lowestNumberOfRooms = 0;
         $highestNumberOfRooms = 0;
 
+        $category = [];
+
         foreach ($data['bouwtypen'] as $bouwType) {
             $type = new ConstructionType();
             $type->setExternalId($bouwType['id']);
@@ -184,6 +186,13 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $constructionNumber->setPrice(
                     new \Money\Money(($number['financieel']['overdracht']['koopprijs'] ?: $number['financieel']['overdracht']['huurprijs']) * 100, new \Money\Currency('EUR'))
                 );
+
+                $saleType = $number['financieel']['overdracht']['koopprijs'] ? 'Koop' : 'Huur';
+
+                if(!in_array($saleType, $category)) {
+                    $category[] = $saleType;
+                }
+
                 if(isset($number['financieel']['overdracht']['koopconditie']) || isset($number['financieel']['overdracht']['huurconditie'])) {
                     $constructionNumber->setPriceCondition(match($number['financieel']['overdracht']['koopconditie'] ?? $number['financieel']['overdracht']['huurconditie']) {
                         // huur: PER_JAAR, PER_MAAND
@@ -210,6 +219,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
             if($lowestNumberOfRooms === 0 || $type->getRooms() < $lowestNumberOfRooms) {
                 $lowestNumberOfRooms = $type->getRooms();
             }
+
+            $project->setCategory(implode(' en ', $category));
 
             $project->addConstructionType($type);
         }

@@ -215,6 +215,21 @@ paths:
           examples: null
           content: null
           extension_properties: []
+        - name: archived
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: boolean
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
       request_body: null
       callbacks: null
       deprecated: false
@@ -708,6 +723,21 @@ paths:
           examples: null
           content: null
           extension_properties: []
+        - name: archived
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: boolean
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
       request_body: null
       callbacks: null
       deprecated: false
@@ -918,6 +948,21 @@ paths:
           allow_empty_value: true
           schema:
             type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: archived
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: boolean
           style: form
           explode: false
           allow_reserved: false
@@ -1356,8 +1401,6 @@ components:
             - string
             - 'null'
         category:
-          default: OverigOG
-          example: OverigOG
           type: string
         main_function:
           type: string
@@ -1520,8 +1563,6 @@ components:
             - string
             - 'null'
         category:
-          default: OverigOG
-          example: OverigOG
           type: string
         main_function:
           type: string

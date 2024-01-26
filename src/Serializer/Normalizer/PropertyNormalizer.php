@@ -34,9 +34,11 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
             $property->setStreet($data['adres']['straat']);
         }
 
-        $numberIsZero = $property->getHouseNumber() === "0" && null !== $property->getHouseNumber();
+        $numberIsZero = $property->getHouseNumber() === 0 && null !== $property->getHouseNumber();
 
         if($numberIsZero) {
+            $property->setHouseNumber(null);
+            $property->setHouseNumberAddition(null);
             $property->setAddress("{$property->getStreet()}, {$property->getCity()}");
         } else {
             $property->setAddress("{$property->getStreet()} {$property->getHouseNumber()}{$property->getHouseNumberAddition()}, {$property->getCity()}");
@@ -47,7 +49,6 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
         $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
         $property->setExternalId($data['id']);
         $property->setArchived(false);
-        $property->setCategory($data['object']['type']['objecttype']);
         if($numberIsZero) {
             $property->setTitle("{$property->getStreet()}, {$property->getCity()}");
         } else {
@@ -125,6 +126,9 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
             });
         }
         $property->setPrice($data['financieel']['overdracht']['koopprijs'] ?: $data['financieel']['overdracht']['huurprijs']);
+
+        $category = $data['financieel']['overdracht']['koopprijs'] ? 'Koop' : 'Huur';
+        $property->setCategory($category);
         $property->setStatus($data['financieel']['overdracht']['status']);
 
         return $property;

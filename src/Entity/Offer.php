@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -14,6 +15,7 @@ use App\State\OfferProvider;
     ]
 )]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 class Offer
 {
     public function __construct(

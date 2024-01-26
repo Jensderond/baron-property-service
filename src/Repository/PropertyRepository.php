@@ -38,7 +38,7 @@ class PropertyRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function archiveProperties(array $idsInImport): int
+    public function archiveMissing(array $idsInImport): int
     {
         $qb = $this->createQueryBuilder('p');
 

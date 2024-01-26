@@ -37,7 +37,7 @@ class ImportPropertiesCommand extends Command
             $this->propertyHandlerService->handle($project, $output);
         }
 
-        $this->propertyHandlerService->archiveProperties($output);
+        $this->propertyHandlerService->archiveItems($output);
 
         $this->propertyHandlerService->persist();
 

@@ -37,7 +37,7 @@ class ImportProjectsCommand extends Command
             $this->projectHandlerService->handle($project, $output);
         }
 
-        $this->projectHandlerService->archiveProjects($output);
+        $this->projectHandlerService->archiveItems($output);
 
         $this->projectHandlerService->persist();
 

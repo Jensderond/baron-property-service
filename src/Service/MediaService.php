@@ -51,7 +51,36 @@ class MediaService
         return $images;
     }
 
-    public function transfromItem(array $media): array
+    public function handleMedia(?array $mediaInput): array
+    {
+        if (!isset($mediaInput)) {
+            return [];
+        }
+
+        $transformedItems = [];
+
+        foreach ($mediaInput as $key => $media) {
+            if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO' || $media['soort'] === 'PLATTEGROND') {
+                if(isset($media['link']) && $media['link'] !== null) {
+                    $transformedItems[] = $this->transfromItem($media);
+
+                    unset($mediaInput[$key]);
+                }
+            }
+
+            if ($media['soort'] === 'DOCUMENT') {
+                $transformedItems[] = $this->transfromItem($media, true);
+
+                unset($mediaInput[$key]);
+            }
+        }
+
+        $mediaItems = array_merge($transformedItems, array_values($mediaInput));
+
+        return $mediaItems;
+    }
+
+    public function transfromItem(array $media, ?bool $isDocument = false): array
     {
         $options = [
             'sizes' => [
@@ -61,11 +90,16 @@ class MediaService
             ],
         ];
 
-        $transformedMedia['sizes'] = $this->buildObject($media['link'], $options);
+        if($isDocument) {
+            $transformedMedia['link'] = $media['link'] . '&resize=4';
+            $transformedMedia['mimetype'] = $media['mimetype'];
+        } else {
+            $transformedMedia['sizes'] = $this->buildObject($media['link'], $options);
+            $transformedMedia['mimetype'] = 'image/webp';
+        }
         $transformedMedia['soort'] = $media['soort'];
         $transformedMedia['title'] = $media['title'] ?? '';
         $transformedMedia['omschrijving'] = $media['omschrijving'] ?? '';
-        $transformedMedia['mimetype'] = 'image/webp';
 
         return $transformedMedia;
     }
