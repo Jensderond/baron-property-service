@@ -27,11 +27,13 @@ class BogObjectRepository extends ServiceEntityRepository
 
         if (empty($idsInImport)) {
             $count = $qb->select('count(p.externalId)')
+                ->andWhere('p.archived = 0')
                 ->getQuery()
                 ->getSingleScalarResult();
 
             $qb->update()
                 ->set('p.archived', true)
+                ->andWhere('p.archived = 0')
                 ->getQuery()
                 ->execute();
 

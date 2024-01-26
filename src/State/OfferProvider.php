@@ -23,9 +23,9 @@ class OfferProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): iterable
     {
-        $bogObjectOperation = new GetCollection(name: "getBogObjectCollection", class: BogObject::class, filters: ['annotated_app_entity_bog_object_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
-        $projectOperation = new GetCollection(name: "getProjectCollection", class: Project::class, filters: ['annotated_app_entity_project_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
-        $propertyOperation = new GetCollection(name: "getPropertyCollection", class: Property::class, filters: ['annotated_app_entity_property_api_platform_doctrine_orm_filter_search_filter'], paginationEnabled: false);
+        $bogObjectOperation = new GetCollection(name: "getBogObjectCollection", class: BogObject::class, filters: ['annotated_app_entity_bog_object_api_platform_doctrine_orm_filter_search_filter', 'annotated_app_entity_bog_object_api_platform_doctrine_orm_filter_boolean_filter'], paginationEnabled: false);
+        $projectOperation = new GetCollection(name: "getProjectCollection", class: Project::class, filters: ['annotated_app_entity_project_api_platform_doctrine_orm_filter_search_filter', 'annotated_app_entity_project_api_platform_doctrine_orm_filter_boolean_filter'], paginationEnabled: false);
+        $propertyOperation = new GetCollection(name: "getPropertyCollection", class: Property::class, filters: ['annotated_app_entity_property_api_platform_doctrine_orm_filter_search_filter', 'annotated_app_entity_property_api_platform_doctrine_orm_filter_boolean_filter'], paginationEnabled: false);
         /** @var BogObject[] $bogObjects*/
         $bogObjects = $this->collectionProvider->provide($bogObjectOperation, $uriVariables, $context);
 
