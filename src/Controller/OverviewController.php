@@ -54,6 +54,16 @@ class OverviewController extends ServiceEntityRepository
         $cities = $this->mergeAndRemoveDuplicatesCaseInsensitive([$propertyCities, $bogObjectCities, $projectCities], 'city');
         $statuses = $this->mergeAndRemoveDuplicatesCaseInsensitive([$propertyStatuses, $bogObjectStatuses, $projectStatuses], 'status');
 
+        function sortCaseInsensitive(&$array) {
+            usort($array, function($a, $b) {
+                return strcasecmp($a, $b);
+            });
+        }
+
+        sortCaseInsensitive($categories);
+        sortCaseInsensitive($cities);
+        sortCaseInsensitive($statuses);
+
         return new JsonResponse(['filters' => ['categories' => $categories, 'cities' => $cities, 'statusses' => $statuses]]);
     }
 }
