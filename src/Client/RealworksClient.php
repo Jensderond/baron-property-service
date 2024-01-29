@@ -28,7 +28,7 @@ class RealworksClient implements PropertyClientInterface
             'headers' => ['Authorization' => $_ENV['REALWORKS_PROPERTY_TOKEN']],
         ]);
         try {
-            $req = $this->realworksClient->request('GET', '/wonen/v2/objecten');
+            $req = $this->realworksClient->request('GET', '/wonen/v2/objecten?actief=all');
         } catch (Exception\TransportExceptionInterface $e) {
             throw new Error('Something went wrong with the request'.$e);
         }
@@ -70,7 +70,7 @@ class RealworksClient implements PropertyClientInterface
             'headers' => ['Authorization' => $_ENV['REALWORKS_BOG_TOKEN']],
         ]);
         try {
-            $req = $this->realworksClient->request('GET', '/bog/v2/objecten');
+            $req = $this->realworksClient->request('GET', '/bog/v2/objecten?actief=all');
         } catch (Exception\TransportExceptionInterface $e) {
             throw new Error('Something went wrong with the request'.$e);
         }

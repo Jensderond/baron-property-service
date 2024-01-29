@@ -27,13 +27,10 @@ class BogObjectRepository extends ServiceEntityRepository
 
         if (empty($idsInImport)) {
             $count = $qb->select('count(p.externalId)')
-                ->andWhere('p.archived = 0')
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $qb->update()
-                ->set('p.archived', true)
-                ->andWhere('p.archived = 0')
+            $qb->delete()
                 ->getQuery()
                 ->execute();
 
@@ -42,14 +39,11 @@ class BogObjectRepository extends ServiceEntityRepository
 
         $count = $qb->select('count(p.externalId)')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0')
             ->getQuery()
             ->getSingleScalarResult();
 
-        $qb->update()
-            ->set('p.archived', true)
+        $qb->delete()
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0')
             ->getQuery()
             ->execute();
 

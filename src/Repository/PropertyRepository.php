@@ -21,23 +21,6 @@ class PropertyRepository extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
-    public function findByFilters(array $filters)
-    {
-        $qb = $this->createQueryBuilder('p');
-
-        if (isset($filters['city'])) {
-            $qb->andWhere('p.city = :city')
-               ->setParameter('city', $filters['city']);
-        }
-
-        if (isset($filters['category'])) {
-            $qb->andWhere('p.category = :category')
-               ->setParameter('category', $filters['category']);
-        }
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function archiveMissing(array $idsInImport): int
     {
         $qb = $this->createQueryBuilder('p');
@@ -47,8 +30,7 @@ class PropertyRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $qb->update()
-                ->set('p.archived', true)
+            $qb->delete()
                 ->getQuery()
                 ->execute();
 
@@ -57,14 +39,11 @@ class PropertyRepository extends ServiceEntityRepository
 
         $count = $qb->select('count(p.externalId)')
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0')
             ->getQuery()
             ->getSingleScalarResult();
 
-        $qb->update()
-            ->set('p.archived', true)
+        $qb->delete()
             ->where($qb->expr()->notIn('p.externalId', $idsInImport))
-            ->andWhere('p.archived = 0')
             ->getQuery()
             ->execute();
 
