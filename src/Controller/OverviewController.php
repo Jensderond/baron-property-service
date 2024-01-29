@@ -60,6 +60,12 @@ class OverviewController extends ServiceEntityRepository
             });
         }
 
+        $cities = array_map(function($city) {
+            return preg_replace_callback('/([a-zA-Z]+)(-|$)/', function($matches) {
+                return ucwords(strtolower($matches[1])) . $matches[2];
+            }, $city);
+        }, $cities);
+
         sortCaseInsensitive($categories);
         sortCaseInsensitive($cities);
         sortCaseInsensitive($statuses);
