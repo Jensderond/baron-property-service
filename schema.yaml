@@ -1765,6 +1765,10 @@ components:
         amount_of_seperate_toilets:
           readOnly: true
           type: integer
+        readable_status:
+          type:
+            - string
+            - 'null'
     ConstructionNumber-read:
       type: object
       description: ''
@@ -1791,6 +1795,10 @@ components:
         formatted_price:
           readOnly: true
           type: string
+        readable_status:
+          type:
+            - string
+            - 'null'
     ConstructionNumber.jsonld:
       type: object
       description: ''
@@ -1905,6 +1913,10 @@ components:
         amount_of_seperate_toilets:
           readOnly: true
           type: integer
+        readable_status:
+          type:
+            - string
+            - 'null'
     ConstructionNumber.jsonld-read:
       type: object
       description: ''
@@ -1952,6 +1964,10 @@ components:
         formatted_price:
           readOnly: true
           type: string
+        readable_status:
+          type:
+            - string
+            - 'null'
     ConstructionType:
       type: object
       description: ''

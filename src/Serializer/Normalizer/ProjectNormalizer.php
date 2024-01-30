@@ -186,6 +186,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $constructionNumber->setAlgemeen($number['algemeen']);
                 $constructionNumber->setFinancieel($number['financieel']);
                 $constructionNumber->setStatus($number['financieel']['overdracht']['status']);
+                $constructionNumber->setReadableStatus(KeyTranslationsHelper::status($number['financieel']['overdracht']['status']));
                 if (isset($number['teksten']['eigenSiteTekst'])) {
                     $constructionNumber->setDescription($number['teksten']['eigenSiteTekst']);
                 }

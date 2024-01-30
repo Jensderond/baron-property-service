@@ -108,6 +108,10 @@ class ConstructionNumber
     #[Ignore]
     private ?string $mediaHash = null;
 
+    #[Groups('read')]
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $readableStatus = null;
+
     public function map(ConstructionNumber $newProperties)
     {
         $reflectionClass = new ReflectionClass($this);
@@ -120,7 +124,7 @@ class ConstructionNumber
                     $this->{$setMethod}($newProperties->{$getMethod}());
                 }
                 if ($propertyName === 'Media') {
-                    if($this->getUpdatedAt() < $newProperties->getUpdatedAt()) {
+                    if ($this->getUpdatedAt() < $newProperties->getUpdatedAt()) {
                         $this->{$setMethod}($newProperties->{$getMethod}());
                     }
                 }
@@ -412,12 +416,24 @@ class ConstructionNumber
     {
         $bathrooms = 0;
 
-        foreach($this->getDetail()['etages'] as $etage) {
-            if(is_array($etage['etagegegevens']['overigeRuimtes']) && in_array('TOILET', $etage['etagegegevens']['overigeRuimtes'])) {
+        foreach ($this->getDetail()['etages'] as $etage) {
+            if (is_array($etage['etagegegevens']['overigeRuimtes']) && in_array('TOILET', $etage['etagegegevens']['overigeRuimtes'])) {
                 $bathrooms++;
             }
         }
 
         return $bathrooms;
+    }
+
+    public function getReadableStatus(): ?string
+    {
+        return $this->readableStatus;
+    }
+
+    public function setReadableStatus(?string $readableStatus): static
+    {
+        $this->readableStatus = $readableStatus;
+
+        return $this;
     }
 }
