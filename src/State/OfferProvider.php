@@ -43,6 +43,7 @@ class OfferProvider implements ProviderInterface
                 $item->getImage(),
                 null,
                 $item->getStatus(),
+                $item->getReadableStatus(),
                 '',
                 $item->getSlug(),
                 null,
@@ -62,6 +63,7 @@ class OfferProvider implements ProviderInterface
                 $item->getMainImage(),
                 null,
                 $item->getStatus(),
+                $item->getReadableStatus(),
                 '',
                 $item->getSlug(),
                 $item->getRooms(),
@@ -81,6 +83,7 @@ class OfferProvider implements ProviderInterface
                 $item->getImage(),
                 $item->getCondition(),
                 $item->getStatus(),
+                $item->getReadableStatus(),
                 $item->getAddress(),
                 $item->getSlug(),
                 $item->getBedrooms(),
@@ -94,7 +97,6 @@ class OfferProvider implements ProviderInterface
 
         $combined = array_merge($bogObjects, $projects, $properties);
 
-        // sort $combined by date
         usort($combined, function ($a, $b) {
             if ($a->status === 'BESCHIKBAAR' && $b->status !== 'BESCHIKBAAR') {
                 return -1;
@@ -102,8 +104,6 @@ class OfferProvider implements ProviderInterface
                 return 1;
             }
 
-            // Additional sorting logic for other statuses if needed
-            // For example, if you want to sort 'PROSPECT' and 'IN_AANMELDING' after 'BESCHIKBAAR'
             $order = ['PROSPECT', 'IN_AANMELDING'];
             foreach ($order as $status) {
                 if ($a->status === $status && $b->status !== $status) {

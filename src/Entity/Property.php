@@ -161,6 +161,9 @@ class Property
     #[ORM\Column(nullable: true)]
     private ?int $livingArea = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $readableStatus = null;
+
     public function __construct()
     {
     }
@@ -365,7 +368,7 @@ class Property
 
     public function createSlug(): static
     {
-        $this->setSlug($this->getStreet().'-'.$this->getHouseNumber().$this->getHouseNumberAddition().'-'.$this->getCity().'-'.$this->getExternalId());
+        $this->setSlug($this->getStreet() . '-' . $this->getHouseNumber() . $this->getHouseNumberAddition() . '-' . $this->getCity() . '-' . $this->getExternalId());
 
         return $this;
     }
@@ -630,6 +633,18 @@ class Property
     public function setLivingArea(?int $livingArea): static
     {
         $this->livingArea = $livingArea;
+
+        return $this;
+    }
+
+    public function getReadableStatus(): ?string
+    {
+        return $this->readableStatus;
+    }
+
+    public function setReadableStatus(?string $readableStatus): static
+    {
+        $this->readableStatus = $readableStatus;
 
         return $this;
     }

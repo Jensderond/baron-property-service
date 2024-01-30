@@ -132,6 +132,10 @@ class Project
     #[Ignore]
     private ?string $mediaHash = null;
 
+    #[Groups('read')]
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $readableStatus = null;
+
     public function __construct()
     {
         $this->constructionTypes = new ArrayCollection();
@@ -298,7 +302,7 @@ class Project
 
     public function createSlug(): static
     {
-        $this->setSlug($this->getCity().'-'.$this->getProvince().'-'.$this->getExternalId());
+        $this->setSlug($this->getCity() . '-' . $this->getProvince() . '-' . $this->getExternalId());
 
         return $this;
     }
@@ -536,7 +540,7 @@ class Project
         }
 
         if (isset($minPrice) && isset($maxPrice)) {
-            return match($this->getAlgemeen()['koopOfHuur']) {
+            return match ($this->getAlgemeen()['koopOfHuur']) {
                 'KOOP' => "Van {$moneyFormatter->format(Money::EUR($minPrice * 100))} tot {$moneyFormatter->format(Money::EUR($maxPrice * 100))} v.o.n.",
                 'HUUR' => "Van {$moneyFormatter->format(Money::EUR($minPrice * 100))} tot {$moneyFormatter->format(Money::EUR($maxPrice * 100))} p.m.",
             };
@@ -565,6 +569,18 @@ class Project
     public function setMediaHash(string $mediaHash): static
     {
         $this->mediaHash = $mediaHash;
+
+        return $this;
+    }
+
+    public function getReadableStatus(): ?string
+    {
+        return $this->readableStatus;
+    }
+
+    public function setReadableStatus(?string $readableStatus): static
+    {
+        $this->readableStatus = $readableStatus;
 
         return $this;
     }

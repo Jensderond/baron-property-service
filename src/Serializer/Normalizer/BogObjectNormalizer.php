@@ -11,17 +11,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
+    {
     }
 
 
-    private function addFacilities(&$facilities, $source, $key) {
+    private function addFacilities(&$facilities, $source, $key)
+    {
         if (isset($source[$key])) {
             $facilities = array_merge($facilities, $source[$key]);
         }
     }
 
-    private function addPlot(&$plot, $source, $key) {
+    private function addPlot(&$plot, $source, $key)
+    {
         if (isset($source[$key])) {
             $plot += $source[$key];
         }
@@ -32,36 +35,36 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $property = new BogObject();
 
         /** Address */
-        if(isset($data['huisnummer'])) {
-            if(isset($data['huisnummertoevoeging'])) {
+        if (isset($data['huisnummer'])) {
+            if (isset($data['huisnummertoevoeging'])) {
                 $property->setHouseNumber($data['huisnummer'] . $data['huisnummertoevoeging']);
             } else {
                 $property->setHouseNumber($data['huisnummer']);
             }
         }
-        if(isset($data['plaats'])) {
+        if (isset($data['plaats'])) {
             $property->setCity($data['plaats']);
         }
-        if(isset($data['postcode'])) {
+        if (isset($data['postcode'])) {
             $property->setZipCode($data['postcode']);
         }
-        if(isset($data['straat'])) {
+        if (isset($data['straat'])) {
             $property->setStreet($data['straat']);
         }
-        if(isset($data['land'])) {
+        if (isset($data['land'])) {
             $property->setCountry($data['land']);
         }
 
         $numberIsZero = ($data['huisnummer'] === "0" || $data['huisnummer'] === 0) && null !== $property->getHouseNumber();
 
         /** Generic */
-        if($numberIsZero) {
+        if ($numberIsZero) {
             $property->setHouseNumber(null);
             $property->setTitle("{$property->getStreet()}, {$property->getCity()}");
         } else {
             $property->setTitle("{$property->getStreet()} {$property->getHouseNumber()}, {$property->getCity()}");
         }
-        if(isset($data['kenmerken']['hoofdfunctie'])) {
+        if (isset($data['kenmerken']['hoofdfunctie'])) {
             $property->setMainFunction(KeyTranslationsHelper::mainFunction($data['kenmerken']['hoofdfunctie']));
         }
         $property->setCreatedAt(new \DateTimeImmutable($data['marketing']['publicatiedatum']));
@@ -126,13 +129,13 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
         $property->setFunctions($data['object']['functies']);
 
-        if(isset($facilities)) {
+        if (isset($facilities)) {
             $property->setFacilities(KeyTranslationsHelper::facilities($facilities));
         }
 
-        if(isset($data['gebouwdetails']['lokatie'])) {
+        if (isset($data['gebouwdetails']['lokatie'])) {
 
-            if(isset($data['gebouwdetails']['lokatie']['parkeren'])) {
+            if (isset($data['gebouwdetails']['lokatie']['parkeren'])) {
                 $property->setParking($data['gebouwdetails']['lokatie']['parkeren']);
             }
 
@@ -201,7 +204,7 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         if (isset($mainImage[0])) {
             $property->setImage($mainImage[0]);
         } else {
-            if($data['media'] !== null && count($data['media']) > 0) {
+            if ($data['media'] !== null && count($data['media']) > 0) {
                 $property->setImage($data['media'][0]);
             }
         }
@@ -212,8 +215,8 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
         /** Price */
         $condition = $data['financieel']['overdracht']['koopEnOfHuur']['koopconditie'] ?? $data['financieel']['overdracht']['koopEnOfHuur']['huurconditie'];
-        if(isset($condition)) {
-            $property->setPriceCondition(match($condition) {
+        if (isset($condition)) {
+            $property->setPriceCondition(match ($condition) {
                 // huur: PER_JAAR, PER_MAAND, PER_VIERKANTE_METERS_PER_JAAR
                 'PER_JAAR' => 'p.j.',
                 'PER_MAAND' => 'p.m.',
@@ -225,8 +228,8 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         }
 
         $serviceCondition = $data['financieel']['overdracht']['koopEnOfHuur']['servicekostenconditie'] ?: null;
-        if(isset($serviceCondition)) {
-            $property->setServiceCostCondition(match($serviceCondition) {
+        if (isset($serviceCondition)) {
+            $property->setServiceCostCondition(match ($serviceCondition) {
                 // huur: PER_JAAR, PER_MAAND, PER_VIERKANTE_METERS_PER_JAAR
                 'PER_JAAR' => 'p.j.',
                 'PER_MAAND' => 'p.m.',
@@ -239,6 +242,7 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $property->setServiceCostPrice($data['financieel']['overdracht']['koopEnOfHuur']['servicekosten'] ?: null);
         $property->setServiceCostVAT($data['financieel']['overdracht']['koopEnOfHuur']['servicekostenBtwBelast'] ?: null);
         $property->setStatus($data['status']);
+        $property->setReadableStatus(KeyTranslationsHelper::status($data['status']));
 
         return $property;
     }
@@ -250,22 +254,22 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $data = $this->objectNormalizer->normalize($project, $format, $context);
 
-        if(isset($data['diversen'])) {
+        if (isset($data['diversen'])) {
             $data['diversen'] = $project->getDiversen();
         }
-        if(isset($data['image'])) {
+        if (isset($data['image'])) {
             $data['image'] = $project->getImage();
         }
-        if(isset($data['media'])) {
+        if (isset($data['media'])) {
             $data['media'] = $project->getMedia();
         }
-        if(isset($data['finance'])) {
+        if (isset($data['finance'])) {
             $data['finance'] = $project->getFinance();
         }
-        if(isset($data['functions'])) {
+        if (isset($data['functions'])) {
             $data['functions'] = $project->getFunctions();
         }
-        if(isset($data['parking'])) {
+        if (isset($data['parking'])) {
             $data['parking'] = $project->getParking();
         }
 

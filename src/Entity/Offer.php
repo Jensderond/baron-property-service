@@ -25,11 +25,12 @@ class Offer
         public readonly ?array $image,
         public readonly ?string $condition,
         public readonly ?string $status,
+        public readonly ?string $readableStatus,
         public readonly ?string $address,
         public readonly ?string $slug,
         public readonly ?string $bedrooms,
         public readonly ?int $numberOfObjects,
-        public readonly null|int|string $plotSurface,
+        public readonly ?string $plotSurface,
         public readonly ?string $buildYear,
         public readonly ?string $price,
     ) {

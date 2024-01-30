@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
-class KeyTranslationsHelper {
+class KeyTranslationsHelper
+{
     public static function mainFunction(string $function): string
     {
-        /**
-         * WINKELRUIMTE, KANTOORRUIMTE, BEDRIJFSRUIMTE, HORECA, BOUWGROND, OVERIGE, LEISURE, MAATSCHAPPELIJK_VASTGOED, VERHARD_BUITENTERREIN, BELEGGING
-         */
         return match ($function) {
             "WINKELRUIMTE" => $function = "Winkelruimte",
             "KANTOORRUIMTE" => $function = "Kantoorruimte",
@@ -97,6 +95,36 @@ class KeyTranslationsHelper {
             "F" => $energyClass = "F",
             "G" => $energyClass = "G",
             default => $energyClass = "Onbekend",
+        };
+    }
+
+    public static function projectCategory(string $category): string
+    {
+        return match ($category) {
+            "KOOP" => $category = "Koop",
+            "HUUR" => $category = "Huur",
+            "KOOP_EN_HUUR" => $category = "Koop en huur",
+            default => $category = "Onbekend",
+        };
+    }
+
+    public static function status(string $status): string
+    {
+        return match ($status) {
+            "BESCHIKBAAR" => $status = "Beschikbaar",
+            "GEANNULEERD" => $status = "Geannuleerd",
+            "GEVEILD" => $status = "Geveild",
+            "INGETROKKEN" => $status = "Ingetrokken",
+            "IN_AANMELDING" => $status = "In aanmelding",
+            "ONDER_BOD" => $status = "Onder bod",
+            "ONDER_OPTIE" => $status = "Onder optie",
+            "PROSPECT" => $status = "Prospect",
+            "VERHUURD" => $status = "Verhuurd",
+            "VERHUURD_ONDER_VOORBEHOUD" => $status = "Verhuurd onder voorbehoud",
+            "VERKOCHT" => $status = "Verkocht",
+            "VERKOCHT_BIJ_INSCHRIJVING" => $status = "Verkocht bij inschrijving",
+            "VERKOCHT_ONDER_VOORBEHOUD" => $status = "Verkocht onder voorbehoud",
+            default => $status = "Onbekend",
         };
     }
 }

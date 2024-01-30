@@ -123,8 +123,8 @@ class BogObject
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $localAmentities = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $plot = null;
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $plot = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $functions = null;
@@ -146,6 +146,9 @@ class BogObject
 
     #[ORM\Column(nullable: true)]
     private ?bool $serviceCostVAT = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $readableStatus = null;
 
     public function map(BogObject $newProperties)
     {
@@ -440,7 +443,7 @@ class BogObject
 
     public function createSlug(): static
     {
-        $this->setSlug($this->getStreet().'-'.$this->getHouseNumber().'-'.$this->getCity().'-'.$this->getExternalId());
+        $this->setSlug($this->getStreet() . '-' . $this->getHouseNumber() . '-' . $this->getCity() . '-' . $this->getExternalId());
 
         return $this;
     }
@@ -517,12 +520,12 @@ class BogObject
         return $this;
     }
 
-    public function getPlot(): ?int
+    public function getPlot(): ?string
     {
         return $this->plot;
     }
 
-    public function setPlot(int $plot): static
+    public function setPlot(?string $plot): static
     {
         $this->plot = $plot;
 
@@ -531,7 +534,7 @@ class BogObject
 
     public function getFormattedPrice(): string
     {
-        if($this->price === 0) return '';
+        if ($this->price === 0) return '';
 
         $currencies = new ISOCurrencies();
 
@@ -626,7 +629,7 @@ class BogObject
 
     public function getFormattedServicePrice(): ?string
     {
-        if($this->serviceCostPrice === 0 || $this->serviceCostPrice === null) return null;
+        if ($this->serviceCostPrice === 0 || $this->serviceCostPrice === null) return null;
 
         $currencies = new ISOCurrencies();
 
@@ -637,5 +640,17 @@ class BogObject
         $vatApplied = $this->serviceCostVAT ? 'incl. btw' : 'excl. btw';
 
         return "{$moneyFormatter->format(Money::EUR($this->serviceCostPrice * 100))} {$this->serviceCostCondition} {$vatApplied}";
+    }
+
+    public function getReadableStatus(): ?string
+    {
+        return $this->readableStatus;
+    }
+
+    public function setReadableStatus(?string $readableStatus): static
+    {
+        $this->readableStatus = $readableStatus;
+
+        return $this;
     }
 }

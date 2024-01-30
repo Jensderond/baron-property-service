@@ -39,40 +39,40 @@ class ProjectHandlerService extends AbstractHandlerService
              * Array with existing construction numbers and their updated at date
              */
             $constructionNumbers = [];
-            foreach($existingProject->getConstructionTypes() as $constructionType) {
-                foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
+            foreach ($existingProject->getConstructionTypes() as $constructionType) {
+                foreach ($constructionType->getConstructionNumbers() as $constructionNumber) {
                     $constructionNumbers[$constructionNumber->getExternalId()] = $constructionNumber->getMediaHash();
                 }
             }
             $existingProject->map($model);
             $existingProject->createSlug();
 
-            if(empty($existingProjectMediaHash) || $existingProjectMediaHash !== $existingProject->getMediaHash()) {
+            if (empty($existingProjectMediaHash) || $existingProjectMediaHash !== $existingProject->getMediaHash()) {
                 $output->writeln('<info>Handling media existing project</info>');
                 $existingProject->setMainImage($this->handleMainImage($model->getMedia()));
-                $existingProject->setMedia($this->handleMedia($model->getMedia()));
+                $existingProject->setMedia($this->mediaService->handleMedia($model->getMedia()));
                 $existingProject->setUpdatedAt($model->getUpdatedAt());
             } else {
                 $output->writeln('<info>Skipping media existing project</info>');
             }
 
-            foreach($existingProject->getConstructionTypes() as $constructionType) {
+            foreach ($existingProject->getConstructionTypes() as $constructionType) {
                 $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
 
-                foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
+                foreach ($constructionType->getConstructionNumbers() as $constructionNumber) {
                     $existingMediaHash = $constructionNumbers[$constructionNumber->getExternalId()] ?? null;
 
-                    if($existingMediaHash !== $constructionNumber->getMediaHash() || $existingMediaHash === null) {
-                        $output->writeln('<info>Handling media for: '.$constructionNumber->getTitle().'</info>');
-                        $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
+                    if ($existingMediaHash !== $constructionNumber->getMediaHash() || $existingMediaHash === null) {
+                        $output->writeln('<info>Handling media for: ' . $constructionNumber->getTitle() . '</info>');
+                        $constructionNumber->setMedia($this->mediaService->handleMedia($constructionNumber->getMedia()));
                     } else {
-                        $output->writeln('<info>Skipping media for: '.$constructionNumber->getTitle().'</info>');
+                        $output->writeln('<info>Skipping media for: ' . $constructionNumber->getTitle() . '</info>');
                     }
                 }
             }
 
             $this->entityManager->persist($existingProject);
-            $output->writeln('<info>Updated Project: '.$model->getTitle().'</info>');
+            $output->writeln('<info>Updated Project: ' . $model->getTitle() . '</info>');
             return;
         }
 
@@ -80,19 +80,19 @@ class ProjectHandlerService extends AbstractHandlerService
         $model->createSlug();
         $model->setMainImage($this->handleMainImage($model->getMedia()));
         $output->writeln('<info>Handling media for new project</info>');
-        $model->setMedia($this->handleMedia($model->getMedia()));
-        foreach($model->getConstructionTypes() as $constructionType) {
+        $model->setMedia($this->mediaService->handleMedia($model->getMedia()));
+        foreach ($model->getConstructionTypes() as $constructionType) {
             $constructionType->setMainImage($this->handleMainImage($constructionType->getMedia()));
 
-            foreach($constructionType->getConstructionNumbers() as $constructionNumber) {
-                $output->writeln('<info>Handling media for new item: '.$constructionNumber->getTitle().'</info>');
-                $constructionNumber->setMedia($this->handleMedia($constructionNumber->getMedia()));
+            foreach ($constructionType->getConstructionNumbers() as $constructionNumber) {
+                $output->writeln('<info>Handling media for new item: ' . $constructionNumber->getTitle() . '</info>');
+                $constructionNumber->setMedia($this->mediaService->handleMedia($constructionNumber->getMedia()));
             }
         }
 
         $this->entityManager->persist($model);
 
-        $output->writeln('<info>Added Project: '.$model->getTitle().'</info>');
+        $output->writeln('<info>Added Project: ' . $model->getTitle() . '</info>');
         return;
     }
 
@@ -132,28 +132,5 @@ class ProjectHandlerService extends AbstractHandlerService
         }
 
         return $this->mediaService->buildObject($mainImage['link'], $options);
-    }
-
-    private function handleMedia(?array $mediaInput): array
-    {
-        if (!isset($mediaInput)) {
-            return [];
-        }
-
-        $transformedItems = [];
-
-        foreach ($mediaInput as $key => $media) {
-            if ($media['soort'] === 'HOOFDFOTO' || $media['soort'] === 'FOTO') {
-                if(isset($media['link']) && $media['link'] !== null) {
-                    $transformedItems[] = $this->mediaService->transfromItem($media);
-
-                    unset($mediaInput[$key]);
-                }
-            }
-        }
-
-        $mediaItems = array_merge($transformedItems, array_values($mediaInput));
-
-        return $mediaItems;
     }
 }

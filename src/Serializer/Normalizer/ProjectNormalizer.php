@@ -7,6 +7,7 @@ use App\Entity\Project;
 use App\Entity\ConstructionType;
 use App\Model\Status;
 use App\Helpers\ArrayHelper;
+use App\Helpers\KeyTranslationsHelper;
 use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -14,7 +15,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
+    {
     }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
@@ -31,7 +33,6 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $data['externalId'] = $data['project']['id'];
         $data['algemeen'] = $data['project']['algemeen'];
-        $data['status'] = $data['project']['algemeen']['status'];
         $data['province'] = $data['project']['algemeen']['provincie'];
         $data['zipcode'] = $data['project']['algemeen']['postcode'];
         $data['city'] = $data['project']['algemeen']['plaats'];
@@ -46,7 +47,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $data['diversen'] = $data['project']['diversen'];
 
         if (isset($data['project']['algemeen']['woonoppervlakteVanaf'])) {
-            if(isset($data['project']['algemeen']['woonoppervlakteTot'])) {
+            if (isset($data['project']['algemeen']['woonoppervlakteTot'])) {
                 $data['woonoppervlakte'] = $data['project']['algemeen']['woonoppervlakteVanaf'] . ' tot ' . $data['project']['algemeen']['woonoppervlakteTot'];
             } else {
                 $data['woonoppervlakte'] = $data['project']['algemeen']['woonoppervlakteVanaf'];
@@ -54,24 +55,52 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         }
 
         if (isset($data['project']['algemeen']['perceeloppervlakteVanaf'])) {
-            if(isset($data['project']['algemeen']['perceeloppervlakteTot'])) {
+            if (isset($data['project']['algemeen']['perceeloppervlakteTot'])) {
                 $data['perceeloppervlakte'] = $data['project']['algemeen']['perceeloppervlakteVanaf'] . ' tot ' . $data['project']['algemeen']['perceeloppervlakteTot'];
             } else {
                 $data['perceeloppervlakte'] = $data['project']['algemeen']['perceeloppervlakteVanaf'];
             }
         }
 
+        /**
+         * Op de aanbodpagina (bij nieuwbouw) mag er dan zo'n zelfde balkje komen als verhuurd/verkocht.
+         * Wanneer de start verkoop nog niet gestart is, mag er inschrijving gestart vermeld worden.
+         * Wanneer de start verkoop al wel is gestart, mag er start verkoop vermeld worden.
+         * Wanneer de start verkoop + bouw wel gestart is, mag er start bouw vermeld worden.
+         * Wanneer de opleveringen gestart zijn, mag er opleveringen gestart vermeld worden.
+         * Wanneer ik hem op verkocht zet (het totale project, alle bouwnummers), mag dit balkje net als bij de rest verkocht vermeld worden.
+         */
+        $dateStartBuilding = new DateTimeImmutable($data['project']['algemeen']['datumStartBouw']);
+        $dateEndBuilding = new DateTimeImmutable($data['project']['algemeen']['opleveringsdatum']);
+        $dateStartSelling = new DateTimeImmutable($data['project']['algemeen']['datumStartVerkoop']);
+        $dateNow = new DateTimeImmutable();
+        $status = "";
+        if ($dateNow < $dateStartSelling) {
+            $status = "Inschrijving gestart";
+        } elseif ($dateNow < $dateStartBuilding) {
+            $status = "Start verkoop";
+        } elseif ($dateNow < $dateEndBuilding) {
+            $status = "Start bouw";
+        } elseif ($dateNow > $dateEndBuilding) {
+            $status = "Opleveringen gestart";
+        }
+        if ($data['project']['algemeen']['status'] === 'VERKOCHT') {
+            $status = "Verkocht";
+        }
+
         $project = new Project();
         $project->setExternalId($data['externalId']);
         $project->setAlgemeen($data['algemeen']);
         $project->setArchived(false);
-        $project->setStatus($data['status']);
+        $project->setStatus($data['algemeen']['status']);
+        $project->setReadableStatus($status);
         $project->setProvince($data['province']);
         $project->setZipcode($data['zipcode']);
         $project->setCity($data['city']);
         $project->setDescriptionSite($data['description_site']);
         $project->setDescription($data['description']);
         $project->setTitle($data['title']);
+        $project->setCategory(KeyTranslationsHelper::projectCategory($data['algemeen']['koopOfHuur']));
 
         /** Media */
         $mainImage = array_filter($data['media'], function ($media) {
@@ -99,8 +128,6 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $lowestNumberOfRooms = 0;
         $highestNumberOfRooms = 0;
 
-        $category = [];
-
         foreach ($data['bouwtypen'] as $bouwType) {
             $type = new ConstructionType();
             $type->setExternalId($bouwType['id']);
@@ -116,8 +143,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
             }
             $type->setRooms($totalRooms);
 
-            if(isset($bouwType['algemeen']['woonhuistype']) || isset($bouwType['algemeen']['appartementsoort'])) {
-                $type->setType(match($bouwType['algemeen']['woonhuistype'] ?? $bouwType['algemeen']['appartementsoort']) {
+            if (isset($bouwType['algemeen']['woonhuistype']) || isset($bouwType['algemeen']['appartementsoort'])) {
+                $type->setType(match ($bouwType['algemeen']['woonhuistype'] ?? $bouwType['algemeen']['appartementsoort']) {
                     // woonhuizen
                     'VRIJSTAANDE_WONING' => 'Vrijstaande woning',
                     'GESCHAKELDE_WONING' => 'Geschakelde woning',
@@ -144,7 +171,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
             }
 
             if (isset($bouwType['algemeen']['woonoppervlakteVanaf'])) {
-                if(isset($bouwType['algemeen']['woonoppervlakteTot'])) {
+                if (isset($bouwType['algemeen']['woonoppervlakteTot'])) {
                     $type->setLivingArea($bouwType['algemeen']['woonoppervlakteVanaf'] . ' tot ' . $bouwType['algemeen']['woonoppervlakteTot']);
                 } else {
                     $type->setLivingArea($bouwType['algemeen']['woonoppervlakteVanaf']);
@@ -187,14 +214,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                     new \Money\Money(($number['financieel']['overdracht']['koopprijs'] ?: $number['financieel']['overdracht']['huurprijs']) * 100, new \Money\Currency('EUR'))
                 );
 
-                $saleType = $number['financieel']['overdracht']['koopprijs'] ? 'Koop' : 'Huur';
-
-                if(!in_array($saleType, $category)) {
-                    $category[] = $saleType;
-                }
-
-                if(isset($number['financieel']['overdracht']['koopconditie']) || isset($number['financieel']['overdracht']['huurconditie'])) {
-                    $constructionNumber->setPriceCondition(match($number['financieel']['overdracht']['koopconditie'] ?? $number['financieel']['overdracht']['huurconditie']) {
+                if (isset($number['financieel']['overdracht']['koopconditie']) || isset($number['financieel']['overdracht']['huurconditie'])) {
+                    $constructionNumber->setPriceCondition(match ($number['financieel']['overdracht']['koopconditie'] ?? $number['financieel']['overdracht']['huurconditie']) {
                         // huur: PER_JAAR, PER_MAAND
                         'PER_JAAR' => 'p.j.',
                         'PER_MAAND' => 'p.m.',
@@ -212,20 +233,18 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $type->addConstructionNumber($constructionNumber);
             }
 
-            if($type->getRooms() > $highestNumberOfRooms) {
+            if ($type->getRooms() > $highestNumberOfRooms) {
                 $highestNumberOfRooms = $type->getRooms();
             }
 
-            if($lowestNumberOfRooms === 0 || $type->getRooms() < $lowestNumberOfRooms) {
+            if ($lowestNumberOfRooms === 0 || $type->getRooms() < $lowestNumberOfRooms) {
                 $lowestNumberOfRooms = $type->getRooms();
             }
-
-            $project->setCategory(implode(' en ', $category));
 
             $project->addConstructionType($type);
         }
 
-        if($lowestNumberOfRooms !== $highestNumberOfRooms) {
+        if ($lowestNumberOfRooms !== $highestNumberOfRooms) {
             $project->setRooms($lowestNumberOfRooms . ' tot ' . $highestNumberOfRooms);
         } else {
             $project->setRooms($lowestNumberOfRooms);
@@ -241,15 +260,15 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $data = $this->objectNormalizer->normalize($project, $format, $context);
 
-        if(isset($data['construction_types']) && isset($data['construction_types']['hydra:member'])) {
+        if (isset($data['construction_types']) && isset($data['construction_types']['hydra:member'])) {
             $data['construction_types'] = $data['construction_types']['hydra:member'];
 
-            usort($data['construction_types'], function($a, $b) {
-                $aAvailable = array_values(array_filter($a['construction_numbers'], function($item) {
+            usort($data['construction_types'], function ($a, $b) {
+                $aAvailable = array_values(array_filter($a['construction_numbers'], function ($item) {
                     return $item['status'] === Status::AVAILABLE->value;
                 }))[0] ?? null;
 
-                $bAvailable = array_values(array_filter($b['construction_numbers'], function($item) {
+                $bAvailable = array_values(array_filter($b['construction_numbers'], function ($item) {
                     return $item['status'] === Status::AVAILABLE->value;
                 }))[0] ?? null;
 
@@ -265,13 +284,13 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
             });
         }
 
-        if(isset($data['algemeen'])) {
+        if (isset($data['algemeen'])) {
             $data['algemeen'] = $project->getAlgemeen();
         }
-        if(isset($data['diversen'])) {
+        if (isset($data['diversen'])) {
             $data['diversen'] = $project->getDiversen();
         }
-        if(isset($data['main_image'])) {
+        if (isset($data['main_image'])) {
             $data['main_image'] = $project->getMainImage();
         }
 

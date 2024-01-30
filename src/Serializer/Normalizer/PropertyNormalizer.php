@@ -4,13 +4,15 @@ namespace App\Serializer\Normalizer;
 
 use App\Helpers\ArrayHelper;
 use \App\Entity\Property;
+use App\Helpers\KeyTranslationsHelper;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
+    {
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
@@ -18,25 +20,25 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
         $property = new \App\Entity\Property();
 
         /** Address */
-        if(isset($data['adres']['huisnummer'])) {
+        if (isset($data['adres']['huisnummer'])) {
             $property->setHouseNumber($data['adres']['huisnummer']);
         }
-        if(isset($data['adres']['huisnummertoevoeging'])) {
+        if (isset($data['adres']['huisnummertoevoeging'])) {
             $property->setHouseNumberAddition($data['adres']['huisnummertoevoeging']);
         }
-        if(isset($data['adres']['plaats'])) {
+        if (isset($data['adres']['plaats'])) {
             $property->setCity($data['adres']['plaats']);
         }
-        if(isset($data['adres']['postcode'])) {
+        if (isset($data['adres']['postcode'])) {
             $property->setZip($data['adres']['postcode']);
         }
-        if(isset($data['adres']['straat'])) {
+        if (isset($data['adres']['straat'])) {
             $property->setStreet($data['adres']['straat']);
         }
 
         $numberIsZero = $property->getHouseNumber() === 0 && null !== $property->getHouseNumber();
 
-        if($numberIsZero) {
+        if ($numberIsZero) {
             $property->setHouseNumber(null);
             $property->setHouseNumberAddition(null);
             $property->setAddress("{$property->getStreet()}, {$property->getCity()}");
@@ -49,7 +51,7 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
         $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
         $property->setExternalId($data['id']);
         $property->setArchived(false);
-        if($numberIsZero) {
+        if ($numberIsZero) {
             $property->setTitle("{$property->getStreet()}, {$property->getCity()}");
         } else {
             $property->setTitle("{$property->getStreet()} {$property->getHouseNumber()}{$property->getHouseNumberAddition()}, {$property->getCity()}");
@@ -115,8 +117,8 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
 
         /** Price */
         $condition = $data['financieel']['overdracht']['koopconditie'] ?? $data['financieel']['overdracht']['huurconditie'];
-        if(isset($condition)) {
-            $property->setPriceCondition(match($condition) {
+        if (isset($condition)) {
+            $property->setPriceCondition(match ($condition) {
                 // huur: PER_JAAR, PER_MAAND
                 'PER_JAAR' => 'p.j.',
                 'PER_MAAND' => 'p.m.',
@@ -130,6 +132,7 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
         $category = $data['financieel']['overdracht']['koopprijs'] ? 'Koop' : 'Huur';
         $property->setCategory($category);
         $property->setStatus($data['financieel']['overdracht']['status']);
+        $property->setReadableStatus(KeyTranslationsHelper::status($data['financieel']['overdracht']['status']));
 
         return $property;
     }
@@ -141,25 +144,25 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $data = $this->objectNormalizer->normalize($project, $format, $context);
 
-        if(isset($data['algemeen'])) {
+        if (isset($data['algemeen'])) {
             $data['algemeen'] = $project->getAlgemeen();
         }
-        if(isset($data['financieel'])) {
+        if (isset($data['financieel'])) {
             $data['financieel'] = $project->getFinancieel();
         }
-        if(isset($data['teksten'])) {
+        if (isset($data['teksten'])) {
             $data['teksten'] = $project->getTeksten();
         }
-        if(isset($data['image'])) {
+        if (isset($data['image'])) {
             $data['image'] = $project->getImage();
         }
-        if(isset($data['media'])) {
+        if (isset($data['media'])) {
             $data['media'] = $project->getMedia();
         }
-        if(isset($data['etages'])) {
+        if (isset($data['etages'])) {
             $data['etages'] = $project->getEtages();
         }
-        if(isset($data['buitenruimte'])) {
+        if (isset($data['buitenruimte'])) {
             $data['buitenruimte'] = $project->getBuitenruimte();
         }
 

@@ -6,7 +6,6 @@ use App\Contract\PropertyClientInterface;
 use App\Entity\Property;
 use App\Entity\Project;
 use App\Serializer\Normalizer\ProjectNormalizer;
-use App\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Doctrine\ORM\EntityManagerInterface;

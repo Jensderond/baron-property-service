@@ -1459,7 +1459,9 @@ components:
             - string
             - 'null'
         plot:
-          type: integer
+          type:
+            - string
+            - 'null'
         formatted_price:
           readOnly: true
           type: string
@@ -1495,6 +1497,10 @@ components:
             - 'null'
         formatted_service_price:
           readOnly: true
+          type:
+            - string
+            - 'null'
+        readable_status:
           type:
             - string
             - 'null'
@@ -1621,7 +1627,9 @@ components:
             - string
             - 'null'
         plot:
-          type: integer
+          type:
+            - string
+            - 'null'
         formatted_price:
           readOnly: true
           type: string
@@ -1657,6 +1665,10 @@ components:
             - 'null'
         formatted_service_price:
           readOnly: true
+          type:
+            - string
+            - 'null'
+        readable_status:
           type:
             - string
             - 'null'
@@ -2207,6 +2219,10 @@ components:
           type:
             - string
             - 'null'
+        readable_status:
+          type:
+            - string
+            - 'null'
         address:
           type:
             - string
@@ -2225,7 +2241,7 @@ components:
             - 'null'
         plot_surface:
           type:
-            - integer
+            - string
             - 'null'
         build_year:
           type:
@@ -2272,6 +2288,10 @@ components:
           type:
             - string
             - 'null'
+        readable_status:
+          type:
+            - string
+            - 'null'
         address:
           type:
             - string
@@ -2290,7 +2310,7 @@ components:
             - 'null'
         plot_surface:
           type:
-            - integer
+            - string
             - 'null'
         build_year:
           type:
@@ -2385,6 +2405,10 @@ components:
             - 'null'
         price_range:
           readOnly: true
+          type:
+            - string
+            - 'null'
+        readable_status:
           type:
             - string
             - 'null'
@@ -2503,6 +2527,10 @@ components:
             - 'null'
         price_range:
           readOnly: true
+          type:
+            - string
+            - 'null'
+        readable_status:
           type:
             - string
             - 'null'
@@ -2653,6 +2681,10 @@ components:
         living_area:
           type:
             - integer
+            - 'null'
+        readable_status:
+          type:
+            - string
             - 'null'
     Property.jsonld:
       type: object
@@ -2807,6 +2839,10 @@ components:
         living_area:
           type:
             - integer
+            - 'null'
+        readable_status:
+          type:
+            - string
             - 'null'
   responses: []
   parameters: []
