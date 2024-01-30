@@ -29,7 +29,7 @@ class Offer
         public readonly ?string $slug,
         public readonly ?string $bedrooms,
         public readonly ?int $numberOfObjects,
-        public readonly ?int $plotSurface,
+        public readonly null|int|string $plotSurface,
         public readonly ?string $buildYear,
         public readonly ?string $price,
     ) {

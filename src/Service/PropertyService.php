@@ -36,11 +36,7 @@ class PropertyService implements PropertyClientInterface
      */
     public function getProperties(): array
     {
-        if ($_ENV['APP_ENV'] === 'dev') {
-            $properties = file_get_contents(__DIR__.'/../../fixtures/properties.json');
-        } else {
-            $properties = $this->client->getProperties();
-        }
+        $properties = $this->client->getProperties();
 
         $serializer = new Serializer(
             [$this->propertyNormalizer, new ArrayDenormalizer()],
@@ -57,11 +53,7 @@ class PropertyService implements PropertyClientInterface
      */
     public function getProjects(): array
     {
-        if ($_ENV['APP_ENV'] === 'dev') {
-            $properties = file_get_contents(__DIR__.'/../../fixtures/project.json');
-        } else {
-            $properties = $this->client->getProjects();
-        }
+        $properties = $this->client->getProjects();
 
         $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
 
@@ -85,18 +77,14 @@ class PropertyService implements PropertyClientInterface
      */
     public function getBogObjects(): array
     {
-        if ($_ENV['APP_ENV'] === 'dev') {
-            $Objects = file_get_contents(__DIR__.'/../../fixtures/bog-objects.json');
-        } else {
-            $Objects = $this->client->getBogObjects();
-        }
+        $objects = $this->client->getBogObjects();
 
         $serializer = new Serializer(
             [$this->bogObjectNormalizer, new ArrayDenormalizer()],
             [new JsonEncoder()]
         );
 
-        $jsonProjects = json_decode($Objects, true);
+        $jsonProjects = json_decode($objects, true);
 
         return $serializer->deserialize(json_encode($jsonProjects['resultaten']), 'App\Entity\BogObject[]', 'json');
     }
