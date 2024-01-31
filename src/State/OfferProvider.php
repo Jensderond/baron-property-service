@@ -104,7 +104,7 @@ class OfferProvider implements ProviderInterface
                 return 1;
             }
 
-            $order = ['PROSPECT', 'IN_AANMELDING'];
+            $order = ['VERKOCHT_ONDER_VOORBEHOUD', 'PROSPECT', 'IN_AANMELDING'];
             foreach ($order as $status) {
                 if ($a->status === $status && $b->status !== $status) {
                     return -1;
