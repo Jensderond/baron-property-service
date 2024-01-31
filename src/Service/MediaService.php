@@ -57,6 +57,10 @@ class MediaService
             }
         }
 
+        usort($transformedItems, function ($a, $b) {
+            return $a['volgnummer'] <=> $b['volgnummer'];
+        });
+
         return array_merge($transformedItems, array_values($mediaInput));
     }
 
@@ -74,6 +78,7 @@ class MediaService
             'soort' => $media['soort'],
             'title' => $media['title'] ?? '',
             'omschrijving' => $media['omschrijving'] ?? '',
+            'volgnummer' => $media['volgnummer'] ?? '',
         ];
 
         $url = parse_url($media['link']);

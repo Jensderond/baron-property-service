@@ -23,6 +23,34 @@ class KeyTranslationsHelper
         };
     }
 
+    public static function houseType(string $type): string
+    {
+        return match ($type) {
+            // woonhuizen
+            'VRIJSTAANDE_WONING' => 'Vrijstaande woning',
+            'GESCHAKELDE_WONING' => 'Geschakelde woning',
+            'TWEE_ONDER_EEN_KAPWONING' => 'Twee-onder-één-kapwoning',
+            'TUSSENWONING' => 'Tussenwoning',
+            'HOEKWONING' => 'Hoekwoning',
+            'EINDWONING' => 'Eindwoning',
+            'HALFVRIJSTAANDE_WONING' => 'Halfvrijstaande woning',
+            'GESCHAKELDE_TWEE_ONDER_EEN_KAPWONING' => 'Geschakelde twee-onder-één-kapwoning',
+            'VERSPRINGEND' => 'Verspringend',
+            // Appartementen
+            'BOVENWONING' => 'Bovenwoning',
+            'BENEDENWONING' => 'Benedenwoning',
+            'MAISONNETTE' => 'Maisonnette',
+            'GALERIJFLAT' => 'Galerijflat',
+            'PORTIEKFLAT' => 'Portiekflat',
+            'BENEDEN_PLUS_BOVENWONING' => 'Beneden plus bovenwoning',
+            'PENTHOUSE' => 'Penthouse',
+            'PORTIEKWONING' => 'Portiekwoning',
+            'STUDENTENKAMER' => 'Studentenkamer',
+            'DUBBEL_BENEDENHUIS' => 'Dubbel benedenhuis',
+            'TUSSENVERDIEPING' => 'Tussenverdieping',
+        };
+    }
+
     public static function distance(string $distance): string
     {
         return match ($distance) {

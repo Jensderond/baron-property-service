@@ -112,6 +112,9 @@ class ConstructionNumber
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $readableStatus = null;
 
+    #[ORM\Column(length: 25, nullable: true)]
+    private ?string $energyClass = null;
+
     public function map(ConstructionNumber $newProperties)
     {
         $reflectionClass = new ReflectionClass($this);
@@ -433,6 +436,18 @@ class ConstructionNumber
     public function setReadableStatus(?string $readableStatus): static
     {
         $this->readableStatus = $readableStatus;
+
+        return $this;
+    }
+
+    public function getEnergyClass(): ?string
+    {
+        return $this->energyClass;
+    }
+
+    public function setEnergyClass(?string $energyClass): static
+    {
+        $this->energyClass = $energyClass;
 
         return $this;
     }

@@ -111,7 +111,7 @@ class ProjectHandlerService extends AbstractHandlerService
 
         $count = $projectRepo->archiveMissing($this->idsInImport);
 
-        $output->writeln("<info>Archived ${count} projects </info>");
+        $output->writeln("<info>Archived $count projects </info>");
     }
 
     private function handleMainImage(array $mediaItems): array
@@ -129,6 +129,13 @@ class ProjectHandlerService extends AbstractHandlerService
 
         if (!$mainImage || !isset($mainImage['link'])) {
             return [];
+        }
+
+        $url = parse_url($mainImage['link']);
+        if (isset($url['query'])) {
+            $mainImage['link'] .= '&resize=4';
+        } else {
+            $mainImage['link'] .= '?resize=4';
         }
 
         return $this->mediaService->buildObject($mainImage['link'], $options);

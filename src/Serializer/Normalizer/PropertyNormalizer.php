@@ -72,7 +72,7 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
             $property->setBuildYear($data['algemeen']['bouwjaar']);
         }
         if (isset($data['algemeen']['energieklasse'])) {
-            $property->setEnergyClass($data['algemeen']['energieklasse']);
+            $property->setEnergyClass(KeyTranslationsHelper::energyClass($data['algemeen']['energieklasse']));
         }
 
         /** Media */

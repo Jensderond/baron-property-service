@@ -66,7 +66,7 @@ class OfferProvider implements ProviderInterface
                 $item->getReadableStatus(),
                 '',
                 $item->getSlug(),
-                $item->getRooms(),
+                null,
                 $item->getNumberOfObjects(),
                 $item->getPlot(),
                 $item->getBuildYear(),
@@ -113,15 +113,7 @@ class OfferProvider implements ProviderInterface
                 }
             }
 
-            if ($a->status === $b->status) {
-                if ($a->itemType === 'property' && $b->itemType !== 'property') {
-                    return -1;
-                } elseif ($b->itemType === 'property' && $a->itemType !== 'property') {
-                    return 1;
-                }
-            }
-
-            return $a->createdAt <=> $b->createdAt;
+            return $b->createdAt <=> $a->createdAt;
         });
 
         $totalItems = count($combined);

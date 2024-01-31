@@ -136,6 +136,14 @@ class Project
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $readableStatus = null;
 
+    #[Groups('read')]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 7, nullable: true)]
+    private ?float $lat = null;
+
+    #[Groups('read')]
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 7, nullable: true)]
+    private ?float $lng = null;
+
     public function __construct()
     {
         $this->constructionTypes = new ArrayCollection();
@@ -184,7 +192,13 @@ class Project
                 $propertyName = substr($method->getName(), 3);
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
-                if ($propertyName !== 'ConstructionTypes' && $propertyName !== 'Media' && $propertyName !== 'MainImage') {
+                if (
+                    $propertyName !== 'ConstructionTypes' &&
+                    $propertyName !== 'Media' &&
+                    $propertyName !== 'MainImage' &&
+                    $propertyName !== 'Lat' &&
+                    $propertyName !== 'Lng'
+                ) {
                     $this->{$setMethod}($newProperties->{$getMethod}());
                 }
                 if ($propertyName === 'ConstructionTypes') {
@@ -570,6 +584,28 @@ class Project
     {
         $this->mediaHash = $mediaHash;
 
+        return $this;
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat !== null ? (float) $this->lat : null;
+    }
+
+    public function setLat(?float $lat): self
+    {
+        $this->lat = $lat;
+        return $this;
+    }
+
+    public function getLng(): ?float
+    {
+        return $this->lng !== null ? (float) $this->lng : null;
+    }
+
+    public function setLng(?float $lng): self
+    {
+        $this->lng = $lng;
         return $this;
     }
 

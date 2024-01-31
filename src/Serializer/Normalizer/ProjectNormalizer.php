@@ -44,6 +44,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         } else {
             $data['media'] = [];
         }
+
         $data['diversen'] = $data['project']['diversen'];
 
         if (isset($data['project']['algemeen']['woonoppervlakteVanaf'])) {
@@ -144,30 +145,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
             $type->setRooms($totalRooms);
 
             if (isset($bouwType['algemeen']['woonhuistype']) || isset($bouwType['algemeen']['appartementsoort'])) {
-                $type->setType(match ($bouwType['algemeen']['woonhuistype'] ?? $bouwType['algemeen']['appartementsoort']) {
-                    // woonhuizen
-                    'VRIJSTAANDE_WONING' => 'Vrijstaande woning',
-                    'GESCHAKELDE_WONING' => 'Geschakelde woning',
-                    'TWEE_ONDER_EEN_KAPWONING' => '2-onder-1-kapwoning',
-                    'TUSSENWONING' => 'Tussenwoning',
-                    'HOEKWONING' => 'Hoekwoning',
-                    'EINDWONING' => 'Eindwoning',
-                    'HALFVRIJSTAANDE_WONING' => 'Halfvrijstaande woning',
-                    'GESCHAKELDE_TWEE_ONDER_EEN_KAPWONING' => 'Geschakelde 2-onder-1-kapwoning',
-                    'VERSPRINGEND' => 'Verspringend',
-                    // Appartementen
-                    'BOVENWONING' => 'Bovenwoning',
-                    'BENEDENWONING' => 'Benedenwoning',
-                    'MAISONNETTE' => 'Maisonnette',
-                    'GALERIJFLAT' => 'Galerijflat',
-                    'PORTIEKFLAT' => 'Portiekflat',
-                    'BENEDEN_PLUS_BOVENWONING' => 'Beneden plus bovenwoning',
-                    'PENTHOUSE' => 'Penthouse',
-                    'PORTIEKWONING' => 'Portiekwoning',
-                    'STUDENTENKAMER' => 'Studentenkamer',
-                    'DUBBEL_BENEDENHUIS' => 'Dubbel benedenhuis',
-                    'TUSSENVERDIEPING' => 'Tussenverdieping',
-                });
+                $type->setType(KeyTranslationsHelper::houseType($bouwType['algemeen']['woonhuistype'] ?? $bouwType['algemeen']['appartementsoort']));
             }
 
             if (isset($bouwType['algemeen']['woonoppervlakteVanaf'])) {
@@ -187,12 +165,14 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $constructionNumber->setFinancieel($number['financieel']);
                 $constructionNumber->setStatus($number['financieel']['overdracht']['status']);
                 $constructionNumber->setReadableStatus(KeyTranslationsHelper::status($number['financieel']['overdracht']['status']));
-                if (isset($number['teksten']['eigenSiteTekst'])) {
-                    $constructionNumber->setDescription($number['teksten']['eigenSiteTekst']);
+                if (isset($number['algemeen']['energieklasse'])) {
+                    $constructionNumber->setEnergyClass(KeyTranslationsHelper::energyClass($number['algemeen']['energieklasse']));
                 }
-                if (!isset($number['teksten']['eigenSiteTekst']) && isset($number['teksten']['aanbiedingstekst'])) {
+
+                if (isset($number['teksten']['aanbiedingstekst'])) {
                     $constructionNumber->setDescription($number['teksten']['aanbiedingstekst']);
                 }
+
                 $constructionNumber->setTeksten($number['teksten']);
                 $constructionNumber->setDiversen($number['diversen']);
                 $constructionNumber->setDetail($number['detail']);
