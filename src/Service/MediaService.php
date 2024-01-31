@@ -49,7 +49,7 @@ class MediaService
 
         foreach ($mediaInput as $key => $media) {
             if (in_array($media['soort'], ['HOOFDFOTO', 'FOTO', 'PLATTEGROND', 'CONNECTED_PARTNER'], true) && isset($media['link'])) {
-                $isDocument = $media['soort'] === 'DOCUMENT';
+                $isDocument = $media['soort'] === 'DOCUMENT' || $media['mimetype'] == "application/pdf";
                 $isConnectedPartner = $media['soort'] === 'CONNECTED_PARTNER';
                 $transformedItems[] = $this->transformItem($media, $isDocument, $isConnectedPartner);
 
@@ -106,6 +106,7 @@ class MediaService
     {
         $imagePath = "{$path}-{$size}.webp";
         if (!$this->fileExist($imagePath)) {
+            dump($url);
             $imageContent = $this->downloadFile($url);
             if ($imageContent) {
                 return $this->resizeAndSaveImage($imageContent, $size, $path);

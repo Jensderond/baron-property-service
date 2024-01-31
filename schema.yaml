@@ -2424,6 +2424,14 @@ components:
           type:
             - string
             - 'null'
+        lat:
+          type:
+            - number
+            - 'null'
+        lng:
+          type:
+            - number
+            - 'null'
         readable_status:
           type:
             - string
@@ -2545,6 +2553,14 @@ components:
           readOnly: true
           type:
             - string
+            - 'null'
+        lat:
+          type:
+            - number
+            - 'null'
+        lng:
+          type:
+            - number
             - 'null'
         readable_status:
           type:
