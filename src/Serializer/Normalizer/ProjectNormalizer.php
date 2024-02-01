@@ -58,11 +58,15 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
             }
         }
 
-        if (isset($data['project']['algemeen']['perceeloppervlakteVanaf'])) {
-            if (isset($data['project']['algemeen']['perceeloppervlakteTot'])) {
-                $data['perceeloppervlakte'] = $data['project']['algemeen']['perceeloppervlakteVanaf'] . ' tot ' . $data['project']['algemeen']['perceeloppervlakteTot'];
+
+        $plotAreaFrom = $data['project']['algemeen']['perceeloppervlakteVanaf'];
+        $plotAreaTo = $data['algemeen']['perceeloppervlakteTot'];
+
+        if (isset($plotAreaFrom)) {
+            if (isset($plotAreaTo) && $plotAreaFrom !== $plotAreaTo) {
+                $data['perceeloppervlakte'] = $plotAreaFrom . ' tot ' . $plotAreaTo;
             } else {
-                $data['perceeloppervlakte'] = $data['project']['algemeen']['perceeloppervlakteVanaf'];
+                $data['perceeloppervlakte'] = $plotAreaFrom;
             }
         }
 
@@ -151,11 +155,15 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 $type->setType(KeyTranslationsHelper::houseType($bouwType['algemeen']['woonhuistype'] ?? $bouwType['algemeen']['appartementsoort']));
             }
 
-            if (isset($bouwType['algemeen']['woonoppervlakteVanaf'])) {
-                if (isset($bouwType['algemeen']['woonoppervlakteTot'])) {
-                    $type->setLivingArea($bouwType['algemeen']['woonoppervlakteVanaf'] . ' tot ' . $bouwType['algemeen']['woonoppervlakteTot']);
+
+            $typeLivingAreaFrom = $bouwType['algemeen']['woonoppervlakteVanaf'];
+            $typeLivingAreaTo = $bouwType['algemeen']['woonoppervlakteTot'];
+
+            if (isset($typeLivingAreaFrom)) {
+                if (isset($typeLivingAreaTo) && $typeLivingAreaFrom !== $typeLivingAreaTo) {
+                    $type->setLivingArea($typeLivingAreaFrom . ' tot ' . $typeLivingAreaTo);
                 } else {
-                    $type->setLivingArea($bouwType['algemeen']['woonoppervlakteVanaf']);
+                    $type->setLivingArea($typeLivingAreaFrom);
                 }
             }
 
