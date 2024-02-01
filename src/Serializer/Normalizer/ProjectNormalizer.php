@@ -47,11 +47,14 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
         $data['diversen'] = $data['project']['diversen'];
 
-        if (isset($data['project']['algemeen']['woonoppervlakteVanaf'])) {
-            if (isset($data['project']['algemeen']['woonoppervlakteTot'])) {
-                $data['woonoppervlakte'] = $data['project']['algemeen']['woonoppervlakteVanaf'] . ' tot ' . $data['project']['algemeen']['woonoppervlakteTot'];
+        $livingAreaFrom = $data['project']['algemeen']['woonoppervlakteVanaf'];
+        $livingAreaTo = $data['project']['algemeen']['woonoppervlakteTot'];
+
+        if (isset($livingAreaFrom)) {
+            if (isset($livingAreaTo) && $livingAreaFrom !== $livingAreaTo) {
+                $data['woonoppervlakte'] = $livingAreaFrom . ' tot ' . $livingAreaTo;
             } else {
-                $data['woonoppervlakte'] = $data['project']['algemeen']['woonoppervlakteVanaf'];
+                $data['woonoppervlakte'] = $livingAreaFrom;
             }
         }
 
