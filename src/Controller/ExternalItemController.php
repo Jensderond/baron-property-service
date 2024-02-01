@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\BogObject;
+use App\Entity\ConstructionNumber;
+use App\Entity\Project;
+use App\Entity\Property;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use ApiPlatform\Action\NotFoundAction;
+use ApiPlatform\OpenApi\Model\Response as ModelResponse;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+
+#[AsController]
+class ExternalItemController extends AbstractController
+{
+    public function __invoke(EntityManagerInterface $entityManager, $id): Project|NotFoundAction|Property|BogObject|ConstructionNumber
+    {
+        $repositories = [Property::class, Project::class, BogObject::class, ConstructionNumber::class];
+
+        foreach ($repositories as $entityClass) {
+            $repository = $entityManager->getRepository($entityClass);
+            $item = $repository->findOneBy(['externalId' => $id]);
+
+            if ($item) {
+                return $item;
+            }
+        }
+
+        return new NotFoundAction();
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "cms": "wp",
+    "remoteHost": "rtw0003",
+    "remoteHostIp": "65.108.57.59",
+    "remoteUsername": "accept",
+    "remotePath": "\/home\/accept\/releases\/current\/",
+    "dumpType": "backup",
+    "externalMysqlUser": "accept",
+    "externalMysqlHost": "rtw0003",
+    "paths": ["web/app/uploads/"],
+    "excludedPaths": []
+}
