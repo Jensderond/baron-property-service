@@ -17,7 +17,8 @@ class OverviewController extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
-    private function mergeAndRemoveDuplicatesCaseInsensitive($arrays, $key) {
+    private function mergeAndRemoveDuplicatesCaseInsensitive($arrays, $key)
+    {
         $caseInsensitiveMap = [];
         foreach ($arrays as $array) {
             foreach ($array as $subArray) {
@@ -54,14 +55,15 @@ class OverviewController extends ServiceEntityRepository
         $cities = $this->mergeAndRemoveDuplicatesCaseInsensitive([$propertyCities, $bogObjectCities, $projectCities], 'city');
         $statuses = $this->mergeAndRemoveDuplicatesCaseInsensitive([$propertyStatuses, $bogObjectStatuses, $projectStatuses], 'status');
 
-        function sortCaseInsensitive(&$array) {
-            usort($array, function($a, $b) {
+        function sortCaseInsensitive(&$array)
+        {
+            usort($array, function ($a, $b) {
                 return strcasecmp($a, $b);
             });
         }
 
-        $cities = array_map(function($city) {
-            return preg_replace_callback('/([a-zA-Z]+)(-|$)/', function($matches) {
+        $cities = array_map(function ($city) {
+            return preg_replace_callback('/([a-zA-Z]+)(-|$)/', function ($matches) {
                 return ucwords(strtolower($matches[1])) . $matches[2];
             }, $city);
         }, $cities);

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+## Description: Syncs the project
+## Usage: sync
+## Example: "ddev sync"
+
+echo "Running sync script on the host system."
+date
+echo "Start script"
+
+#
+# Pullit sql and files
+#
+echo "> Pulling database content... and files content..."
+cd ./private/pullit/
+sh pullit.sh -d
+cd ../../
+
+date
+echo "End script"

@@ -592,6 +592,76 @@ paths:
     servers: null
     parameters: []
     extension_properties: []
+  '/api/external/item/{id}':
+    ref: null
+    summary: null
+    description: null
+    get:
+      operation_id: getExternalItem
+      tags:
+        - Property
+      responses:
+        200:
+          description: 'Property resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Property.jsonld'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+              example: null
+              examples: null
+              encoding: null
+              extension_properties: []
+          headers: null
+          links: null
+          extension_properties: []
+        404:
+          description: 'Resource not found'
+          content: null
+          headers: null
+          links: null
+          extension_properties: []
+      summary: 'Retrieves a Property resource.'
+      description: 'Retrieves a Property resource.'
+      external_docs: null
+      parameters:
+        - name: id
+          in: path
+          description: 'Property identifier'
+          required: true
+          deprecated: false
+          allow_empty_value: false
+          schema:
+            type: string
+          style: simple
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+      request_body: null
+      callbacks: null
+      deprecated: false
+      security: null
+      servers: null
+      extension_properties: []
+    put: null
+    post: null
+    delete: null
+    options: null
+    head: null
+    patch: null
+    trace: null
+    servers: null
+    parameters: []
+    extension_properties: []
   /api/offers:
     ref: null
     summary: null
@@ -1769,6 +1839,10 @@ components:
           type:
             - string
             - 'null'
+        energy_class:
+          type:
+            - string
+            - 'null'
     ConstructionNumber-read:
       type: object
       description: ''
@@ -1914,6 +1988,10 @@ components:
           readOnly: true
           type: integer
         readable_status:
+          type:
+            - string
+            - 'null'
+        energy_class:
           type:
             - string
             - 'null'

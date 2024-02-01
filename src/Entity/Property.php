@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\GraphQl\Query;
 use ApiPlatform\Metadata\GraphQl\QueryCollection;
+use App\Controller\ExternalItemController;
 use App\Repository\PropertyRepository;
 use App\State\PropertyProvider;
 use Cocur\Slugify\Slugify;
@@ -41,6 +42,13 @@ use Symfony\Component\Serializer\Attribute\Ignore;
             name: "getByExternalId",
             uriTemplate: "/properties/external/{id}",
             provider: PropertyProvider::class
+        ),
+        new Get(
+            name: "getExternalItem",
+            uriTemplate: "/external/item/{id}",
+            controller: ExternalItemController::class,
+            read: false,
+            // output: true
         )
     ],
     graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')]
