@@ -20,7 +20,7 @@ use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 
 #[ORM\Entity(repositoryClass: BogObjectRepository::class)]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'status' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 #[ApiResource(
     operations: [

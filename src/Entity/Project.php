@@ -31,7 +31,7 @@ use Symfony\Component\Serializer\Attribute\Ignore;
         new GetCollection(name: "getProjectCollection", normalizationContext: ['groups' => ['slug']])
     ]
 )]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'status' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
