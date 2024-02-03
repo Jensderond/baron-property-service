@@ -48,7 +48,6 @@ use Symfony\Component\Serializer\Attribute\Ignore;
             uriTemplate: "/external/item/{id}",
             controller: ExternalItemController::class,
             read: false,
-            // output: true
         )
     ],
     graphQlOperations: [new Query(name: 'item_query'), new QueryCollection(name: 'collection_query', paginationType: 'page')]
