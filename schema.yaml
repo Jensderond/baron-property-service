@@ -168,6 +168,38 @@ paths:
           examples: null
           content: null
           extension_properties: []
+        - name: status
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'status[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
         - name: category
           in: query
           description: ''
@@ -746,6 +778,38 @@ paths:
           examples: null
           content: null
           extension_properties: []
+        - name: status
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'status[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
         - name: category
           in: query
           description: ''
@@ -962,6 +1026,38 @@ paths:
           content: null
           extension_properties: []
         - name: 'city[]'
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: status
+          in: query
+          description: ''
+          required: false
+          deprecated: false
+          allow_empty_value: true
+          schema:
+            type: string
+          style: form
+          explode: false
+          allow_reserved: false
+          example: null
+          examples: null
+          content: null
+          extension_properties: []
+        - name: 'status[]'
           in: query
           description: ''
           required: false

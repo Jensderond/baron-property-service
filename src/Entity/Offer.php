@@ -14,7 +14,7 @@ use App\State\OfferProvider;
         new GetCollection(name: "getOfferCollection", provider: OfferProvider::class, filters: ['annotated_app_entity_offer_api_platform_doctrine_orm_filter_search_filter'])
     ]
 )]
-#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'status' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 class Offer
 {
