@@ -10,7 +10,6 @@ use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\BogObject;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BogObjectRepository;
-use Doctrine\Common\Collections\Criteria;
 
 class BogObjectProvider implements ProviderInterface
 {
@@ -47,11 +46,7 @@ class BogObjectProvider implements ProviderInterface
         /** @var BogObjectRepository $bogObjectRepo */
         $bogObjectRepo = $this->entityManager->getRepository(BogObject::class);
 
-        $criteria = new Criteria();
-        $criteria->where(Criteria::expr()->eq('externalId', $id));
-        $criteria->setMaxResults(1);
-
-        $project = $bogObjectRepo->matching($criteria)->first();
+        $project = $bogObjectRepo->findOneBy(['externalId' => $id]);
 
         if(!$project) {
             return new NotFoundAction();

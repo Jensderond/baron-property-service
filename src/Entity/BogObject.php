@@ -19,7 +19,6 @@ use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 
-#[ORM\Entity(repositoryClass: BogObjectRepository::class)]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'status' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
 #[ApiResource(
@@ -28,6 +27,8 @@ use Money\Money;
         new GetCollection(name: "getBogObjectCollection")
     ]
 )]
+
+#[ORM\Entity(repositoryClass: BogObjectRepository::class)]
 class BogObject
 {
     #[ORM\Id]
