@@ -127,6 +127,12 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
             $facilities = array_unique($facilities);
         }
 
+        foreach ($data['object']['functies'] as $key => $function) {
+            if (!$function['actief']) {
+                unset($data['object']['functies'][$key]);
+            }
+        }
+
         $property->setFunctions($data['object']['functies']);
 
         if (isset($facilities)) {
