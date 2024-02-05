@@ -109,8 +109,8 @@ class BogObjectHandlerService extends AbstractHandlerService
     {
         $options = [
             'sizes' => [
-                '1x' => '400x266',
-                '2x' => '800x532',
+                '1x' => '401x267',
+                '2x' => '802x534',
             ],
         ];
 

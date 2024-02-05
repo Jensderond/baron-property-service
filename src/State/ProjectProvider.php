@@ -10,7 +10,6 @@ use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 
 class ProjectProvider implements ProviderInterface

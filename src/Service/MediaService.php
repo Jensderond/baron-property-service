@@ -106,7 +106,6 @@ class MediaService
     {
         $imagePath = "{$path}-{$size}.webp";
         if (!$this->fileExist($imagePath)) {
-            dump($url);
             $imageContent = $this->downloadFile($url);
             if ($imageContent) {
                 return $this->resizeAndSaveImage($imageContent, $size, $path);
