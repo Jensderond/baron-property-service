@@ -73,6 +73,7 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $property->setArchived(false);
         $property->setFinance($data['financieel']);
         $property->setDiversen($data['diversen']['diversen']);
+        $property->setKadaster($data['diversen']['kadaster']);
 
         if (isset($data['teksten']['eigenSiteTekst']) && !empty($data['teksten']['eigenSiteTekst'])) {
             $property->setDescription($data['teksten']['eigenSiteTekst']);
@@ -262,6 +263,9 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
         if (isset($data['diversen'])) {
             $data['diversen'] = $project->getDiversen();
+        }
+        if (isset($data['kadaster'])) {
+            $data['kadaster'] = $project->getKadaster();
         }
         if (isset($data['image'])) {
             $data['image'] = $project->getImage();

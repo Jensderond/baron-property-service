@@ -151,6 +151,9 @@ class BogObject
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $readableStatus = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $kadaster = null;
+
     public function map(BogObject $newProperties)
     {
         $reflectionClass = new ReflectionClass($this);
@@ -651,6 +654,18 @@ class BogObject
     public function setReadableStatus(?string $readableStatus): static
     {
         $this->readableStatus = $readableStatus;
+
+        return $this;
+    }
+
+    public function getKadaster(): ?array
+    {
+        return $this->kadaster;
+    }
+
+    public function setKadaster(?array $kadaster): static
+    {
+        $this->kadaster = $kadaster;
 
         return $this;
     }
