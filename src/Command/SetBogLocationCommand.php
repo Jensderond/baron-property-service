@@ -17,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'app:set-bog-location',
     description: 'Set latitude and longitude for a Bog object',
 )]
-class SetObjectLocationCommand extends Command
+class SetBogLocationCommand extends Command
 {
     private $bogObjectRepository;
     private $entityManager;

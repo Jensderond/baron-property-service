@@ -55,6 +55,8 @@ class BogObjectHandlerService extends AbstractHandlerService
         }
 
         $model->map($model);
+        $model->setImage($this->handleMainImage($model->getImage()));
+        $model->setMedia($this->mediaService->handleMedia($model->getMedia()));
         $model->createSlug();
         $this->checkLatLong($model);
         $output->writeln('<info>Handling media for new bog object</info>');
