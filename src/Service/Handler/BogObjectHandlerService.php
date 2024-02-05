@@ -116,6 +116,13 @@ class BogObjectHandlerService extends AbstractHandlerService
             return [];
         }
 
+        $url = parse_url($mediaItems['link']);
+        if (isset($url['query'])) {
+            $mediaItems['link'] .= '&resize=4';
+        } else {
+            $mediaItems['link'] .= '?resize=4';
+        }
+
         return $this->mediaService->buildObject($mediaItems['link'], $options);
     }
 }
