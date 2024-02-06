@@ -88,6 +88,11 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
             $property->setEnergyClass(KeyTranslationsHelper::energyClass($data['gebouwdetails']['energielabel']['energieklasse']));
         }
 
+        foreach ($data['object']['functies'] as $key => $function) {
+            if (!$function['actief']) {
+                unset($data['object']['functies'][$key]);
+            }
+        }
 
         if (isset($data['object']['functies'])) {
             $plot = 0;
@@ -126,12 +131,6 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
             $property->setPlot($plot);
             $facilities = array_unique($facilities);
-        }
-
-        foreach ($data['object']['functies'] as $key => $function) {
-            if (!$function['actief']) {
-                unset($data['object']['functies'][$key]);
-            }
         }
 
         $property->setFunctions($data['object']['functies']);
