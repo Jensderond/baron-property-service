@@ -86,11 +86,11 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         if ($dateNow < $dateStartSelling) {
             $status = "Inschrijving gestart";
         } elseif ($dateNow < $dateStartBuilding) {
-            $status = "Start verkoop";
+            $status = "Verkoop gestart";
         } elseif ($dateNow < $dateEndBuilding) {
-            $status = "Start bouw";
+            $status = "Bouw gestart";
         } elseif ($dateNow > $dateEndBuilding) {
-            $status = "Opleveringen gestart";
+            $status = "Oplevering gestart";
         }
         if ($data['project']['algemeen']['status'] === 'VERKOCHT') {
             $status = "Verkocht";
