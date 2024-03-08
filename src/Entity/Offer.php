@@ -20,6 +20,7 @@ class Offer
 {
     public function __construct(
         public readonly ?string $createdAt,
+        public readonly ?string $updatedAt,
         public readonly ?string $itemType,
         public readonly ?string $title,
         public readonly ?array $image,

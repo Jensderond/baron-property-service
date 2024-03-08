@@ -38,6 +38,7 @@ class OfferProvider implements ProviderInterface
         $bogObjects = array_map(
             fn (BogObject $item) => new Offer(
                 $item->getCreatedAt()->format('Y-m-d'),
+                $item->getUpdatedAt()->format('Y-m-d'),
                 'bogObject',
                 $item->getTitle(),
                 $item->getImage(),
@@ -58,6 +59,7 @@ class OfferProvider implements ProviderInterface
         $projects = array_map(
             fn (Project $item) => new Offer(
                 $item->getCreatedAt()->format('Y-m-d'),
+                $item->getUpdatedAt()->format('Y-m-d'),
                 'project',
                 $item->getTitle(),
                 $item->getMainImage(),
@@ -78,6 +80,7 @@ class OfferProvider implements ProviderInterface
         $properties = array_map(
             fn (Property $item) => new Offer(
                 $item->getCreatedAt()->format('Y-m-d'),
+                $item->getUpdatedAt()->format('Y-m-d'),
                 'property',
                 $item->getTitle(),
                 $item->getImage(),
@@ -113,7 +116,11 @@ class OfferProvider implements ProviderInterface
                 }
             }
 
-            return $b->createdAt <=> $a->createdAt;
+            if($a->status === 'BESCHIKBAAR' && $b->status === 'BESCHIKBAAR') {
+                return $b->createdAt <=> $a->createdAt;
+            } else {
+                return $b->updatedAt <=> $a->updatedAt;
+            }
         });
 
         $totalItems = count($combined);

@@ -48,7 +48,7 @@ class MediaService
         $transformedItems = [];
 
         foreach ($mediaInput as $key => $media) {
-            if (in_array($media['soort'], ['HOOFDFOTO', 'FOTO', 'PLATTEGROND', 'CONNECTED_PARTNER'], true) && isset($media['link'])) {
+            if (in_array($media['soort'], ['HOOFDFOTO', 'FOTO', 'PLATTEGROND', 'CONNECTED_PARTNER', 'DOCUMENT'], true) && isset($media['link'])) {
                 $isDocument = $media['soort'] === 'DOCUMENT' || $media['mimetype'] == "application/pdf";
                 $isConnectedPartner = $media['soort'] === 'CONNECTED_PARTNER';
                 $transformedItems[] = $this->transformItem($media, $isDocument, $isConnectedPartner);
@@ -92,7 +92,7 @@ class MediaService
             $transformedMedia['link'] = $media['link'];
             $transformedMedia['mimetype'] = $media['mimetype'];
         } elseif ($isConnectedPartner) {
-            $transformedMedia['link'] = $this->downloadAndSaveOriginalImage($media['link']);
+            $transformedMedia['link'] = $media['link'];
             $transformedMedia['mimetype'] = $media['mimetype'];
         } else {
             $transformedMedia['sizes'] = $this->buildObject($media['link'], $options);
