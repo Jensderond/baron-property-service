@@ -92,7 +92,7 @@ class MediaService
             $transformedMedia['link'] = $media['link'];
             $transformedMedia['mimetype'] = $media['mimetype'];
         } elseif ($isConnectedPartner) {
-            $transformedMedia['link'] = $media['link'];
+            $transformedMedia['link'] = $this->downloadAndSaveOriginalImage($media['link']);
             $transformedMedia['mimetype'] = $media['mimetype'];
         } else {
             $transformedMedia['sizes'] = $this->buildObject($media['link'], $options);
