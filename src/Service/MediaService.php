@@ -50,7 +50,8 @@ class MediaService
         foreach ($mediaInput as $key => $media) {
             if (in_array($media['soort'], ['HOOFDFOTO', 'FOTO', 'PLATTEGROND', 'CONNECTED_PARTNER', 'DOCUMENT'], true) && isset($media['link'])) {
                 $isDocument = $media['soort'] === 'DOCUMENT' || $media['mimetype'] == "application/pdf";
-                $transformedItems[] = $this->transformItem($media, $isDocument);
+                $isConnectedPartner = $media['soort'] === 'CONNECTED_PARTNER';
+                $transformedItems[] = $this->transformItem($media, $isDocument, $isConnectedPartner);
 
                 unset($mediaInput[$key]);
             }
@@ -63,7 +64,7 @@ class MediaService
         return array_merge($transformedItems, array_values($mediaInput));
     }
 
-    public function transformItem(array $media, ?bool $isDocument = false): array
+    public function transformItem(array $media, ?bool $isDocument = false, ?bool $isConnectedPartner = false): array
     {
         $options = [
             'sizes' => [
@@ -88,6 +89,9 @@ class MediaService
         }
 
         if ($isDocument) {
+            $transformedMedia['link'] = $media['link'];
+            $transformedMedia['mimetype'] = $media['mimetype'];
+        } elseif ($isConnectedPartner) {
             $transformedMedia['link'] = $media['link'];
             $transformedMedia['mimetype'] = $media['mimetype'];
         } else {
