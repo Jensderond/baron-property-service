@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
@@ -51,7 +52,8 @@ class MediaService
             if (in_array($media['soort'], ['HOOFDFOTO', 'FOTO', 'PLATTEGROND', 'CONNECTED_PARTNER', 'DOCUMENT'], true) && isset($media['link'])) {
                 $isDocument = $media['soort'] === 'DOCUMENT' || $media['mimetype'] == "application/pdf";
                 $isConnectedPartner = $media['soort'] === 'CONNECTED_PARTNER';
-                $transformedItems[] = $this->transformItem($media, $isDocument, $isConnectedPartner);
+                $isFloorplan = $media['soort'] === 'PLATTEGROND';
+                $transformedItems[] = $this->transformItem($media, $isDocument, $isConnectedPartner, $isFloorplan);
 
                 unset($mediaInput[$key]);
             }
@@ -64,7 +66,7 @@ class MediaService
         return array_merge($transformedItems, array_values($mediaInput));
     }
 
-    public function transformItem(array $media, ?bool $isDocument = false, ?bool $isConnectedPartner = false): array
+    public function transformItem(array $media, ?bool $isDocument = false, ?bool $isConnectedPartner = false, ?bool $isFloorplan = false): array
     {
         $options = [
             'sizes' => [
@@ -91,7 +93,7 @@ class MediaService
         if ($isDocument) {
             $transformedMedia['link'] = $media['link'];
             $transformedMedia['mimetype'] = $media['mimetype'];
-        } elseif ($isConnectedPartner) {
+        } elseif ($isConnectedPartner || $isFloorplan) {
             $transformedMedia['link'] = $this->downloadAndSaveOriginalImage($media['link']);
             $transformedMedia['mimetype'] = $media['mimetype'];
         } else {
@@ -157,7 +159,7 @@ class MediaService
         [$width, $height] = explode('x', $size);
         $imagine = new Imagine();
         $image = $imagine->load($imageContent);
-        $resizedImage = $image->resize(new Box($width, $height));
+        $resizedImage = $image->thumbnail(new Box($width, $height), ImageInterface::THUMBNAIL_INSET);
 
         $imagePath = "{$path}-{$width}x{$height}.webp";
         $this->assetsStorage->write($imagePath, $resizedImage->get('webp'));
