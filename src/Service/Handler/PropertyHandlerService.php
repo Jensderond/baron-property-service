@@ -37,7 +37,7 @@ class PropertyHandlerService extends AbstractHandlerService
             if ($existingPropertyMediaHash === null || $existingPropertyMediaHash !== $model->getMediaHash()) {
                 $output->writeln('<info>Handling media existing property</info>');
                 $property->setImage($this->handlePropertyMainImage($model));
-                $property->setMedia($this->mediaService->handleMedia($property->getMedia()));
+                $property->setMedia($this->mediaService->handleMedia($model->getMedia()));
 
                 $output->writeln('<info>Updated media for Property: '.$model->getTitle().'</info>');
             } else {

@@ -2,10 +2,8 @@
 
 namespace App\Service\Handler;
 
-use App\Entity\ConstructionNumber;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
-use App\Repository\ConstructionNumberRepository;
 use App\Service\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
