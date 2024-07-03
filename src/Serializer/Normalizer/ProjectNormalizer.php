@@ -109,7 +109,11 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project->setZipcode($data['zipcode']);
         $project->setCity($data['city']);
         $project->setDescription($data['description']);
-        $project->setTitle($data['title']);
+        if ($data['city']) {
+            $project->setTitle($data['title'] . ', ' . $data['city']);
+        } else {
+            $project->setTitle($data['title']);
+        }
         $project->setCategory(KeyTranslationsHelper::projectCategory($data['algemeen']['koopOfHuur']));
 
         /** Media */
