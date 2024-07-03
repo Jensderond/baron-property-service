@@ -36,7 +36,6 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $data['province'] = $data['project']['algemeen']['provincie'];
         $data['zipcode'] = $data['project']['algemeen']['postcode'];
         $data['city'] = $data['project']['algemeen']['plaats'];
-        $data['description_site'] = $data['teksten']['eigenSiteTekst'];
         $data['description'] = $data['teksten']['aanbiedingstekst'];
         $data['title'] = $data['project']['algemeen']['omschrijving'];
         if (isset($data['media'])) {
@@ -78,16 +77,20 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
          * Wanneer de opleveringen gestart zijn, mag er opleveringen gestart vermeld worden.
          * Wanneer ik hem op verkocht zet (het totale project, alle bouwnummers), mag dit balkje net als bij de rest verkocht vermeld worden.
          */
-        $dateStartBuilding = new DateTimeImmutable($data['project']['algemeen']['datumStartBouw']);
-        $dateEndBuilding = new DateTimeImmutable($data['project']['algemeen']['opleveringsdatum']);
-        $dateStartSelling = new DateTimeImmutable($data['project']['algemeen']['datumStartVerkoop']);
+        $dateStartBuilding = $data['project']['algemeen']['datumStartBouw'];
+        $dateStartBuilding = $dateStartBuilding ? new DateTimeImmutable($dateStartBuilding) : null;
+        $dateEndBuilding = $data['project']['algemeen']['opleveringsdatum'];
+        $dateEndBuilding = $dateEndBuilding ? new DateTimeImmutable($dateEndBuilding) : null;
+        $dateStartSelling = $data['project']['algemeen']['datumStartVerkoop'];
+        $dateStartSelling = $dateStartSelling ? new DateTimeImmutable($dateStartSelling) : null;
+
         $dateNow = new DateTimeImmutable();
         $status = "";
         if ($dateNow < $dateStartSelling) {
             $status = "Inschrijving gestart";
-        } elseif ($dateNow < $dateStartBuilding) {
+        } elseif ($dateNow < $dateStartBuilding || $dateStartBuilding === null) {
             $status = "Verkoop gestart";
-        } elseif ($dateNow < $dateEndBuilding) {
+        } elseif ($dateNow < $dateEndBuilding || $dateEndBuilding === null) {
             $status = "Bouw gestart";
         } elseif ($dateNow > $dateEndBuilding) {
             $status = "Oplevering gestart";
@@ -105,7 +108,6 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project->setProvince($data['province']);
         $project->setZipcode($data['zipcode']);
         $project->setCity($data['city']);
-        $project->setDescriptionSite($data['description_site']);
         $project->setDescription($data['description']);
         $project->setTitle($data['title']);
         $project->setCategory(KeyTranslationsHelper::projectCategory($data['algemeen']['koopOfHuur']));
