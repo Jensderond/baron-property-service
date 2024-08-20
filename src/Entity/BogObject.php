@@ -641,7 +641,7 @@ class BogObject
         $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 0);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
 
-        $vatApplied = $this->serviceCostVAT ? 'incl. btw' : 'excl. btw';
+        $vatApplied = $this->serviceCostVAT ? 'excl. btw' : 'incl. btw';
 
         return "{$moneyFormatter->format(Money::EUR($this->serviceCostPrice * 100))} {$this->serviceCostCondition} {$vatApplied}";
     }
