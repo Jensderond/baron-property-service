@@ -11,9 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
-    {
-    }
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
 
 
     private function addFacilities(&$facilities, $source, $key)
@@ -91,6 +89,8 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         foreach ($data['object']['functies'] as $key => $function) {
             if (!$function['actief']) {
                 unset($data['object']['functies'][$key]);
+                // make sure the array is reindexed
+                $data['object']['functies'] = array_values($data['object']['functies']);
             }
         }
 
@@ -104,7 +104,6 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
                     $this->addFacilities($facilities, $function['bedrijfsruimte']['bedrijfsruimteKantoorruimte'], 'kantoorruimteVoorzieningen');
                     $this->addPlot($plot, $function['bedrijfsruimte']['bedrijfshal'], 'oppervlakte');
                     $this->addPlot($plot, $function['bedrijfsruimte']['bedrijfsruimteKantoorruimte'], 'kantoorruimteOppervlakte');
-                    $this->addPlot($plot, $function['bedrijfsruimte']['terrein'], 'terreinOppervlakte');
                     $property->setNumberOfFloors($function['bedrijfsruimte']['bedrijfsruimteKantoorruimte']['kantoorruimteAantalVerdiepingen']);
                 } elseif (isset($function['leisure'])) {
                     $this->addFacilities($facilities, $function['leisure'], 'leisurevoorzieningen');
