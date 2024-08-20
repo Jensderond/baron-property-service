@@ -89,10 +89,10 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         foreach ($data['object']['functies'] as $key => $function) {
             if (!$function['actief']) {
                 unset($data['object']['functies'][$key]);
-                // make sure the array is reindexed
-                $data['object']['functies'] = array_values($data['object']['functies']);
             }
         }
+        // make sure the array is reindexed
+        $data['object']['functies'] = array_values($data['object']['functies']);
 
         if (isset($data['object']['functies'])) {
             $plot = 0;
