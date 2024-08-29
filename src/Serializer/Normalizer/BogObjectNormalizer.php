@@ -14,21 +14,21 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
     public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
 
 
-    private function addFacilities(&$facilities, $source, $key)
+    private function addFacilities(&$facilities, $source, $key): void
     {
         if (isset($source[$key])) {
             $facilities = array_merge($facilities, $source[$key]);
         }
     }
 
-    private function addPlot(&$plot, $source, $key)
+    private function addPlot(&$plot, $source, $key): void
     {
         if (isset($source[$key])) {
             $plot += $source[$key];
         }
     }
 
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BogObject
     {
         $property = new BogObject();
 
@@ -125,6 +125,12 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 } elseif (isset($function['winkelruimte'])) {
                     $this->addPlot($plot, $function['winkelruimte'], 'oppervlakte');
                     $property->setNumberOfFloors($function['winkelruimte']['aantalVerdiepingen']);
+                }
+            }
+
+            if ($plot == 0 && $data['diversen']['kadaster'] !== null && isset($data['diversen']['kadaster'][0]['kadastergegevens'])) {
+                foreach ($data['diversen']['kadaster'] as $kadaster) {
+                    $this->addPlot($plot, $kadaster['kadastergegevens'], 'oppervlakte');
                 }
             }
 
@@ -255,7 +261,7 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * @param BogObject $project
      */
-    public function normalize($project, ?string $format = null, array $context = [])
+    public function normalize($project, ?string $format = null, array $context = []): array
     {
         $data = $this->objectNormalizer->normalize($project, $format, $context);
 

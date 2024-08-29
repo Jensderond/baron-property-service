@@ -3,7 +3,7 @@
 namespace App\Serializer\Normalizer;
 
 use App\Helpers\ArrayHelper;
-use \App\Entity\Property;
+use App\Entity\Property;
 use App\Helpers\KeyTranslationsHelper;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -11,11 +11,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
-    {
-    }
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
 
-    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Property
     {
         $property = new \App\Entity\Property();
 
@@ -140,7 +138,7 @@ class PropertyNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * @param Property $project
      */
-    public function normalize($project, ?string $format = null, array $context = [])
+    public function normalize($project, ?string $format = null, array $context = []): array
     {
         $data = $this->objectNormalizer->normalize($project, $format, $context);
 
