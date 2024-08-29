@@ -18,8 +18,7 @@ class BogObjectHandlerService extends AbstractHandlerService
         protected EntityManagerInterface $entityManager,
         protected AddressService $addressService,
         protected MediaService $mediaService
-    ) {
-    }
+    ) {}
 
     /**
      * @param BogObject $model
@@ -39,7 +38,7 @@ class BogObjectHandlerService extends AbstractHandlerService
             $existingObject->createSlug();
 
             $existingObject->setImage($this->handleMainImage($model->getImage()));
-            if(empty($existingObjectMediaHash) || $existingObjectMediaHash !== $existingObject->getMediaHash()) {
+            if (empty($existingObjectMediaHash) || $existingObjectMediaHash !== $existingObject->getMediaHash()) {
                 $output->writeln('<info>Handling media existing BOG Object</info>');
                 $existingObject->setMedia($this->mediaService->handleMedia($model->getMedia()));
                 $existingObject->setUpdatedAt($model->getUpdatedAt());
@@ -50,7 +49,7 @@ class BogObjectHandlerService extends AbstractHandlerService
             $this->checkLatLong($existingObject);
 
             $this->entityManager->persist($existingObject);
-            $output->writeln('<info>Updated BOG Object: '.$model->getTitle().'</info>');
+            $output->writeln('<info>Updated BOG Object: ' . $model->getTitle() . '</info>');
             return;
         }
 
@@ -59,12 +58,12 @@ class BogObjectHandlerService extends AbstractHandlerService
         $model->setMedia($this->mediaService->handleMedia($model->getMedia()));
         $model->createSlug();
         $this->checkLatLong($model);
-        $output->writeln('<info>Handling media for new bog object</info>');
+        $output->writeln('<info>Handling media for new BOG Object</info>');
         $model->setMedia($this->mediaService->handleMedia($model->getMedia()));
 
         $this->entityManager->persist($model);
 
-        $output->writeln('<info>Added BOG Object: '.$model->getTitle().'</info>');
+        $output->writeln('<info>Added BOG Object: ' . $model->getTitle() . '</info>');
         return;
     }
 
@@ -83,7 +82,7 @@ class BogObjectHandlerService extends AbstractHandlerService
 
         $count = $projectRepo->archiveMissing($this->idsInImport);
 
-        $output->writeln("<info>Archived ${count} BOG Objects </info>");
+        $output->writeln("<info>Archived $count BOG Objects </info>");
     }
 
     /**
@@ -97,7 +96,7 @@ class BogObjectHandlerService extends AbstractHandlerService
         if (!$numberIsZero && (!$object->getLat() || !$object->getLng())) {
             if (($object->getHouseNumber() && !$numberIsZero) && $object->getStreet() && $object->getCity()) {
                 $geoData = $this->addressService->getLatLngFromAddress($object->getHouseNumber(), $object->getStreet(), $object->getCity());
-                if($geoData) {
+                if ($geoData) {
                     $object->setLat($geoData['lat']);
                     $object->setLng($geoData['lng']);
                 }
