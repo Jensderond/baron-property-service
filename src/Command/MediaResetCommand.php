@@ -30,6 +30,7 @@ class MediaResetCommand extends Command
         $this
             ->addOption('all', null, InputOption::VALUE_NONE, 'Reset media hash for all entities.')
             ->addOption('entity', null, InputOption::VALUE_REQUIRED, 'Specify the entity to reset media hash for (BogObject, Project, or Property).')
+            ->addOption('entityId', null, InputOption::VALUE_REQUIRED, 'Specify the entity id to reset media hash for (BogObject, Project, or Property).')
         ;
     }
 
@@ -38,6 +39,7 @@ class MediaResetCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $allOption = $input->getOption('all');
         $entityOption = $input->getOption('entity');
+        $entityIdOption = $input->getOption('entityId');
 
         if ($allOption && $entityOption) {
             $io->error('You cannot specify both --all and --entity options. Please choose one.');
@@ -59,21 +61,28 @@ class MediaResetCommand extends Command
         }
 
         foreach ($entities as $entity) {
-            $this->resetMediaHash($io, $entity);
+            $this->resetMediaHash($io, $entity, $entityIdOption);
         }
 
         $io->success('Media hash reset and import commands executed successfully.');
         return Command::SUCCESS;
     }
 
-    private function resetMediaHash(SymfonyStyle $io, string $entity): void
+    private function resetMediaHash(SymfonyStyle $io, string $entity, ?int $entityId): void
     {
         // Reset media hash logic for the given entity
         $io->writeln(sprintf('Resetting media hash for entity: %s', $entity));
 
         // Reset media hash in the database for the specified entity
         $repository = $this->entityManager->getRepository('App\Entity\\' . $entity);
-        $entities = $repository->findAll();
+
+        $entities = [];
+        if ($entityId) {
+            $entities[] = $repository->find($entityId);
+        } else {
+            $entities = $repository->findAll();
+        }
+
         foreach ($entities as $entityInstance) {
             $entityInstance->setMediaHash("");
             $this->entityManager->persist($entityInstance);

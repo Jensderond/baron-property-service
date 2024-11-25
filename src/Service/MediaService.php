@@ -140,7 +140,9 @@ class MediaService
         }
 
         try {
-            $this->logger->info('Downloading file');
+            $this->logger->info('Downloading file', [
+                'url' => $url,
+            ]);
             return file_get_contents($url);
         } catch (FilesystemException $e) {
             $this->logger->error('Filesystem error:' . $e->getMessage());
