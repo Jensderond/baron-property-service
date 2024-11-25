@@ -115,6 +115,13 @@ class PropertyHandlerService extends AbstractHandlerService
             return [];
         }
 
+        $url = parse_url($mainImage['link']);
+        if (isset($url['query'])) {
+            $mainImage['link'] .= '&resize=4';
+        } else {
+            $mainImage['link'] .= '?resize=4';
+        }
+
         return $this->mediaService->buildObject($mainImage['link'], $options);
     }
 }
