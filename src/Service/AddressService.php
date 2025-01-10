@@ -14,7 +14,7 @@ class AddressService implements AddressClientInterface
    *   'lng': float,
    * }
    */
-  public function getLatLngFromAddress(mixed $housenumber, string $street, string $city): ?array
+  public function getLatLngFromAddress(string|int $housenumber, string $street, string $city): ?array
   {
     $address = $this->client->getLatLngFromAddress($housenumber, $street, $city);
     $data = json_decode($address, true);
