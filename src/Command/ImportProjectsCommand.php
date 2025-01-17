@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Service\PropertyService;
 use App\Service\Handler\ProjectHandlerService;
+use App\Service\PropertyService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,7 +37,8 @@ class ImportProjectsCommand extends Command
             $this->projectHandlerService->handle($project, $output);
         }
 
-        $this->projectHandlerService->archiveItems($output);
+        // 16-01-2025 client wanted this disabled.
+        // $this->projectHandlerService->archiveItems($output);
 
         $this->projectHandlerService->persist();
 
