@@ -3,7 +3,6 @@
 namespace App\Client;
 
 use App\Contract\PropertyClientInterface;
-use EasyRdf\Http;
 use Error;
 use Symfony\Contracts\HttpClient\Exception;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

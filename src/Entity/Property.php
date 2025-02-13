@@ -195,7 +195,12 @@ class Property
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
 
-                if ($propertyName !== 'Media' && $propertyName !== 'Image') {
+                if (
+                    $propertyName !== 'Media' &&
+                    $propertyName !== 'Image' &&
+                    $propertyName !== 'Lat' &&
+                    $propertyName !== 'Lng'
+                ) {
                     $this->{$setMethod}($newProperties->{$getMethod}());
                 }
             }
