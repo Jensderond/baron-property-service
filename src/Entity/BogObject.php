@@ -546,11 +546,39 @@ class BogObject
         if ($this->price === 0) return '';
 
         $currencies = new ISOCurrencies();
-
         $numberFormatter = new \NumberFormatter('nl_NL', \NumberFormatter::CURRENCY);
         $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 0);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
 
+        // Check if property is both for sale and for rent
+        if (isset($this->finance['overdracht']['koopEnOfHuur']['aanmeldingsreden']) && 
+            $this->finance['overdracht']['koopEnOfHuur']['aanmeldingsreden'] === 'IN_VERKOOP_OF_VERHUUR_GENOMEN') {
+            
+            $salePrice = $this->price;
+            $saleCondition = $this->priceCondition;
+            
+            // Get rental price and condition
+            $rentalPrice = $this->finance['overdracht']['koopEnOfHuur']['huurprijs'] ?? 0;
+            $rentalCondition = match($this->finance['overdracht']['koopEnOfHuur']['huurconditie'] ?? '') {
+                'PER_JAAR' => 'p.j.',
+                'PER_MAAND' => 'p.m.',
+                'PER_VIERKANTE_METERS_PER_JAAR' => 'p.j. per m²',
+                default => '',
+            };
+            
+            // Format both prices
+            $formattedSalePrice = $moneyFormatter->format(Money::EUR($salePrice * 100));
+            $formattedRentalPrice = $rentalPrice > 0 
+                ? $moneyFormatter->format(Money::EUR($rentalPrice * 100)) 
+                : '';
+            
+            // Combine both prices if rental price exists
+            if ($rentalPrice > 0) {
+                return "{$formattedSalePrice} {$saleCondition} - {$formattedRentalPrice} {$rentalCondition}";
+            }
+        }
+        
+        // Default case: single price
         return "{$moneyFormatter->format(Money::EUR($this->price * 100))} {$this->priceCondition}";
     }
 
