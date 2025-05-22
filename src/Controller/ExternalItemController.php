@@ -8,13 +8,13 @@ use App\Entity\Project;
 use App\Entity\Property;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use ApiPlatform\Action\NotFoundAction;
+use ApiPlatform\Symfony\Action\NotFoundAction;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
 class ExternalItemController extends AbstractController
 {
-    public function __invoke(EntityManagerInterface $entityManager, $id): Project|NotFoundAction|Property|BogObject|ConstructionNumber
+    public function __invoke(EntityManagerInterface $entityManager, int $id): Project|NotFoundAction|Property|BogObject|ConstructionNumber
     {
         $repositories = [Property::class, Project::class, BogObject::class, ConstructionNumber::class];
 
