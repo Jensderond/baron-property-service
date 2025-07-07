@@ -49,23 +49,26 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $livingAreaFrom = $data['project']['algemeen']['woonoppervlakteVanaf'];
         $livingAreaTo = $data['project']['algemeen']['woonoppervlakteTot'];
 
+        $livingAreaCombined = '';
+
         if (isset($livingAreaFrom)) {
             if (isset($livingAreaTo) && $livingAreaFrom !== $livingAreaTo) {
-                $data['woonoppervlakte'] = $livingAreaFrom . ' tot ' . $livingAreaTo;
+                $livingAreaCombined = $livingAreaFrom . ' tot ' . $livingAreaTo;
             } else {
-                $data['woonoppervlakte'] = $livingAreaFrom;
+                $livingAreaCombined  = $livingAreaFrom;
             }
         }
 
 
         $plotAreaFrom = $data['project']['algemeen']['perceeloppervlakteVanaf'];
         $plotAreaTo = $data['algemeen']['perceeloppervlakteTot'];
+        $plotAreaCombined = '';
 
         if (isset($plotAreaFrom)) {
             if (isset($plotAreaTo) && $plotAreaFrom !== $plotAreaTo) {
-                $data['perceeloppervlakte'] = $plotAreaFrom . ' tot ' . $plotAreaTo;
+                $plotAreaCombined = $plotAreaFrom . ' tot ' . $plotAreaTo;
             } else {
-                $data['perceeloppervlakte'] = $plotAreaFrom;
+                $plotAreaCombined = $plotAreaFrom;
             }
         }
 
@@ -136,8 +139,8 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $project->setDiversen($data['diversen']);
         $project->setCreatedAt(new DateTimeImmutable($data['marketing']['publicatiedatum']));
         $project->setUpdatedAt(new DateTimeImmutable($data['tijdstipLaatsteWijziging']));
-        $project->setLivingArea($data['woonoppervlakte']);
-        $project->setPlot($data['perceeloppervlakte'] ?? null);
+        $project->setLivingArea($livingAreaCombined);
+        $project->setPlot($plotAreaCombined);
 
         $lowestNumberOfRooms = 0;
         $highestNumberOfRooms = 0;
