@@ -37,7 +37,8 @@ class ImportBogObjectsCommand extends Command
             $this->bogObjectHandlerService->handle($object, $output);
         }
 
-        $this->bogObjectHandlerService->archiveItems($output);
+        // 10-12-2025 client wanted this disabled.
+        // $this->bogObjectHandlerService->archiveItems($output);
 
         $this->bogObjectHandlerService->persist();
 
