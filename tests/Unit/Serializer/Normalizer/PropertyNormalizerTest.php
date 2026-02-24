@@ -34,7 +34,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyAddress(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame(42, $property->getHouseNumber());
@@ -47,7 +47,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyTitle(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame('Keizersgracht 42A, Amsterdam', $property->getTitle());
@@ -55,7 +55,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyGenericFields(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame(12345, $property->getExternalId());
@@ -68,7 +68,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyDescription(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         // eigenSiteTekst takes priority over aanbiedingstekst
@@ -77,7 +77,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyPricing(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame(750000, $property->getPrice());
@@ -89,7 +89,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyRooms(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame(3, $property->getBedrooms()); // 2 + 1
@@ -98,7 +98,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyMedia(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertCount(3, $property->getMedia());
@@ -110,7 +110,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyDates(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame('2024-01-15', $property->getCreatedAt()->format('Y-m-d'));
@@ -119,7 +119,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeSalePropertyRawArrays(): void
     {
-        $data = $this->loadFixture('realworks_v2_property.json');
+        $data = $this->loadFixture('realworks_v3_property.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertIsArray($property->getAlgemeen());
@@ -138,7 +138,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeRentalPropertyPricing(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_rental.json');
+        $data = $this->loadFixture('realworks_v3_property_rental.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame(1500, $property->getPrice());
@@ -148,7 +148,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeRentalPropertyFallbackDescription(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_rental.json');
+        $data = $this->loadFixture('realworks_v3_property_rental.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         // eigenSiteTekst is null, falls back to aanbiedingstekst
@@ -157,7 +157,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeRentalPropertyAddress(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_rental.json');
+        $data = $this->loadFixture('realworks_v3_property_rental.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame(10, $property->getHouseNumber());
@@ -171,21 +171,20 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeZeroHouseNumber(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_zero_housenumber.json');
+        $data = $this->loadFixture('realworks_v3_property_zero_housenumber.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
-        // huisnummer=0 is falsy so it never gets set; numberIsZero check doesn't trigger
-        // This means the else branch runs, producing a trailing space before the comma
-        // This is a known quirk in the current code
+        // v3 fix: huisnummer "0" is now correctly parsed and triggers the numberIsZero branch
+        // which sets houseNumber and houseNumberAddition to null and formats address without number
         $this->assertNull($property->getHouseNumber());
         $this->assertNull($property->getHouseNumberAddition());
-        $this->assertSame('Landgoed De Bilt , Utrecht', $property->getAddress());
-        $this->assertSame('Landgoed De Bilt , Utrecht', $property->getTitle());
+        $this->assertSame('Landgoed De Bilt, Utrecht', $property->getAddress());
+        $this->assertSame('Landgoed De Bilt, Utrecht', $property->getTitle());
     }
 
     public function testDenormalizeZeroHouseNumberPlotFallback(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_zero_housenumber.json');
+        $data = $this->loadFixture('realworks_v3_property_zero_housenumber.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         // totaleWoonkameroppervlakte is null, falls back to totaleKadestraleOppervlakte
@@ -194,7 +193,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeZeroBuildYear(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_zero_housenumber.json');
+        $data = $this->loadFixture('realworks_v3_property_zero_housenumber.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         // bouwjaar = 0 should not be set
@@ -203,7 +202,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeEmptyMediaFallback(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_zero_housenumber.json');
+        $data = $this->loadFixture('realworks_v3_property_zero_housenumber.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertEmpty($property->getMedia());
@@ -212,7 +211,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeEmptyEtages(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_zero_housenumber.json');
+        $data = $this->loadFixture('realworks_v3_property_zero_housenumber.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame(0, $property->getBedrooms());
@@ -221,7 +220,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeStatusTranslation(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_zero_housenumber.json');
+        $data = $this->loadFixture('realworks_v3_property_zero_housenumber.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame('ONDER_BOD', $property->getStatus());
@@ -230,7 +229,7 @@ class PropertyNormalizerTest extends TestCase
 
     public function testDenormalizeVonCondition(): void
     {
-        $data = $this->loadFixture('realworks_v2_property_zero_housenumber.json');
+        $data = $this->loadFixture('realworks_v3_property_zero_housenumber.json');
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame('v.o.n.', $property->getPriceCondition());

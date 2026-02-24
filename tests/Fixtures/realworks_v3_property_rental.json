@@ -1,0 +1,53 @@
+{
+    "id": 12346,
+    "adres": {
+        "huisnummer": {
+            "hoofdnummer": "10",
+            "toevoeging": null
+        },
+        "plaats": "Rotterdam",
+        "postcode": "3011AA",
+        "straat": "Coolsingel"
+    },
+    "algemeen": {
+        "bouwjaar": 2005,
+        "energieklasse": "B",
+        "woonoppervlakte": 85,
+        "totaleWoonkameroppervlakte": null,
+        "totaleKadestraleOppervlakte": null
+    },
+    "financieel": {
+        "overdracht": {
+            "koopconditie": null,
+            "huurconditie": "PER_MAAND",
+            "koopprijs": 0,
+            "huurprijs": 1500,
+            "status": "BESCHIKBAAR"
+        }
+    },
+    "teksten": {
+        "eigenSiteTekst": null,
+        "aanbiedingstekst": "Modern appartement in het centrum van Rotterdam."
+    },
+    "media": [
+        {
+            "soort": "HOOFDFOTO",
+            "link": "https://example.com/rental-main.jpg",
+            "volgnummer": 0
+        }
+    ],
+    "detail": {
+        "etages": [
+            {
+                "aantalSlaapkamers": 2,
+                "aantalKamers": 3
+            }
+        ],
+        "overigOnroerendGoed": [],
+        "buitenruimte": []
+    },
+    "marketing": {
+        "publicatiedatum": "2024-03-01T09:00:00Z"
+    },
+    "tijdstipLaatsteWijziging": "2024-05-15T11:00:00Z"
+}
