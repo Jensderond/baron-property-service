@@ -2,17 +2,16 @@
 
 namespace App\Serializer\Normalizer;
 
-use App\Helpers\ArrayHelper;
 use App\Entity\BogObject;
+use App\Helpers\ArrayHelper;
 use App\Helpers\KeyTranslationsHelper;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
+class BogObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 {
     public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
-
 
     private function addFacilities(&$facilities, $source, $key): void
     {
@@ -30,30 +29,36 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BogObject
     {
-        $property = new BogObject();
+        $property = new BogObject;
 
         /** Address */
-        if (isset($data['huisnummer'])) {
-            if (isset($data['huisnummertoevoeging'])) {
-                $property->setHouseNumber($data['huisnummer'] . $data['huisnummertoevoeging']);
+        $huisnummer = ArrayHelper::safeGet($data, 'adres.huisnummer.hoofdnummer');
+        if ($huisnummer) {
+            $huisnummertoevoeging = ArrayHelper::safeGet($data, 'adres.huisnummer.toevoeging');
+            if ($huisnummertoevoeging) {
+                $property->setHouseNumber($huisnummer.$huisnummertoevoeging);
             } else {
-                $property->setHouseNumber($data['huisnummer']);
+                $property->setHouseNumber($huisnummer);
             }
         }
-        if (isset($data['plaats'])) {
-            $property->setCity($data['plaats']);
+        $city = ArrayHelper::safeGet($data, 'adres.plaats');
+        if ($city) {
+            $property->setCity($city);
         }
-        if (isset($data['postcode'])) {
-            $property->setZipCode($data['postcode']);
+        $zipcode = ArrayHelper::safeGet($data, 'adres.postcode');
+        if ($zipcode) {
+            $property->setZipCode($zipcode);
         }
-        if (isset($data['straat'])) {
-            $property->setStreet($data['straat']);
+        $street = ArrayHelper::safeGet($data, 'adres.straat');
+        if ($street) {
+            $property->setStreet($street);
         }
-        if (isset($data['land'])) {
-            $property->setCountry($data['land']);
+        $country = ArrayHelper::safeGet($data, 'adres.land');
+        if ($country) {
+            $property->setCountry($country);
         }
 
-        $numberIsZero = ($data['huisnummer'] === "0" || $data['huisnummer'] === 0) && null !== $property->getHouseNumber();
+        $numberIsZero = ($huisnummer === '0' || $huisnummer === 0) && $property->getHouseNumber() !== null;
 
         /** Generic */
         if ($numberIsZero) {
@@ -65,29 +70,36 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         if (isset($data['kenmerken']['hoofdfunctie'])) {
             $property->setMainFunction(KeyTranslationsHelper::mainFunction($data['kenmerken']['hoofdfunctie']));
         }
-        $property->setCreatedAt(new \DateTimeImmutable($data['marketing']['publicatiedatum']));
-        $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
-        $property->setExternalId($data['id']);
+        $property->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new \DateTimeImmutable));
+        $property->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new \DateTimeImmutable));
+        $property->setExternalId(ArrayHelper::safeGet($data, 'id'));
         $property->setArchived(false);
-        $property->setFinance($data['financieel']);
-        $property->setDiversen($data['diversen']['diversen']);
-        $property->setKadaster($data['diversen']['kadaster']);
+        $property->setFinance(ArrayHelper::safeGet($data, 'financieel', []));
+        $property->setDiversen(ArrayHelper::safeGet($data, 'diversen.diversen', []));
+        $property->setKadaster(ArrayHelper::safeGet($data, 'diversen.kadaster', []));
 
-        if (isset($data['teksten']['eigenSiteTekst']) && !empty($data['teksten']['eigenSiteTekst'])) {
-            $property->setDescription($data['teksten']['eigenSiteTekst']);
-        } elseif (isset($data['teksten']['aanbiedingstekst'])) {
-            $property->setDescription($data['teksten']['aanbiedingstekst']);
+        $eigenSiteTekst = ArrayHelper::safeGet($data, 'teksten.eigenSiteTekst');
+        if ($eigenSiteTekst && ! empty($eigenSiteTekst)) {
+            $property->setDescription($eigenSiteTekst);
+        } else {
+            $aanbiedingstekst = ArrayHelper::safeGet($data, 'teksten.aanbiedingstekst');
+            if ($aanbiedingstekst) {
+                $property->setDescription($aanbiedingstekst);
+            }
         }
 
         if (isset($data['gebouwdetails']['bouwjaar']['bouwjaar1'])) {
-            $property->setBuildYear((int)$data['gebouwdetails']['bouwjaar']['bouwjaar1']);
+            $bouwjaarFromLokatie = ArrayHelper::safeGetNumeric($data, 'gebouwdetails.bouwjaar.bouwjaar1', 0);
+            if ($bouwjaarFromLokatie > 0) {
+                $property->setBuildYear((int) $bouwjaarFromLokatie);
+            }
         }
         if (isset($data['gebouwdetails']['energielabel']['energieklasse'])) {
             $property->setEnergyClass(KeyTranslationsHelper::energyClass($data['gebouwdetails']['energielabel']['energieklasse']));
         }
 
         foreach ($data['object']['functies'] as $key => $function) {
-            if (!$function['actief']) {
+            if (! $function['actief']) {
                 unset($data['object']['functies'][$key]);
             }
         }
@@ -188,23 +200,27 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
                 if (count($accessibility) > 1) {
                     $lastItem = array_pop($accessibility);
-                    $property->setAccessibility(implode(', ', $accessibility) . ' en ' . $lastItem);
+                    $property->setAccessibility(implode(', ', $accessibility).' en '.$lastItem);
                 } else {
                     $property->setAccessibility(implode('', $accessibility));
                 }
 
                 if (count($localAmentities) > 1) {
                     $lastItem = array_pop($localAmentities);
-                    $property->setLocalAmentities(implode(', ', $localAmentities) . ' en ' . $lastItem);
+                    $property->setLocalAmentities(implode(', ', $localAmentities).' en '.$lastItem);
                 } else {
                     $property->setLocalAmentities(implode('', $localAmentities));
                 }
             }
 
-            $property->setBuildYear((int)$data['gebouwdetails']['bouwjaar']['bouwjaar1']);
+            $bouwjaarFromLokatie = ArrayHelper::safeGetNumeric($data, 'gebouwdetails.bouwjaar.bouwjaar1', 0);
+            if ($bouwjaarFromLokatie > 0) {
+                $property->setBuildYear((int) $bouwjaarFromLokatie);
+            }
         }
 
         /** Media */
+        $data['media'] = ArrayHelper::remapMediaLinks($data['media']);
         $mainImage = array_filter($data['media'], function ($media) {
             return $media['soort'] === 'HOOFDFOTO';
         });
@@ -259,7 +275,7 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
     }
 
     /**
-     * @param BogObject $project
+     * @param  BogObject  $project
      */
     public function normalize($project, ?string $format = null, array $context = []): array
     {
@@ -295,7 +311,7 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         return $type === BogObject::class;
     }
 
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof BogObject;
     }

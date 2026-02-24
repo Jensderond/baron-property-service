@@ -32,7 +32,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogAddress(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame('15B', $bog->getHouseNumber());
@@ -44,7 +44,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogTitle(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame('Lange Voorhout 15B, Den Haag', $bog->getTitle());
@@ -56,7 +56,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogIdentity(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame(55001, $bog->getExternalId());
@@ -65,7 +65,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogMainFunction(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame('Kantoorruimte', $bog->getMainFunction());
@@ -73,7 +73,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogDescription(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         // eigenSiteTekst takes priority
@@ -82,7 +82,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogBuildYear(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame(1890, $bog->getBuildYear());
@@ -90,7 +90,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogEnergyClass(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame('C', $bog->getEnergyClass());
@@ -102,7 +102,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogRentalPricing(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame(2500, $bog->getPrice());
@@ -112,7 +112,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogServiceCosts(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame(350, $bog->getServiceCostPrice());
@@ -122,7 +122,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogStatus(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame('BESCHIKBAAR', $bog->getStatus());
@@ -135,7 +135,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogFunctionsFiltersInactive(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         // Only the active kantoorruimte function should remain
@@ -146,7 +146,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogPlot(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         // From kantoorruimte oppervlakte
@@ -155,7 +155,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogFacilities(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertStringContainsString('Lift', $bog->getFacilities());
@@ -166,7 +166,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogNumberOfFloors(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame(3, $bog->getNumberOfFloors());
@@ -178,7 +178,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogAccessibility(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $accessibility = $bog->getAccessibility();
@@ -189,7 +189,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogLocalAmentities(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $amentities = $bog->getLocalAmentities();
@@ -199,7 +199,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogParking(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertIsArray($bog->getParking());
@@ -212,7 +212,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogMedia(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertCount(2, $bog->getMedia());
@@ -227,7 +227,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogDates(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertSame('2024-02-20', $bog->getCreatedAt()->format('Y-m-d'));
@@ -240,7 +240,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogRawArrays(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         $bog = $this->normalizer->denormalize($data, BogObject::class);
 
         $this->assertIsArray($bog->getFinance());
@@ -255,7 +255,7 @@ class BogObjectNormalizerTest extends TestCase
 
     public function testDenormalizeBogSaleProperty(): void
     {
-        $data = $this->loadFixture('realworks_v2_bog_object.json');
+        $data = $this->loadFixture('realworks_v3_bog_object.json');
         // Override to make it a sale property
         $data['financieel']['overdracht']['koopEnOfHuur']['koopprijs'] = 950000;
         $data['financieel']['overdracht']['koopEnOfHuur']['huurprijs'] = 0;
