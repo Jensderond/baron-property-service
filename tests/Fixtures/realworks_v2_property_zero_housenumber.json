@@ -1,0 +1,40 @@
+{
+    "id": 12347,
+    "adres": {
+        "huisnummer": 0,
+        "huisnummertoevoeging": null,
+        "plaats": "Utrecht",
+        "postcode": "3500AA",
+        "straat": "Landgoed De Bilt"
+    },
+    "algemeen": {
+        "bouwjaar": 0,
+        "energieklasse": null,
+        "woonoppervlakte": 200,
+        "totaleWoonkameroppervlakte": null,
+        "totaleKadestraleOppervlakte": "500"
+    },
+    "financieel": {
+        "overdracht": {
+            "koopconditie": "VRIJ_OP_NAAM",
+            "huurconditie": null,
+            "koopprijs": 1200000,
+            "huurprijs": 0,
+            "status": "ONDER_BOD"
+        }
+    },
+    "teksten": {
+        "eigenSiteTekst": null,
+        "aanbiedingstekst": "Ruim landgoed met veel grond."
+    },
+    "media": [],
+    "detail": {
+        "etages": [],
+        "overigOnroerendGoed": [],
+        "buitenruimte": []
+    },
+    "marketing": {
+        "publicatiedatum": "2024-02-01T08:00:00Z"
+    },
+    "tijdstipLaatsteWijziging": "2024-04-10T16:00:00Z"
+}

@@ -177,6 +177,20 @@
     "phpstan/phpstan": {
         "version": "0.12.99"
     },
+    "phpunit/phpunit": {
+        "version": "10.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "10.0",
+            "ref": "bb22cf8d8c554a623b427d5f3416b538f5525233"
+        },
+        "files": [
+            ".env.test",
+            "phpunit.dist.xml",
+            "tests/bootstrap.php"
+        ]
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -194,6 +208,18 @@
     },
     "rector/rector": {
         "version": "0.11.60"
+    },
+    "sentry/sentry-symfony": {
+        "version": "5.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "5.0",
+            "ref": "f26c577142172082bb3aeef519af6b5944b86ac2"
+        },
+        "files": [
+            "config/packages/sentry.yaml"
+        ]
     },
     "symfony/asset": {
         "version": "v5.3.4"

@@ -1,0 +1,69 @@
+{
+    "id": 12345,
+    "adres": {
+        "huisnummer": 42,
+        "huisnummertoevoeging": "A",
+        "plaats": "Amsterdam",
+        "postcode": "1012AB",
+        "straat": "Keizersgracht"
+    },
+    "algemeen": {
+        "bouwjaar": 1920,
+        "energieklasse": "A_P",
+        "woonoppervlakte": 120,
+        "totaleWoonkameroppervlakte": "85",
+        "totaleKadestraleOppervlakte": "150"
+    },
+    "financieel": {
+        "overdracht": {
+            "koopconditie": "KOSTEN_KOPER",
+            "huurconditie": null,
+            "koopprijs": 750000,
+            "huurprijs": 0,
+            "status": "BESCHIKBAAR"
+        }
+    },
+    "teksten": {
+        "eigenSiteTekst": "Prachtige grachtenwoning in het hart van Amsterdam.",
+        "aanbiedingstekst": "Mooie woning aan de gracht."
+    },
+    "media": [
+        {
+            "soort": "FOTO",
+            "url": "https://example.com/photo1.jpg",
+            "volgnummer": 1
+        },
+        {
+            "soort": "HOOFDFOTO",
+            "url": "https://example.com/main.jpg",
+            "volgnummer": 0
+        },
+        {
+            "soort": "FOTO",
+            "url": "https://example.com/photo2.jpg",
+            "volgnummer": 2
+        }
+    ],
+    "detail": {
+        "etages": [
+            {
+                "aantalSlaapkamers": 2,
+                "aantalKamers": 4
+            },
+            {
+                "aantalSlaapkamers": 1,
+                "aantalKamers": 2
+            }
+        ],
+        "overigOnroerendGoed": [
+            {"type": "GARAGE"}
+        ],
+        "buitenruimte": [
+            {"type": "TUIN", "oppervlakte": 50}
+        ]
+    },
+    "marketing": {
+        "publicatiedatum": "2024-01-15T10:00:00Z"
+    },
+    "tijdstipLaatsteWijziging": "2024-06-01T14:30:00Z"
+}
