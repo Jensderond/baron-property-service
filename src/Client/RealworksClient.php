@@ -27,7 +27,7 @@ class RealworksClient implements PropertyClientInterface
             'headers' => ['Authorization' => $_ENV['REALWORKS_PROPERTY_TOKEN']],
         ]);
 
-        return $this->fetchPaginated($client, '/wonen/v2/objecten?actief=all');
+        return $this->fetchPaginated($client, '/wonen/v3/objecten?actief=all');
     }
 
     /**
@@ -64,7 +64,7 @@ class RealworksClient implements PropertyClientInterface
             'headers' => ['Authorization' => $_ENV['REALWORKS_BOG_TOKEN']],
         ]);
 
-        return $this->fetchPaginated($client, '/bog/v2/objecten?actief=all');
+        return $this->fetchPaginated($client, '/bog/v3/objecten?actief=all');
     }
 
     private function fetchPaginated(HttpClientInterface $client, string $baseUrl): string
