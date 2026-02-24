@@ -1,0 +1,487 @@
+{
+  "external_id": 625443,
+  "title": "PleXat (bedrijfsunits) , SINT-ANNALAND",
+  "diversen": {
+    "tiaraObjectGuid": null,
+    "woonoppervlak": "",
+    "situatie": null,
+    "tiaraObjectId": null,
+    "eigenBelang": false,
+    "collegialeInformatie": "",
+    "transactietoelichting": "",
+    "informatieplicht": [],
+    "bouwjaaromschrijving2": "",
+    "bouwjaaromschrijving3": "",
+    "vertrouwelijk": false,
+    "bouwjaar2": "",
+    "bouwjaar3": "",
+    "bouwjaar4": "",
+    "bouwjaar5": "",
+    "bouwjaaromschrijving4": "",
+    "bouwjaaromschrijving5": "",
+    "actief": false,
+    "bouwvorm": "BESTAANDE_BOUW",
+    "wijzigingsdatum": "2025-12-10 15:47:39",
+    "objectcode": "B100002",
+    "invoerdatum": "2024-01-09",
+    "afdelingscode": "938516",
+    "status": "GEEN_WOONRUIMTE_AANWEZIG",
+    "type": null
+  },
+  "category": "Koop",
+  "city": "SINT-ANNALAND",
+  "country": "Nederland",
+  "zip_code": "4697 RZ",
+  "street": "PleXat (bedrijfsunits)",
+  "main_function": "Bedrijfsruimte",
+  "status": "VERKOCHT",
+  "media": [
+    {
+      "soort": "HOOFDFOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938923.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938923.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938923.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938931.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938931.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938931.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 3,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938943.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938943.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938943.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 4,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941541.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941541.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941541.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 5,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938973.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938973.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938973.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 6,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/170053721.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/170053721.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/170053721.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 7,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960441.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960441.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960441.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 9,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938959.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938959.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938959.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 10,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/170053695.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/170053695.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/170053695.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 11,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960437.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960437.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960437.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 12,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960617.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960617.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960617.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 13,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960493.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960493.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960493.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 14,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960501.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960501.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169960501.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 15,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941975.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941975.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941975.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 16,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942113.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942113.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942113.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 17,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942129.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942129.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942129.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 18,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957145.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957145.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957145.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 20,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957053.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957053.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957053.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 21,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942115.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942115.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169942115.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 22,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957181.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957181.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957181.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 23,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941937.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941937.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941937.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 24,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957091.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957091.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169957091.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 25,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941807.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941807.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169941807.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 26,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169939119.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169939119.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169939119.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    }
+  ],
+  "image": {
+    "1x": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938923.jpg-401x267.webp",
+    "2x": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/169938923.jpg-802x534.webp"
+  },
+  "description": "ONDERNEMEN EN INVESTEREN IN PLEXAT \n\nBent u ondernemer, zzp’er, particulier of belegger en op zoek naar een bedrijfsruimte of onderhoudsvrije opslagruimte? Dan bent u bij PleXat op het juiste adres! \n\nOp het bedrijventerrein van Sint-Annaland worden 28 representatieve bedrijfsunits gerealiseerd (vanaf 27 m2), welke te gebruiken zijn voor verschillende doeleinden. De modulaire bedrijfsunits kunnen zelfs gekoppeld worden, waardoor u grotere ruimtes kunt creëren.   \n\nDe bedrijfsunits zijn voor veel doeleinden te gebruiken, zoals bijvoorbeeld een opslagruimte, werkplaats, webwinkel, hobby- of atelierruimte, stalling of als investering. \n\nDe bedrijfsunits zijn gelegen op een afgesloten terrein, wat wordt voorzien van een elektrische toegangspoort en 24/7 camerabeveiliging. Bij de toegangspoort (aan de voorzijde van het terrein) komt uw eigen brievenbus met mogelijkheid tot het hebben van een logoaanduiding, zodat u zelfs de bedrijfsunit als postadres kunt opgeven. \n\nWelke voorzieningen u in de bedrijfsunit wilt, hangt volledig af waar u de unit voor gaat gebruiken. Daarom zijn er naast de basisvoorzieningen een aantal extra keuzeopties opgenomen in de standaardoptielijst. Denk bijvoorbeeld aan het koppelen van twee of meer bedrijfsunits, extra daglicht door een lichtkoepel in het dak, een raam of deur in de sectionaaldeur. In de optielijst heeft u meerdere mogelijkheden om extra voorzieningen te realiseren in uw bedrijfsunit.\n\nBinnen het nieuwbouwproject worden twee type bedrijfsunits verkocht, te weten: \n•   2x type A: bruto afmetingen 8,99 x 2,98 x 3,48 (l x b x h)\n• 26x type B: bruto afmetingen 8,99 x 3,48 x 3,48 (l x b x h)\n\n \nBELEGGEN IN PLEXAT\n\nWilt u veilig beleggen in vastgoed met een bruto start rendement van 7,5%?* Dan is investeren in een bedrijfsunit van PleXat een goede mogelijkheid!\n\nDoor de stijgende vraag naar bedrijfsunits in de regio en de grote doelgroep, zijn de units goed verhuurbaar. Het bruto rendement kan met de indexatie van de huur zelfs verder toenemen. Daarnaast zijn de bedrijfsunits onderhoudsarm en waardevast! \n\n\nOVER SINT-ANNALAND\n\nSint-Annaland, ook wel ‘Stalland’ genoemd, ligt op het eiland Tholen. De bereikbaarheid van Tholen is uitstekend door de A4. Zo bent u binnen no-time in steden, zoals Rotterdam, Breda, Antwerpen en Goes. Door de centrale ligging in de Zuidwestelijke Delta, ligt de haven van Sint-Annaland daarnaast in directe verbinding met o.a. de Oosterschelde en de Krammer. \n\nDe afgelopen jaren is Sint-Annaland flink aan het uitbreiden. Er is meer ruimte gekomen voor ondernemers door de groei van het industrieterrein. Inmiddels is deze locatie een verzamelplaats van (startende) ondernemers en toonaangevende bedrijven. Daarnaast groeit Sint-Annaland ook op het gebied van inwoners door de komst van nieuwbouwwijken en appartementencomplexen. Dit maakt het een interessante investeringslocatie op korte- en lange termijn! \n\n\nHUIDIGE BESCHIKBAARHEID \n\n100% verkocht! Van de 28 bedrijfsunits is er geen enkele bedrijfsunit meer beschikbaar. \n\nHeeft u vragen of wilt u meer informatie en/of documentatie ontvangen over de aankoop van een bedrijfsunit? Neem contact op met nieuwbouwmakelaar BARON.  \n\n* Disclaimer: Het rendement is op basis van een rendementsberekening en bieden geen garantie voor de toekomst. Deze berekening is puur en alleen een grove indicatie en is afhankelijk van de economie. Waardestijgingen vastgoed zijn hier nog niet in meegenomen, maar kunnen voor een extra ROI zorgen.",
+  "finance": {
+    "overdracht": {
+      "koopEnOfHuur": {
+        "servicekostenBtwBelast": null,
+        "koopprijsCollegiaalTonen": true,
+        "huurprijsCollegiaalTonen": null,
+        "veilingVanafprijs": null,
+        "veilingZoekprijs": null,
+        "veilingStartdatumEnTijd": null,
+        "veilingEinddatumEnTijd": null,
+        "veilingSiteadres": "",
+        "servicekostenconditie": null,
+        "bouwrente": false,
+        "huurprijstype": null,
+        "veilingssoort": null,
+        "veilingstype": null,
+        "veilingSitenaam": "",
+        "aanmeldingsreden": "IN_VERKOOP_GENOMEN",
+        "koopprijsvoorvoegsel": "VRAAGPRIJS",
+        "aanvaardingsdatum": null,
+        "koopconditie": "VRIJ_OP_NAAM",
+        "koopprijs": 47500,
+        "huurconditie": null,
+        "huurprijs": 0,
+        "servicekosten": null,
+        "aanvaarding": "IN_OVERLEG",
+        "wozWaarde": null,
+        "aanvaardingstoelichting": "",
+        "wozWaardePeildatum": null,
+        "huurprijsvoorvoegsel": null,
+        "huurprijsTot": null,
+        "btwVanToepassing": true
+      },
+      "transactie": {
+        "bedrijfshalTransactieprijs": null,
+        "terreinTransactieprijs": null,
+        "kantoorruimteTransactieprijs": null,
+        "ondertekeningsdatum": "2024-10-14",
+        "overeenkomstduur": "",
+        "beleggerNationaliteit": null,
+        "publicatieTransactie": true,
+        "vestigingsreden": null,
+        "transactiedatum": null,
+        "beleggertype": null,
+        "saleEnLeaseback": false,
+        "verhuurprijsconditie": "PER_MAAND",
+        "transactieprijsconditie": "VRIJ_OP_NAAM",
+        "datumOnderVoorbehoudVanaf": null,
+        "datumOnderVoorbehoudTot": null,
+        "verkochtOnderVoorbehoudConditie": null,
+        "verhuurdOnderVoorbehoudConditie": null,
+        "prijsOndervoorbehoud": null,
+        "aantalMaandenIncentives": null,
+        "contanteWaardeIncentives": null,
+        "transactieOppervlakte": 27,
+        "sbiCode": [],
+        "transactieTerOvernameBtwBelast": null,
+        "transactieTerOvernamePersoneel": null,
+        "transactieTerOvernameprijs": null,
+        "transportdatum": null,
+        "transactieprijs": 47500,
+        "incentives": null
+      }
+    }
+  },
+  "price": 47500,
+  "build_year": 2024,
+  "slug": "plexat-bedrijfsunits-sint-annaland-625443",
+  "facilities": "Overheaddeuren",
+  "archived": false,
+  "price_condition": "v.o.n.",
+  "accessibility": "Bushalte op 1500 m tot 2000 m",
+  "parking": {
+    "overdekteParkeerplaatsenPrijs": null,
+    "overdekteParkeerplaatsenAantal": null,
+    "overdekteParkeerplaatsenBtw": false,
+    "nietOverdekteParkeerplaatsenBtw": false,
+    "parkeerfaciliteiten": "",
+    "nietOverdekteParkeerplaatsenAantal": "",
+    "nietOverdekteParkeerplaatsenPrijs": null
+  },
+  "local_amentities": "Restaurant op 1000 m tot 1500 m, Winkel op 1000 m tot 1500 m en Bank op 1000 m tot 1500 m",
+  "plot": "31",
+  "functions": [
+    {
+      "bedrijfsruimte": {
+        "bedrijfsruimteKantoorruimte": {
+          "kantoorruimteLuchtbehandeling": [],
+          "kantoorruimteVoorzieningen": [],
+          "kantoorruimteOppervlakte": null,
+          "kantoorruimteAantalVerdiepingen": null,
+          "kantoorruimtePrijs": null,
+          "kantoorruimteBtwBelast": null
+        },
+        "bedrijfshal": {
+          "oppervlakte": 31,
+          "unitsVanaf": 0,
+          "kantoorruimteAanwezig": false,
+          "bedrijfshalVrijeHoogte": 324,
+          "bedrijfshalVrijeOverspanning": null,
+          "bedrijfshalVrijeVloerbelasting": null,
+          "bedrijfshalLuchtbehandelingen": [],
+          "bedrijfshalVoorzieningen": [
+            "OVERHEADDEUREN"
+          ],
+          "bedrijfshalPrijs": 47500,
+          "bedrijfshalBtwBelast": true,
+          "logistiekeFunctie": false,
+          "terreinAanwezig": false
+        },
+        "terrein": {
+          "terreinUitbreidingsmogelijkheidtype": null,
+          "terreinOppervlakte": null,
+          "terreinUitbreidingsmogelijkheid": null,
+          "terreinBouwhoogte": null,
+          "terreinBtwBelast": false,
+          "terreinPrijs": null
+        }
+      },
+      "actief": true,
+      "wijzigingsdatum": "2024-05-16 14:20:31",
+      "invoerdatum": "2024-01-09 10:29:05",
+      "type": "BEDRIJFSRUIMTE"
+    }
+  ],
+  "lat": 41,
+  "lng": 4,
+  "readable_status": "Verkocht",
+  "kadaster": [
+    {
+      "kadastergegevens": {
+        "perceel": "1343",
+        "einddatum": null,
+        "erfpachtprijsvorm": null,
+        "afkoopoptie": null,
+        "afgekochtTot": null,
+        "erfpachtPerJaar": null,
+        "gemeente": "Tholen",
+        "gemeentecode": "",
+        "sectie": "AN",
+        "erfpachtduur": null,
+        "indexnummer": "",
+        "aandeel": "",
+        "omvang": "GEHEEL_PERCEEL",
+        "eigendomssoort": null,
+        "eeuwigAfgekocht": false,
+        "erfpachtgever": null,
+        "oppervlakte": 27,
+        "wijzigingsdatum": "2024-02-05 16:00:07",
+        "invoerdatum": "2024-02-05"
+      }
+    }
+  ],
+  "formatted_price": "€ 47.500 v.o.n."
+}

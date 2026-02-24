@@ -1,0 +1,28 @@
+{
+  "filters": {
+    "categories": [
+      "Huur",
+      "Koop"
+    ],
+    "cities": [
+      "Bergen op Zoom",
+      "Bruinisse",
+      "Dinteloord",
+      "Halsteren",
+      "Oud Gastel",
+      "Oud-Vossemeer",
+      "Roosendaal",
+      "SINT Philipsland",
+      "Sint-Annaland",
+      "Sint-Maartensdijk",
+      "Tholen"
+    ],
+    "statusses": [
+      "BESCHIKBAAR",
+      "VERHUURD",
+      "VERHUURD_ONDER_VOORBEHOUD",
+      "VERKOCHT",
+      "VERKOCHT_ONDER_VOORBEHOUD"
+    ]
+  }
+}
