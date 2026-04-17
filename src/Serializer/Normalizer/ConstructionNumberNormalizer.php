@@ -12,12 +12,12 @@ class ConstructionNumberNormalizer implements NormalizerInterface
     {
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === ConstructionNumber::class; // Adjust the namespace accordingly
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof ConstructionNumber; // Adjust the namespace accordingly
     }
@@ -25,7 +25,7 @@ class ConstructionNumberNormalizer implements NormalizerInterface
     /**
      * @param  ConstructionNumber  $number
      */
-    public function normalize($number, ?string $format = null, array $context = [])
+    public function normalize($number, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->objectNormalizer->normalize($number, $format, $context);
 

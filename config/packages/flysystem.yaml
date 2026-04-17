@@ -18,13 +18,11 @@ services:
 flysystem:
     storages:
         public_uploads.storage:
-            adapter: 'local'
             public_url: '%env(APP_BASE_URL)%uploads/'
-            options:
+            local:
                 directory: '%kernel.project_dir%/public/uploads'
         assets.storage:
-            adapter: 'asyncaws'
             public_url: '%env(CLOUDFLARE_ASSETS_URL)%/'
-            options:
+            asyncaws:
                 client: 'cloudflare_r2_client'
                 bucket: '%env(CLOUDFLARE_ASSETS_BUCKET)%'

@@ -19,17 +19,17 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
     {
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === Project::class; // Adjust the namespace accordingly
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Project; // Adjust the namespace accordingly
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         $data['externalId'] = ArrayHelper::safeGet($data, 'project.id');
         $data['algemeen'] = ArrayHelper::safeGet($data, 'project.algemeen', []);
@@ -280,7 +280,7 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
     /**
      * @param  Project  $project
      */
-    public function normalize($project, ?string $format = null, array $context = [])
+    public function normalize($project, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->objectNormalizer->normalize($project, $format, $context);
 

@@ -206,7 +206,7 @@ class PropertyNormalizer implements DenormalizerInterface, NormalizerInterface
         return $data;
     }
 
-    public function supportsDenormalization($data, string $type, ?string $format = null): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === Property::class;
     }
