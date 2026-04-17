@@ -58,7 +58,7 @@ class BogObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             $property->setCountry($country);
         }
 
-        $numberIsZero = ($huisnummer === '0' || $huisnummer === 0) && $property->getHouseNumber() !== null;
+        $numberIsZero = $huisnummer === null || (($huisnummer === '0' || $huisnummer === 0) && $property->getHouseNumber() !== null);
 
         /** Generic */
         if ($numberIsZero) {

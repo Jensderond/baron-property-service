@@ -8,8 +8,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ConstructionNumberNormalizer implements NormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface $objectNormalizer) {
-    }
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface $objectNormalizer) {}
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
@@ -22,28 +21,28 @@ class ConstructionNumberNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param ConstructionNumber $number
+     * @param  ConstructionNumber  $number
      */
     public function normalize($number, ?string $format = null, array $context = [])
     {
         $data = $this->objectNormalizer->normalize($number, $format, $context);
 
-        if(isset($data['algemeen'])) {
+        if (isset($data['algemeen'])) {
             $data['algemeen'] = $number->getAlgemeen();
         }
-        if(isset($data['diversen'])) {
+        if (isset($data['diversen'])) {
             $data['diversen'] = $number->getDiversen();
         }
-        if(isset($data['address'])){
+        if (isset($data['address'])) {
             $data['address'] = $number->getAddress();
         }
-        if(isset($data['financieel'])){
+        if (isset($data['financieel'])) {
             $data['financieel'] = $number->getFinancieel();
         }
-        if(isset($data['detail'])){
+        if (isset($data['detail'])) {
             $data['detail'] = $number->getDetail();
         }
-        if(isset($data['teksten'])){
+        if (isset($data['teksten'])) {
             $data['teksten'] = $number->getTeksten();
         }
 

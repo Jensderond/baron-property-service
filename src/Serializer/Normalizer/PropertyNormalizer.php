@@ -39,7 +39,7 @@ class PropertyNormalizer implements DenormalizerInterface, NormalizerInterface
             $property->setStreet($street);
         }
 
-        $numberIsZero = $property->getHouseNumber() === 0 && $property->getHouseNumber() !== null;
+        $numberIsZero = $property->getHouseNumber() === null || $property->getHouseNumber() === 0;
 
         if ($numberIsZero) {
             $property->setHouseNumber(null);

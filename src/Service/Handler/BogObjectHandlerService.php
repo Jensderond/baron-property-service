@@ -90,8 +90,8 @@ class BogObjectHandlerService extends AbstractHandlerService
      */
     private function checkLatLong(BogObject &$object): void
     {
-        $houseNumber = strtolower(str_replace(' ', '', $object->getHouseNumber()));
-        $numberIsZero = $houseNumber === "0" || null === $houseNumber || $houseNumber === "0ong";
+        $houseNumber = $object->getHouseNumber();
+        $numberIsZero = $houseNumber === null || $houseNumber === '' || strtolower(str_replace(' ', '', $houseNumber)) === "0" || strtolower(str_replace(' ', '', $houseNumber)) === "0ong";
 
         if (!$numberIsZero && (!$object->getLat() || !$object->getLng())) {
             if (($object->getHouseNumber() && !$numberIsZero) && $object->getStreet() && $object->getCity()) {

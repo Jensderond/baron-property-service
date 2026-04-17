@@ -90,7 +90,7 @@ class PropertyHandlerService extends AbstractHandlerService
 
         $count = $propertyRepo->archiveMissing($this->idsInImport);
 
-        $output->writeln("<info>Archived ${count} properties </info>");
+        $output->writeln("<info>Archived {$count} properties </info>");
     }
 
     public function persist(): void

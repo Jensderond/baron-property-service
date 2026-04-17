@@ -3,21 +3,19 @@
 namespace App\Serializer\Normalizer;
 
 use App\Entity\ConstructionNumber;
-use App\Entity\Project;
 use App\Entity\ConstructionType;
-use App\Model\Status;
+use App\Entity\Project;
 use App\Helpers\ArrayHelper;
 use App\Helpers\KeyTranslationsHelper;
+use App\Model\Status;
 use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
+class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
-    {
-    }
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
@@ -31,46 +29,23 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $data['externalId'] = $data['project']['id'];
-        $data['algemeen'] = $data['project']['algemeen'];
-        $data['province'] = $data['project']['algemeen']['provincie'];
-        $data['zipcode'] = $data['project']['algemeen']['postcode'];
-        $data['city'] = $data['project']['algemeen']['plaats'];
-        $data['description'] = $data['teksten']['aanbiedingstekst'];
-        $data['title'] = $data['project']['algemeen']['omschrijving'];
-        if (isset($data['media'])) {
-            $data['media'] = $data['media'];
-        } else {
-            $data['media'] = [];
-        }
+        $data['externalId'] = ArrayHelper::safeGet($data, 'project.id');
+        $data['algemeen'] = ArrayHelper::safeGet($data, 'project.algemeen', []);
+        $data['province'] = ArrayHelper::safeGet($data, 'project.algemeen.provincie', '');
+        $data['zipcode'] = ArrayHelper::safeGet($data, 'project.algemeen.postcode', '');
+        $data['city'] = ArrayHelper::safeGet($data, 'project.algemeen.plaats', '');
+        $data['description'] = ArrayHelper::safeGet($data, 'teksten.aanbiedingstekst', '');
+        $data['title'] = ArrayHelper::safeGet($data, 'project.algemeen.omschrijving', '');
+        $data['media'] = ArrayHelper::safeGet($data, 'media', []);
+        $data['diversen'] = ArrayHelper::safeGet($data, 'project.diversen', []);
 
-        $data['diversen'] = $data['project']['diversen'];
+        $livingAreaFrom = ArrayHelper::safeGet($data, 'project.algemeen.woonoppervlakteVanaf');
+        $livingAreaTo = ArrayHelper::safeGet($data, 'project.algemeen.woonoppervlakteTot');
+        $livingAreaCombined = ArrayHelper::combineAreaValues($livingAreaFrom, $livingAreaTo);
 
-        $livingAreaFrom = $data['project']['algemeen']['woonoppervlakteVanaf'];
-        $livingAreaTo = $data['project']['algemeen']['woonoppervlakteTot'];
-
-        $livingAreaCombined = '';
-
-        if (isset($livingAreaFrom)) {
-            if (isset($livingAreaTo) && $livingAreaFrom !== $livingAreaTo) {
-                $livingAreaCombined = $livingAreaFrom . ' tot ' . $livingAreaTo;
-            } else {
-                $livingAreaCombined  = $livingAreaFrom;
-            }
-        }
-
-
-        $plotAreaFrom = $data['project']['algemeen']['perceeloppervlakteVanaf'];
-        $plotAreaTo = $data['algemeen']['perceeloppervlakteTot'];
-        $plotAreaCombined = '';
-
-        if (isset($plotAreaFrom)) {
-            if (isset($plotAreaTo) && $plotAreaFrom !== $plotAreaTo) {
-                $plotAreaCombined = $plotAreaFrom . ' tot ' . $plotAreaTo;
-            } else {
-                $plotAreaCombined = $plotAreaFrom;
-            }
-        }
+        $plotAreaFrom = ArrayHelper::safeGet($data, 'project.algemeen.perceeloppervlakteVanaf');
+        $plotAreaTo = ArrayHelper::safeGet($data, 'project.algemeen.perceeloppervlakteTot');
+        $plotAreaCombined = ArrayHelper::combineAreaValues($plotAreaFrom, $plotAreaTo);
 
         /**
          * Op de aanbodpagina (bij nieuwbouw) mag er dan zo'n zelfde balkje komen als verhuurd/verkocht.
@@ -80,158 +55,204 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
          * Wanneer de opleveringen gestart zijn, mag er opleveringen gestart vermeld worden.
          * Wanneer ik hem op verkocht zet (het totale project, alle bouwnummers), mag dit balkje net als bij de rest verkocht vermeld worden.
          */
-        $dateStartBuilding = $data['project']['algemeen']['datumStartBouw'];
-        $dateStartBuilding = $dateStartBuilding ? new DateTimeImmutable($dateStartBuilding) : null;
-        $dateEndBuilding = $data['project']['algemeen']['opleveringsdatum'];
-        $dateEndBuilding = $dateEndBuilding ? new DateTimeImmutable($dateEndBuilding) : null;
-        $dateStartSelling = $data['project']['algemeen']['datumStartVerkoop'];
-        $dateStartSelling = $dateStartSelling ? new DateTimeImmutable($dateStartSelling) : null;
+        $dateStartBuilding = ArrayHelper::safeGetDate($data, 'project.algemeen.datumStartBouw');
+        $dateEndBuilding = ArrayHelper::safeGetDate($data, 'project.algemeen.opleveringsdatum');
+        $dateStartSelling = ArrayHelper::safeGetDate($data, 'project.algemeen.datumStartVerkoop');
 
-        $dateNow = new DateTimeImmutable();
-        $status = "";
-        if ($dateNow < $dateStartSelling) {
-            $status = "Inschrijving gestart";
-        } elseif ($dateNow < $dateStartBuilding || $dateStartBuilding === null) {
-            $status = "Verkoop gestart";
-        } elseif ($dateNow < $dateEndBuilding || $dateEndBuilding === null) {
-            $status = "Bouw gestart";
-        } elseif ($dateNow > $dateEndBuilding) {
-            $status = "Oplevering gestart";
+        $dateNow = new DateTimeImmutable;
+        $status = '';
+        if ($dateStartSelling && $dateNow < $dateStartSelling) {
+            $status = 'Inschrijving gestart';
+        } elseif ($dateStartBuilding === null || $dateNow < $dateStartBuilding) {
+            $status = 'Verkoop gestart';
+        } elseif ($dateEndBuilding === null || $dateNow < $dateEndBuilding) {
+            $status = 'Bouw gestart';
+        } elseif ($dateEndBuilding && $dateNow > $dateEndBuilding) {
+            $status = 'Oplevering gestart';
         }
-        if ($data['project']['algemeen']['status'] === 'VERKOCHT') {
-            $status = "Verkocht";
+        if (ArrayHelper::safeGet($data, 'project.algemeen.status') === 'VERKOCHT') {
+            $status = 'Verkocht';
         }
 
-        $project = new Project();
+        $project = new Project;
         $project->setExternalId($data['externalId']);
         $project->setAlgemeen($data['algemeen']);
         $project->setArchived(false);
-        $project->setStatus($data['algemeen']['status']);
+        $project->setStatus(ArrayHelper::safeGet($data['algemeen'], 'status', ''));
         $project->setReadableStatus($status);
         $project->setProvince($data['province']);
         $project->setZipcode($data['zipcode']);
         $project->setCity($data['city']);
         $project->setDescription($data['description']);
         if ($data['city']) {
-            $project->setTitle($data['title'] . ', ' . $data['city']);
+            $project->setTitle($data['title'].', '.$data['city']);
         } else {
             $project->setTitle($data['title']);
         }
-        $project->setCategory(KeyTranslationsHelper::projectCategory($data['algemeen']['koopOfHuur']));
+        $koopOfHuur = ArrayHelper::safeGet($data['algemeen'], 'koopOfHuur', '');
+        if ($koopOfHuur) {
+            $project->setCategory(KeyTranslationsHelper::projectCategory($koopOfHuur));
+        }
 
         /** Media */
-        $mainImage = array_filter($data['media'], function ($media) {
-            return $media['soort'] === 'HOOFDFOTO';
-        });
-
-        // get first item in $mainImage array
-        $mainImage = array_values($mainImage);
+        $mediaArray = $data['media'];
+        $mainImage = [];
+        if (is_array($mediaArray) && ! empty($mediaArray)) {
+            $mainImage = array_filter($mediaArray, function ($media) {
+                return is_array($media) && ($media['soort'] ?? '') === 'HOOFDFOTO';
+            });
+            $mainImage = array_values($mainImage);
+        }
 
         if (isset($mainImage[0])) {
             $project->setMainImage([$mainImage[0]]);
         } else {
-            $project->setMainImage($data['media'][0] ?: null);
+            $project->setMainImage($mediaArray[0] ?? null);
         }
 
-        $project->setMedia($data['media']);
-        ArrayHelper::sort($data['media']);
-        $project->setMediaHash(md5(json_encode($data['media'])));
+        $project->setMedia($mediaArray);
+        if (is_array($mediaArray)) {
+            ArrayHelper::sort($mediaArray);
+            $project->setMediaHash(md5(json_encode($mediaArray)));
+        } else {
+            $project->setMediaHash('');
+        }
         $project->setDiversen($data['diversen']);
-        $project->setCreatedAt(new DateTimeImmutable($data['marketing']['publicatiedatum']));
-        $project->setUpdatedAt(new DateTimeImmutable($data['tijdstipLaatsteWijziging']));
+        $project->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new DateTimeImmutable));
+        $project->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new DateTimeImmutable));
         $project->setLivingArea($livingAreaCombined);
         $project->setPlot($plotAreaCombined);
 
         $lowestNumberOfRooms = 0;
         $highestNumberOfRooms = 0;
 
-        foreach ($data['bouwtypen'] as $bouwType) {
-            $type = new ConstructionType();
-            $type->setExternalId($bouwType['id']);
-            $type->setTitle($bouwType['algemeen']['omschrijving']);
-            $type->setMedia($bouwType['media']);
-            $type->setAlgemeen($bouwType['algemeen']);
-            $type->setTeksten($bouwType['teksten']);
+        $bouwtypen = ArrayHelper::safeGet($data, 'bouwtypen', []);
+        if (! is_array($bouwtypen)) {
+            $bouwtypen = [];
+        }
+
+        foreach ($bouwtypen as $bouwType) {
+            if (! is_array($bouwType)) {
+                continue;
+            }
+            $type = new ConstructionType;
+            $type->setExternalId(ArrayHelper::safeGet($bouwType, 'id'));
+            $type->setTitle(ArrayHelper::safeGet($bouwType, 'algemeen.omschrijving', ''));
+            $type->setMedia(ArrayHelper::safeGet($bouwType, 'media', []));
+            $type->setAlgemeen(ArrayHelper::safeGet($bouwType, 'algemeen', []));
+            $type->setTeksten(ArrayHelper::safeGet($bouwType, 'teksten', []));
 
             $totalRooms = 0;
-            $etages = $bouwType['detail']['etages'];
-            foreach ($etages as $etage) {
-                $totalRooms += $etage['aantalKamers'];
+            $etages = ArrayHelper::safeGet($bouwType, 'detail.etages', []);
+            if (is_array($etages)) {
+                foreach ($etages as $etage) {
+                    if (is_array($etage)) {
+                        $totalRooms += ArrayHelper::safeGetNumeric($etage, 'aantalKamers', 0);
+                    }
+                }
             }
             $type->setRooms($totalRooms);
 
-            if (isset($bouwType['algemeen']['woonhuistype']) || isset($bouwType['algemeen']['appartementsoort'])) {
-                $type->setType(KeyTranslationsHelper::houseType($bouwType['algemeen']['woonhuistype'] ?? $bouwType['algemeen']['appartementsoort']));
+            $woonhuistype = ArrayHelper::safeGet($bouwType, 'algemeen.woonhuistype');
+            $appartementsoort = ArrayHelper::safeGet($bouwType, 'algemeen.appartementsoort');
+            if ($woonhuistype || $appartementsoort) {
+                $type->setType(KeyTranslationsHelper::houseType($woonhuistype ?? $appartementsoort));
             }
 
-
-            $typeLivingAreaFrom = $bouwType['algemeen']['woonoppervlakteVanaf'];
-            $typeLivingAreaTo = $bouwType['algemeen']['woonoppervlakteTot'];
-
-            if (isset($typeLivingAreaFrom)) {
-                if (isset($typeLivingAreaTo) && $typeLivingAreaFrom !== $typeLivingAreaTo) {
-                    $type->setLivingArea($typeLivingAreaFrom . ' tot ' . $typeLivingAreaTo);
-                } else {
-                    $type->setLivingArea($typeLivingAreaFrom);
-                }
+            $typeLivingAreaFrom = ArrayHelper::safeGet($bouwType, 'algemeen.woonoppervlakteVanaf');
+            $typeLivingAreaTo = ArrayHelper::safeGet($bouwType, 'algemeen.woonoppervlakteTot');
+            $typeLivingArea = ArrayHelper::combineAreaValues($typeLivingAreaFrom, $typeLivingAreaTo);
+            if ($typeLivingArea) {
+                $type->setLivingArea($typeLivingArea);
             }
 
-            foreach ($bouwType['bouwnummers'] as $number) {
-                $constructionNumber = new ConstructionNumber();
-                $constructionNumber->setExternalId($number['id']);
-                $constructionNumber->setTitle($number['adres']['straat']);
-                $constructionNumber->setAddress($number['adres']);
-                $constructionNumber->setAlgemeen($number['algemeen']);
-                $constructionNumber->setFinancieel($number['financieel']);
-                $constructionNumber->setStatus($number['financieel']['overdracht']['status']);
-                $constructionNumber->setReadableStatus(KeyTranslationsHelper::status($number['financieel']['overdracht']['status']));
-                if (isset($number['algemeen']['energieklasse'])) {
-                    $constructionNumber->setEnergyClass(KeyTranslationsHelper::energyClass($number['algemeen']['energieklasse']));
+            $bouwnummers = ArrayHelper::safeGet($bouwType, 'bouwnummers', []);
+            if (is_array($bouwnummers)) {
+                foreach ($bouwnummers as $number) {
+                    if (! is_array($number)) {
+                        continue;
+                    }
+
+                    $constructionNumber = new ConstructionNumber;
+                    $constructionNumber->setExternalId(ArrayHelper::safeGet($number, 'id'));
+                    $constructionNumber->setTitle(ArrayHelper::safeGet($number, 'adres.straat', ''));
+                    $constructionNumber->setAddress(ArrayHelper::safeGet($number, 'adres', []));
+                    $constructionNumber->setAlgemeen(ArrayHelper::safeGet($number, 'algemeen', []));
+                    $constructionNumber->setFinancieel(ArrayHelper::safeGet($number, 'financieel', []));
+
+                    $status = ArrayHelper::safeGet($number, 'financieel.overdracht.status', '');
+                    $constructionNumber->setStatus($status);
+                    if ($status) {
+                        $constructionNumber->setReadableStatus(KeyTranslationsHelper::status($status));
+                    }
+
+                    $energyClass = ArrayHelper::safeGet($number, 'algemeen.energieklasse');
+                    if ($energyClass) {
+                        $constructionNumber->setEnergyClass(KeyTranslationsHelper::energyClass($energyClass));
+                    }
+
+                    $description = ArrayHelper::safeGet($number, 'teksten.aanbiedingstekst');
+                    if ($description) {
+                        $constructionNumber->setDescription($description);
+                    }
+
+                    $constructionNumber->setTeksten(ArrayHelper::safeGet($number, 'teksten', []));
+                    $constructionNumber->setDiversen(ArrayHelper::safeGet($number, 'diversen', []));
+                    $constructionNumber->setDetail(ArrayHelper::safeGet($number, 'detail', []));
+
+                    $numberMedia = ArrayHelper::safeGet($number, 'media', []);
+                    if (is_array($numberMedia)) {
+                        ArrayHelper::sort($numberMedia);
+                        $constructionNumber->setMedia($numberMedia);
+                        $constructionNumber->setMediaHash(md5(json_encode($numberMedia)));
+                    } else {
+                        $constructionNumber->setMedia([]);
+                        $constructionNumber->setMediaHash('');
+                    }
+
+                    $constructionNumber->setUpdatedAt(ArrayHelper::safeGetDate($number, 'diversen.diversen.wijzigingsdatum', new DateTimeImmutable));
+
+                    $totalCNRooms = 0;
+                    $totalCNBedrooms = 0;
+
+                    $numberEtages = ArrayHelper::safeGet($number, 'detail.etages', []);
+                    if (is_array($numberEtages)) {
+                        foreach ($numberEtages as $etage) {
+                            if (is_array($etage)) {
+                                $totalCNRooms += ArrayHelper::safeGetNumeric($etage, 'aantalKamers', 0);
+                                $totalCNBedrooms += ArrayHelper::safeGetNumeric($etage, 'aantalSlaapkamers', 0);
+                            }
+                        }
+                    }
+
+                    $koopprijs = ArrayHelper::safeGetNumeric($number, 'financieel.overdracht.koopprijs', 0);
+                    $huurprijs = ArrayHelper::safeGetNumeric($number, 'financieel.overdracht.huurprijs', 0);
+                    $price = $koopprijs ?: $huurprijs;
+                    $constructionNumber->setPrice(
+                        new \Money\Money($price * 100, new \Money\Currency('EUR'))
+                    );
+
+                    $koopconditie = ArrayHelper::safeGet($number, 'financieel.overdracht.koopconditie');
+                    $huurconditie = ArrayHelper::safeGet($number, 'financieel.overdracht.huurconditie');
+                    $conditie = $koopconditie ?? $huurconditie;
+                    if ($conditie) {
+                        $constructionNumber->setPriceCondition(match ($conditie) {
+                            'PER_JAAR' => 'p.j.',
+                            'PER_MAAND' => 'p.m.',
+                            'KOSTEN_KOPER' => 'k.k.',
+                            'VRIJ_OP_NAAM' => 'v.o.n.',
+                            default => ''
+                        });
+                    }
+
+                    $constructionNumber->setRooms($totalCNRooms);
+                    $constructionNumber->setBedrooms($totalCNBedrooms);
+                    $constructionNumber->setConstructionType($type);
+                    $constructionNumber->setLivingArea(ArrayHelper::safeGet($number, 'algemeen.woonoppervlakte', ''));
+                    $constructionNumber->createSlug();
+
+                    $type->addConstructionNumber($constructionNumber);
                 }
-
-                if (isset($number['teksten']['aanbiedingstekst'])) {
-                    $constructionNumber->setDescription($number['teksten']['aanbiedingstekst']);
-                }
-
-                $constructionNumber->setTeksten($number['teksten']);
-                $constructionNumber->setDiversen($number['diversen']);
-                $constructionNumber->setDetail($number['detail']);
-                ArrayHelper::sort($number['media']);
-                $constructionNumber->setMedia($number['media']);
-                $constructionNumber->setMediaHash(md5(json_encode($number['media'])));
-                $constructionNumber->setUpdatedAt(new DateTimeImmutable($number['diversen']['diversen']['wijzigingsdatum']));
-
-                $totalCNRooms = 0;
-                $totalCNBedrooms = 0;
-
-                $etages = $number['detail']['etages'];
-
-                foreach ($etages as $etage) {
-                    $totalCNRooms += $etage['aantalKamers'];
-                    $totalCNBedrooms += $etage['aantalSlaapkamers'];
-                }
-
-                $constructionNumber->setPrice(
-                    new \Money\Money(($number['financieel']['overdracht']['koopprijs'] ?: $number['financieel']['overdracht']['huurprijs']) * 100, new \Money\Currency('EUR'))
-                );
-
-                if (isset($number['financieel']['overdracht']['koopconditie']) || isset($number['financieel']['overdracht']['huurconditie'])) {
-                    $constructionNumber->setPriceCondition(match ($number['financieel']['overdracht']['koopconditie'] ?? $number['financieel']['overdracht']['huurconditie']) {
-                        // huur: PER_JAAR, PER_MAAND
-                        'PER_JAAR' => 'p.j.',
-                        'PER_MAAND' => 'p.m.',
-                        // Koop: KOSTEN_KOPER, VRIJ_OP_NAAM
-                        'KOSTEN_KOPER' => 'k.k.',
-                        'VRIJ_OP_NAAM' => 'v.o.n.',
-                    });
-                }
-                $constructionNumber->setRooms($totalCNRooms);
-                $constructionNumber->setBedrooms($totalCNBedrooms);
-                $constructionNumber->setConstructionType($type);
-                $constructionNumber->setLivingArea($number['algemeen']['woonoppervlakte']);
-                $constructionNumber->createSlug();
-
-                $type->addConstructionNumber($constructionNumber);
             }
 
             if ($type->getRooms() > $highestNumberOfRooms) {
@@ -246,7 +267,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
         }
 
         if ($lowestNumberOfRooms !== $highestNumberOfRooms) {
-            $project->setRooms($lowestNumberOfRooms . ' tot ' . $highestNumberOfRooms);
+            $project->setRooms($lowestNumberOfRooms.' tot '.$highestNumberOfRooms);
         } else {
             $project->setRooms($lowestNumberOfRooms);
         }
@@ -255,7 +276,7 @@ class ProjectNormalizer implements NormalizerInterface, DenormalizerInterface
     }
 
     /**
-     * @param Project $project
+     * @param  Project  $project
      */
     public function normalize($project, ?string $format = null, array $context = [])
     {
