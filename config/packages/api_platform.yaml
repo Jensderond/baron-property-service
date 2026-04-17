@@ -6,7 +6,6 @@ api_platform:
     formats:
         jsonld: ['application/ld+json']
         json: ['application/json']
-        html: ['text/html']
     patch_formats:
         json: ['application/merge-patch+json']
     name_converter: 'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'
