@@ -2,7 +2,7 @@
 
 namespace App\State;
 
-use ApiPlatform\Action\NotFoundAction;
+use ApiPlatform\Symfony\Action\NotFoundAction;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
