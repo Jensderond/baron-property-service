@@ -4,13 +4,13 @@ namespace App\State;
 
 use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
-use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\ConstructionNumber;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ConstructionNumberRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ConstructionNumberProvider implements ProviderInterface
 {
@@ -28,7 +28,7 @@ class ConstructionNumberProvider implements ProviderInterface
         /** @var ConstructionNumberRepository $constructionNumberRepository */
         $constructionNumberRepository = $this->entityManager->getRepository(ConstructionNumber::class);
 
-        if(!is_numeric($uriVariables['id'])) {
+        if (!is_numeric($uriVariables['id'])) {
             return new NotFoundAction();
         }
 
@@ -38,7 +38,7 @@ class ConstructionNumberProvider implements ProviderInterface
 
         $number = $constructionNumberRepository->matching($criteria)->first();
 
-        if(!$number) {
+        if (!$number) {
             return new NotFoundAction();
         }
 

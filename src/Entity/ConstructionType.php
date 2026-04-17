@@ -2,22 +2,22 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\GraphQl\QueryCollection;
-use ApiPlatform\Metadata\GraphQl\Query;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\GraphQl\Query;
+use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Model\Status;
 use App\Repository\ConstructionTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ReflectionClass;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use ReflectionClass;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: ConstructionTypeRepository::class)]
@@ -102,34 +102,6 @@ class ConstructionType
     {
         $this->map($newType);
         $this->updateConstructionNumbers($newType->getConstructionNumbers());
-    }
-
-    /**
-     * @param Collection<int, ConstructionNumber> $newNumbers
-     */
-    private function updateConstructionNumbers(Collection $newNumbers)
-    {
-        foreach ($newNumbers as $newNumber) {
-            /** @var ConstructionNumber|null $existingNumber */
-            $existingNumber = $this->constructionNumbers->filter(function ($number) use ($newNumber) {
-                return $number->getExternalId() === $newNumber->getExternalId();
-            })->first();
-
-            if ($existingNumber) {
-                $existingNumber->updateFromNewNumber($newNumber);
-            } else {
-                $newNumber->setConstructionType($this);
-                $this->constructionNumbers->add($newNumber);
-            }
-        }
-
-        foreach ($this->constructionNumbers as $existingNumber) {
-            if (!$newNumbers->exists(function ($key, $number) use ($existingNumber) {
-                return $number->getExternalId() === $existingNumber->getExternalId();
-            })) {
-                $this->constructionNumbers->removeElement($existingNumber);
-            }
-        }
     }
 
 
@@ -330,5 +302,33 @@ class ConstructionType
         return $this->getConstructionNumbers()->findFirst(function ($key, $number) {
             return $number->getStatus() === Status::AVAILABLE->value;
         }) !== null;
+    }
+
+    /**
+     * @param Collection<int, ConstructionNumber> $newNumbers
+     */
+    private function updateConstructionNumbers(Collection $newNumbers)
+    {
+        foreach ($newNumbers as $newNumber) {
+            /** @var ConstructionNumber|null $existingNumber */
+            $existingNumber = $this->constructionNumbers->filter(function ($number) use ($newNumber) {
+                return $number->getExternalId() === $newNumber->getExternalId();
+            })->first();
+
+            if ($existingNumber) {
+                $existingNumber->updateFromNewNumber($newNumber);
+            } else {
+                $newNumber->setConstructionType($this);
+                $this->constructionNumbers->add($newNumber);
+            }
+        }
+
+        foreach ($this->constructionNumbers as $existingNumber) {
+            if (!$newNumbers->exists(function ($key, $number) use ($existingNumber) {
+                return $number->getExternalId() === $existingNumber->getExternalId();
+            })) {
+                $this->constructionNumbers->removeElement($existingNumber);
+            }
+        }
     }
 }

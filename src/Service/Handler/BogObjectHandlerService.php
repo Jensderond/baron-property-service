@@ -18,7 +18,8 @@ class BogObjectHandlerService extends AbstractHandlerService
         protected EntityManagerInterface $entityManager,
         protected AddressService $addressService,
         protected MediaService $mediaService
-    ) {}
+    ) {
+    }
 
     /**
      * @param BogObject $model

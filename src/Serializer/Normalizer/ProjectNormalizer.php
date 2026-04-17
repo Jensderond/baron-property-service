@@ -15,7 +15,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
+    {
+    }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {
@@ -59,7 +61,7 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
         $dateEndBuilding = ArrayHelper::safeGetDate($data, 'project.algemeen.opleveringsdatum');
         $dateStartSelling = ArrayHelper::safeGetDate($data, 'project.algemeen.datumStartVerkoop');
 
-        $dateNow = new DateTimeImmutable;
+        $dateNow = new DateTimeImmutable();
         $status = '';
         if ($dateStartSelling && $dateNow < $dateStartSelling) {
             $status = 'Inschrijving gestart';
@@ -74,7 +76,7 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
             $status = 'Verkocht';
         }
 
-        $project = new Project;
+        $project = new Project();
         $project->setExternalId($data['externalId']);
         $project->setAlgemeen($data['algemeen']);
         $project->setArchived(false);
@@ -118,8 +120,8 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
             $project->setMediaHash('');
         }
         $project->setDiversen($data['diversen']);
-        $project->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new DateTimeImmutable));
-        $project->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new DateTimeImmutable));
+        $project->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new DateTimeImmutable()));
+        $project->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new DateTimeImmutable()));
         $project->setLivingArea($livingAreaCombined);
         $project->setPlot($plotAreaCombined);
 
@@ -135,7 +137,7 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
             if (! is_array($bouwType)) {
                 continue;
             }
-            $type = new ConstructionType;
+            $type = new ConstructionType();
             $type->setExternalId(ArrayHelper::safeGet($bouwType, 'id'));
             $type->setTitle(ArrayHelper::safeGet($bouwType, 'algemeen.omschrijving', ''));
             $type->setMedia(ArrayHelper::safeGet($bouwType, 'media', []));
@@ -173,7 +175,7 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
                         continue;
                     }
 
-                    $constructionNumber = new ConstructionNumber;
+                    $constructionNumber = new ConstructionNumber();
                     $constructionNumber->setExternalId(ArrayHelper::safeGet($number, 'id'));
                     $constructionNumber->setTitle(ArrayHelper::safeGet($number, 'adres.straat', ''));
                     $constructionNumber->setAddress(ArrayHelper::safeGet($number, 'adres', []));
@@ -210,7 +212,7 @@ class ProjectNormalizer implements DenormalizerInterface, NormalizerInterface
                         $constructionNumber->setMediaHash('');
                     }
 
-                    $constructionNumber->setUpdatedAt(ArrayHelper::safeGetDate($number, 'diversen.diversen.wijzigingsdatum', new DateTimeImmutable));
+                    $constructionNumber->setUpdatedAt(ArrayHelper::safeGetDate($number, 'diversen.diversen.wijzigingsdatum', new DateTimeImmutable()));
 
                     $totalCNRooms = 0;
                     $totalCNBedrooms = 0;

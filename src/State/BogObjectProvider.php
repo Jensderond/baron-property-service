@@ -4,12 +4,12 @@ namespace App\State;
 
 use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
-use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use App\Entity\BogObject;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\BogObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class BogObjectProvider implements ProviderInterface
 {
@@ -48,7 +48,7 @@ class BogObjectProvider implements ProviderInterface
 
         $project = $bogObjectRepo->findOneBy(['externalId' => $id]);
 
-        if(!$project) {
+        if (!$project) {
             return new NotFoundAction();
         }
 

@@ -4,13 +4,13 @@ namespace App\State;
 
 use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
-use ApiPlatform\Serializer\SerializerContextBuilderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ProjectProvider implements ProviderInterface
 {
@@ -52,7 +52,7 @@ class ProjectProvider implements ProviderInterface
 
         $project = $projectRepo->matching($criteria)->first();
 
-        if(!$project) {
+        if (!$project) {
             return new NotFoundAction();
         }
 

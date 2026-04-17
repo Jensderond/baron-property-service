@@ -17,4 +17,3 @@ enum Status: string
     case CANCELLED = "GEANNULEERD";
     case SOLD_BY_REGISTRATION = "VERKOCHT_BIJ_INSCHRIJVING";
 }
-

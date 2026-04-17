@@ -27,12 +27,6 @@ class ProjectNormalizerTest extends TestCase
         $this->normalizer = new ProjectNormalizer($objectNormalizer);
     }
 
-    private function loadFixture(string $filename): array
-    {
-        $path = __DIR__ . '/../../../Fixtures/' . $filename;
-        return json_decode(file_get_contents($path), true);
-    }
-
     // ========================================================================
     // Project basics
     // ========================================================================
@@ -182,7 +176,7 @@ class ProjectNormalizerTest extends TestCase
         $this->assertCount(2, $numbers);
 
         // First construction number
-        $bn1 = $numbers->filter(fn($n) => $n->getExternalId() === 7001)->first();
+        $bn1 = $numbers->filter(fn ($n) => $n->getExternalId() === 7001)->first();
         $this->assertSame('Havenstraat', $bn1->getTitle());
         $this->assertSame('A++', $bn1->getEnergyClass());
         $this->assertSame(95, $bn1->getLivingArea());
@@ -197,7 +191,7 @@ class ProjectNormalizerTest extends TestCase
         $this->assertSame('39500000', $bn1->getPrice()->getAmount());
 
         // Second construction number - sold
-        $bn2 = $numbers->filter(fn($n) => $n->getExternalId() === 7002)->first();
+        $bn2 = $numbers->filter(fn ($n) => $n->getExternalId() === 7002)->first();
         $this->assertSame('VERKOCHT', $bn2->getStatus());
         $this->assertSame('Verkocht', $bn2->getReadableStatus());
     }
@@ -208,7 +202,7 @@ class ProjectNormalizerTest extends TestCase
         $project = $this->normalizer->denormalize($data, Project::class);
 
         $typeA = $project->getConstructionTypes()->first();
-        $bn1 = $typeA->getConstructionNumbers()->filter(fn($n) => $n->getExternalId() === 7001)->first();
+        $bn1 = $typeA->getConstructionNumbers()->filter(fn ($n) => $n->getExternalId() === 7001)->first();
 
         $this->assertCount(1, $bn1->getMedia());
         $this->assertNotEmpty($bn1->getMediaHash());
@@ -240,5 +234,11 @@ class ProjectNormalizerTest extends TestCase
         $this->assertSame('KOOP', $project->getAlgemeen()['koopOfHuur']);
         $this->assertIsArray($project->getDiversen());
         $this->assertSame('Intern project', $project->getDiversen()['notities']);
+    }
+
+    private function loadFixture(string $filename): array
+    {
+        $path = __DIR__ . '/../../../Fixtures/' . $filename;
+        return json_decode(file_get_contents($path), true);
     }
 }

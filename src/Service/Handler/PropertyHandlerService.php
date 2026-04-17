@@ -63,24 +63,6 @@ class PropertyHandlerService extends AbstractHandlerService
     }
 
     /**
-     * This function checks if the lat and long are set for the given property
-     */
-    private function checkLatLong(Property &$property): void
-    {
-        $numberIsZero = $property->getHouseNumber() === 0 || null === $property->getHouseNumber();
-
-        if (!$numberIsZero && (!$property->getLat() || !$property->getLng())) {
-            if (($property->getHouseNumber() && !$numberIsZero) && $property->getStreet() && $property->getCity()) {
-                $geoData = $this->addressService->getLatLngFromAddress($property->getHouseNumber(), $property->getStreet(), $property->getCity());
-                if($geoData) {
-                    $property->setLat($geoData['lat']);
-                    $property->setLng($geoData['lng']);
-                }
-            }
-        }
-    }
-
-    /**
      * @param OutputInterface $output
      */
     public function archiveItems($output): void
@@ -96,6 +78,24 @@ class PropertyHandlerService extends AbstractHandlerService
     public function persist(): void
     {
         $this->entityManager->flush();
+    }
+
+    /**
+     * This function checks if the lat and long are set for the given property
+     */
+    private function checkLatLong(Property &$property): void
+    {
+        $numberIsZero = $property->getHouseNumber() === 0 || null === $property->getHouseNumber();
+
+        if (!$numberIsZero && (!$property->getLat() || !$property->getLng())) {
+            if (($property->getHouseNumber() && !$numberIsZero) && $property->getStreet() && $property->getCity()) {
+                $geoData = $this->addressService->getLatLngFromAddress($property->getHouseNumber(), $property->getStreet(), $property->getCity());
+                if ($geoData) {
+                    $property->setLat($geoData['lat']);
+                    $property->setLng($geoData['lng']);
+                }
+            }
+        }
     }
 
     private function handlePropertyMainImage(Property $item): array

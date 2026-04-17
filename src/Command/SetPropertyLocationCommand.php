@@ -44,7 +44,7 @@ class SetPropertyLocationCommand extends Command
         $objects = $this->propertyRepository->findAll();
         $objectNames = array_map(function ($object) {
             return $object->getTitle();
-            }, $objects);
+        }, $objects);
 
         // Ask user to select an object
         $objectQuestion = new ChoiceQuestion('Please select a object:', $objectNames);

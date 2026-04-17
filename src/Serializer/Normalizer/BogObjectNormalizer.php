@@ -11,25 +11,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BogObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
-
-    private function addFacilities(&$facilities, $source, $key): void
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
     {
-        if (isset($source[$key])) {
-            $facilities = array_merge($facilities, $source[$key]);
-        }
-    }
-
-    private function addPlot(&$plot, $source, $key): void
-    {
-        if (isset($source[$key])) {
-            $plot += $source[$key];
-        }
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BogObject
     {
-        $property = new BogObject;
+        $property = new BogObject();
 
         /** Address */
         $huisnummer = ArrayHelper::safeGet($data, 'adres.huisnummer.hoofdnummer');
@@ -70,8 +58,8 @@ class BogObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         if (isset($data['kenmerken']['hoofdfunctie'])) {
             $property->setMainFunction(KeyTranslationsHelper::mainFunction($data['kenmerken']['hoofdfunctie']));
         }
-        $property->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new \DateTimeImmutable));
-        $property->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new \DateTimeImmutable));
+        $property->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new \DateTimeImmutable()));
+        $property->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new \DateTimeImmutable()));
         $property->setExternalId(ArrayHelper::safeGet($data, 'id'));
         $property->setArchived(false);
         $property->setFinance(ArrayHelper::safeGet($data, 'financieel', []));
@@ -322,5 +310,19 @@ class BogObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \App\Entity\BogObject::class => true,
             'App\Entity\BogObject[]' => true,
         ];
+    }
+
+    private function addFacilities(&$facilities, $source, $key): void
+    {
+        if (isset($source[$key])) {
+            $facilities = array_merge($facilities, $source[$key]);
+        }
+    }
+
+    private function addPlot(&$plot, $source, $key): void
+    {
+        if (isset($source[$key])) {
+            $plot += $source[$key];
+        }
     }
 }

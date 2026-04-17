@@ -11,11 +11,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PropertyNormalizer implements DenormalizerInterface, NormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
+    {
+    }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): Property
     {
-        $property = new \App\Entity\Property;
+        $property = new \App\Entity\Property();
 
         /** Address */
         $huisnummer = ArrayHelper::safeGet($data, 'adres.huisnummer.hoofdnummer');
@@ -50,8 +52,8 @@ class PropertyNormalizer implements DenormalizerInterface, NormalizerInterface
         }
 
         /** Generic */
-        $property->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new \DateTimeImmutable));
-        $property->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new \DateTimeImmutable));
+        $property->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new \DateTimeImmutable()));
+        $property->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new \DateTimeImmutable()));
         $property->setExternalId(ArrayHelper::safeGet($data, 'id'));
         $property->setArchived(false);
         if ($numberIsZero) {

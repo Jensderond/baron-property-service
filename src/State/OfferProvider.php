@@ -8,10 +8,10 @@ use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
 use App\Entity\BogObject;
 use App\Entity\Offer;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Project;
 use App\Entity\Property;
 use App\Pagination\OfferPaginator;
+use Doctrine\ORM\EntityManagerInterface;
 
 class OfferProvider implements ProviderInterface
 {
@@ -116,7 +116,7 @@ class OfferProvider implements ProviderInterface
                 }
             }
 
-            if($a->status === 'BESCHIKBAAR' && $b->status === 'BESCHIKBAAR') {
+            if ($a->status === 'BESCHIKBAAR' && $b->status === 'BESCHIKBAAR') {
                 return $b->createdAt <=> $a->createdAt;
             } else {
                 return $b->updatedAt <=> $a->updatedAt;

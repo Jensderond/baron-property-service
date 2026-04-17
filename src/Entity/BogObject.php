@@ -9,15 +9,15 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\BogObjectRepository;
-use Cocur\Slugify\Slugify;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\Types;
-use ReflectionClass;
 use App\State\BogObjectProvider;
-use Symfony\Component\Serializer\Attribute\Ignore;
+use Cocur\Slugify\Slugify;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Money\Currencies\ISOCurrencies;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
+use ReflectionClass;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['city' => 'exact', 'status' => 'exact', 'category' => 'exact', 'title' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['archived'])]
@@ -543,7 +543,9 @@ class BogObject
 
     public function getFormattedPrice(): string
     {
-        if ($this->price === 0) return '';
+        if ($this->price === 0) {
+            return '';
+        }
 
         $currencies = new ISOCurrencies();
         $numberFormatter = new \NumberFormatter('nl_NL', \NumberFormatter::CURRENCY);
@@ -551,12 +553,12 @@ class BogObject
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
 
         // Check if property is both for sale and for rent
-        if (isset($this->finance['overdracht']['koopEnOfHuur']['aanmeldingsreden']) && 
+        if (isset($this->finance['overdracht']['koopEnOfHuur']['aanmeldingsreden']) &&
             $this->finance['overdracht']['koopEnOfHuur']['aanmeldingsreden'] === 'IN_VERKOOP_OF_VERHUUR_GENOMEN') {
-            
+
             $salePrice = $this->price;
             $saleCondition = $this->priceCondition;
-            
+
             // Get rental price and condition
             $rentalPrice = $this->finance['overdracht']['koopEnOfHuur']['huurprijs'] ?? 0;
             $rentalCondition = match($this->finance['overdracht']['koopEnOfHuur']['huurconditie'] ?? '') {
@@ -565,19 +567,19 @@ class BogObject
                 'PER_VIERKANTE_METERS_PER_JAAR' => 'p.j. per m²',
                 default => '',
             };
-            
+
             // Format both prices
             $formattedSalePrice = $moneyFormatter->format(Money::EUR($salePrice * 100));
-            $formattedRentalPrice = $rentalPrice > 0 
-                ? $moneyFormatter->format(Money::EUR($rentalPrice * 100)) 
+            $formattedRentalPrice = $rentalPrice > 0
+                ? $moneyFormatter->format(Money::EUR($rentalPrice * 100))
                 : '';
-            
+
             // Combine both prices if rental price exists
             if ($rentalPrice > 0) {
                 return "{$formattedSalePrice} {$saleCondition} - {$formattedRentalPrice} {$rentalCondition}";
             }
         }
-        
+
         // Default case: single price
         return "{$moneyFormatter->format(Money::EUR($this->price * 100))} {$this->priceCondition}";
     }
@@ -666,7 +668,9 @@ class BogObject
 
     public function getFormattedServicePrice(): ?string
     {
-        if ($this->serviceCostPrice === 0 || $this->serviceCostPrice === null) return null;
+        if ($this->serviceCostPrice === 0 || $this->serviceCostPrice === null) {
+            return null;
+        }
 
         $currencies = new ISOCurrencies();
 

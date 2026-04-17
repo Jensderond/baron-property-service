@@ -3,8 +3,8 @@
 namespace App\Pagination;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use IteratorAggregate;
 use ArrayIterator;
+use IteratorAggregate;
 use Traversable;
 
 class OfferPaginator implements PaginatorInterface, IteratorAggregate

@@ -8,7 +8,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ConstructionNumberNormalizer implements NormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface $objectNormalizer) {}
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface $objectNormalizer)
+    {
+    }
 
     public function supportsDenormalization($data, $type, $format = null, array $context = [])
     {

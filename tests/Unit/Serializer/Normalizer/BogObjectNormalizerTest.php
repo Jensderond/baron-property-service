@@ -7,8 +7,6 @@ namespace App\Tests\Unit\Serializer\Normalizer;
 use App\Entity\BogObject;
 use App\Serializer\Normalizer\BogObjectNormalizer;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BogObjectNormalizerTest extends TestCase
 {
@@ -18,12 +16,6 @@ class BogObjectNormalizerTest extends TestCase
     {
         $mock = $this->createMock(ObjectNormalizerStub::class);
         $this->normalizer = new BogObjectNormalizer($mock);
-    }
-
-    private function loadFixture(string $filename): array
-    {
-        $path = __DIR__ . '/../../../Fixtures/' . $filename;
-        return json_decode(file_get_contents($path), true);
     }
 
     // ========================================================================
@@ -268,5 +260,11 @@ class BogObjectNormalizerTest extends TestCase
         $this->assertSame(950000, $bog->getPrice());
         $this->assertSame('k.k.', $bog->getPriceCondition());
         $this->assertSame('Koop', $bog->getCategory());
+    }
+
+    private function loadFixture(string $filename): array
+    {
+        $path = __DIR__ . '/../../../Fixtures/' . $filename;
+        return json_decode(file_get_contents($path), true);
     }
 }

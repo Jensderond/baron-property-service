@@ -17,20 +17,6 @@ class OverviewController extends ServiceEntityRepository
         parent::__construct($registry, Property::class);
     }
 
-    private function mergeAndRemoveDuplicatesCaseInsensitive($arrays, $key)
-    {
-        $caseInsensitiveMap = [];
-        foreach ($arrays as $array) {
-            foreach ($array as $subArray) {
-                $value = $subArray[$key] ?? null;
-                if ($value && !isset($caseInsensitiveMap[strtolower($value)])) {
-                    $caseInsensitiveMap[strtolower($value)] = $value;
-                }
-            }
-        }
-        return array_values($caseInsensitiveMap);
-    }
-
     #[Route('/properties/overview-filters', name: 'overview-filters')]
     public function overviewFilters(): JsonResponse
     {
@@ -73,5 +59,19 @@ class OverviewController extends ServiceEntityRepository
         sortCaseInsensitive($statuses);
 
         return new JsonResponse(['filters' => ['categories' => $categories, 'cities' => $cities, 'statusses' => $statuses]]);
+    }
+
+    private function mergeAndRemoveDuplicatesCaseInsensitive($arrays, $key)
+    {
+        $caseInsensitiveMap = [];
+        foreach ($arrays as $array) {
+            foreach ($array as $subArray) {
+                $value = $subArray[$key] ?? null;
+                if ($value && !isset($caseInsensitiveMap[strtolower($value)])) {
+                    $caseInsensitiveMap[strtolower($value)] = $value;
+                }
+            }
+        }
+        return array_values($caseInsensitiveMap);
     }
 }

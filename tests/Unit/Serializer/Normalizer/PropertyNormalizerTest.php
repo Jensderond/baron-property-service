@@ -22,12 +22,6 @@ class PropertyNormalizerTest extends TestCase
         $this->normalizer = new PropertyNormalizer($mock);
     }
 
-    private function loadFixture(string $filename): array
-    {
-        $path = __DIR__ . '/../../../Fixtures/' . $filename;
-        return json_decode(file_get_contents($path), true);
-    }
-
     // ========================================================================
     // Sale property (koop)
     // ========================================================================
@@ -233,6 +227,12 @@ class PropertyNormalizerTest extends TestCase
         $property = $this->normalizer->denormalize($data, Property::class);
 
         $this->assertSame('v.o.n.', $property->getPriceCondition());
+    }
+
+    private function loadFixture(string $filename): array
+    {
+        $path = __DIR__ . '/../../../Fixtures/' . $filename;
+        return json_decode(file_get_contents($path), true);
     }
 }
 

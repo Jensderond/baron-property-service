@@ -6,9 +6,9 @@ use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use ApiPlatform\State\SerializerAwareProviderTrait;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PropertyProvider implements ProviderInterface
 {
@@ -28,7 +28,7 @@ class PropertyProvider implements ProviderInterface
 
         $property = $propertyRepo->findOneBy(['externalId' => $uriVariables['id'] ?? null]);
 
-        if(!$property) {
+        if (!$property) {
             return new NotFoundAction();
         }
 
