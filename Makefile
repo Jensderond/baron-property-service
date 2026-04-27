@@ -40,7 +40,6 @@ rector: up
 
 import:
 	$(SYMFONY) app:import-properties
-	$(SYMFONY) app:import-projects
 	$(SYMFONY) app:import-bog-objects
 
 schema:
