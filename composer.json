@@ -6,7 +6,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/core": "^4.3",
@@ -59,7 +59,7 @@
     "config": {
         "optimize-autoloader": true,
         "platform": {
-            "php": "8.2.0"
+            "php": "8.4.0"
         },
         "preferred-install": {
             "*": "dist"
@@ -88,6 +88,8 @@
         "symfony/polyfill-intl-grapheme": "*",
         "symfony/polyfill-intl-normalizer": "*",
         "symfony/polyfill-mbstring": "*",
+        "symfony/polyfill-php84": "*",
+        "symfony/polyfill-php83": "*",
         "symfony/polyfill-php82": "*",
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php80": "*",
