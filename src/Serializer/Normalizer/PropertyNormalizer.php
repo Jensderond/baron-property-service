@@ -87,9 +87,6 @@ class PropertyNormalizer implements DenormalizerInterface, NormalizerInterface
 
         /** Media */
         $mediaArray = ArrayHelper::safeGet($data, 'media', []);
-        if (is_array($mediaArray)) {
-            $mediaArray = ArrayHelper::remapMediaLinks($mediaArray);
-        }
         $mainImage = [];
         if (is_array($mediaArray) && ! empty($mediaArray)) {
             $mainImage = array_filter($mediaArray, function ($media) {

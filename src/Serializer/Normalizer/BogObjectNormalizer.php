@@ -219,7 +219,6 @@ class BogObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         if (! is_array($mediaArray)) {
             $mediaArray = [];
         }
-        $mediaArray = ArrayHelper::remapMediaLinks($mediaArray);
         $mainImage = array_values(array_filter($mediaArray, function ($media) {
             return is_array($media) && ($media['soort'] ?? null) === 'HOOFDFOTO';
         }));

@@ -86,24 +86,6 @@ class ArrayHelper
     }
 
     /**
-     * Remaps the v3 'link' field back to 'url' in media arrays for backward compatibility.
-     *
-     * @param  array  $media  The media array from v3 API response
-     * @return array The media array with 'link' renamed to 'url'
-     */
-    public static function remapMediaLinks(array $media): array
-    {
-        return array_map(function ($item) {
-            if (is_array($item) && array_key_exists('link', $item) && !array_key_exists('url', $item)) {
-                $item['url'] = $item['link'];
-                unset($item['link']);
-            }
-
-            return $item;
-        }, $media);
-    }
-
-    /**
      * Combines area values with "tot" if they differ.
      *
      * @param  string|null  $from  The from value
