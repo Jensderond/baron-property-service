@@ -2,17 +2,23 @@ api_platform:
     title: Baron property service
     version: 1.0.1
     show_webby: false
-    graphql:
-        graphql_playground:
-            enabled: true
+    use_symfony_listeners: true
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
     patch_formats:
         json: ['application/merge-patch+json']
     name_converter: 'Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter'
+    serializer:
+        hydra_prefix: true
     swagger:
         versions: [3]
     defaults:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+            max_age: 900
+            shared_max_age: 900
+            public: true
         normalization_context:
             skip_null_values: true

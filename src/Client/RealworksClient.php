@@ -22,17 +22,12 @@ class RealworksClient implements PropertyClientInterface
      */
     public function getProperties(): string
     {
-        $this->realworksClient = $this->realworksClient->withOptions([
+        $client = $this->realworksClient->withOptions([
             'base_uri' => 'https://api.realworks.nl',
             'headers' => ['Authorization' => $_ENV['REALWORKS_PROPERTY_TOKEN']],
         ]);
-        try {
-            $req = $this->realworksClient->request('GET', '/wonen/v2/objecten?actief=all');
-        } catch (Exception\TransportExceptionInterface $e) {
-            throw new Error('Something went wrong with the request'.$e);
-        }
 
-        return $req->getContent();
+        return $this->fetchPaginated($client, '/wonen/v3/objecten?actief=all');
     }
 
     /**
@@ -64,16 +59,41 @@ class RealworksClient implements PropertyClientInterface
      */
     public function getBogObjects(): string
     {
-        $this->realworksClient = $this->realworksClient->withOptions([
+        $client = $this->realworksClient->withOptions([
             'base_uri' => 'https://api.realworks.nl',
             'headers' => ['Authorization' => $_ENV['REALWORKS_BOG_TOKEN']],
         ]);
-        try {
-            $req = $this->realworksClient->request('GET', '/bog/v2/objecten?actief=all');
-        } catch (Exception\TransportExceptionInterface $e) {
-            throw new Error('Something went wrong with the request'.$e);
+
+        return $this->fetchPaginated($client, '/bog/v3/objecten?actief=all');
+    }
+
+    private function fetchPaginated(HttpClientInterface $client, string $baseUrl): string
+    {
+        $allResults = [];
+        $offset = 0;
+        $pageSize = 100;
+        $maxIterations = 50;
+        $separator = str_contains($baseUrl, '?') ? '&' : '?';
+
+        for ($i = 0; $i < $maxIterations; $i++) {
+            try {
+                $url = $baseUrl . $separator . 'aantal=' . $pageSize . '&vanaf=' . $offset;
+                $response = $client->request('GET', $url);
+                $json = json_decode($response->getContent(), true);
+            } catch (Exception\TransportExceptionInterface $e) {
+                throw new Error('Something went wrong with the request' . $e);
+            }
+
+            $results = $json['resultaten'] ?? [];
+            $allResults = array_merge($allResults, $results);
+
+            if (count($results) < $pageSize) {
+                break;
+            }
+
+            $offset += $pageSize;
         }
 
-        return $req->getContent();
+        return json_encode(['resultaten' => $allResults]);
     }
 }

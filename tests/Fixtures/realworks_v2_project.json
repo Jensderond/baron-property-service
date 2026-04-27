@@ -1,0 +1,159 @@
+{
+    "project": {
+        "id": 99001,
+        "algemeen": {
+            "provincie": "Noord-Holland",
+            "postcode": "2011AB",
+            "plaats": "Haarlem",
+            "omschrijving": "Nieuwbouwproject De Haven",
+            "koopOfHuur": "KOOP",
+            "status": "BESCHIKBAAR",
+            "woonoppervlakteVanaf": "80",
+            "woonoppervlakteTot": "150",
+            "perceeloppervlakteVanaf": "120",
+            "perceeloppervlakteTot": "200",
+            "datumStartBouw": "2024-06-01",
+            "opleveringsdatum": "2025-12-01",
+            "datumStartVerkoop": "2024-01-15",
+            "aantalBouwnummers": 20,
+            "aantalVrijeEenheden": 5,
+            "koopaanneemsomVanaf": 350000,
+            "koopaanneemsomTot": 550000
+        },
+        "diversen": {
+            "notities": "Intern project"
+        }
+    },
+    "teksten": {
+        "aanbiedingstekst": "Prachtig nieuwbouwproject aan de haven van Haarlem."
+    },
+    "media": [
+        {
+            "soort": "HOOFDFOTO",
+            "url": "https://example.com/project-main.jpg",
+            "volgnummer": 0
+        },
+        {
+            "soort": "FOTO",
+            "url": "https://example.com/project-2.jpg",
+            "volgnummer": 1
+        }
+    ],
+    "marketing": {
+        "publicatiedatum": "2024-01-10T08:00:00Z"
+    },
+    "tijdstipLaatsteWijziging": "2024-05-20T12:00:00Z",
+    "bouwtypen": [
+        {
+            "id": 5001,
+            "algemeen": {
+                "omschrijving": "Type A - Tussenwoning",
+                "woonhuistype": "TUSSENWONING",
+                "appartementsoort": null,
+                "woonoppervlakteVanaf": "95",
+                "woonoppervlakteTot": "95"
+            },
+            "media": [
+                {
+                    "soort": "HOOFDFOTO",
+                    "url": "https://example.com/type-a.jpg"
+                }
+            ],
+            "teksten": {
+                "aanbiedingstekst": "Ruime tussenwoning met 4 kamers."
+            },
+            "detail": {
+                "etages": [
+                    {"aantalKamers": 2, "aantalSlaapkamers": 0},
+                    {"aantalKamers": 3, "aantalSlaapkamers": 2}
+                ]
+            },
+            "bouwnummers": [
+                {
+                    "id": 7001,
+                    "adres": {
+                        "straat": "Havenstraat",
+                        "huisnummer": 1,
+                        "plaats": "Haarlem",
+                        "postcode": "2011AC"
+                    },
+                    "algemeen": {
+                        "energieklasse": "A_PP",
+                        "woonoppervlakte": 95
+                    },
+                    "financieel": {
+                        "overdracht": {
+                            "koopprijs": 395000,
+                            "huurprijs": 0,
+                            "status": "BESCHIKBAAR",
+                            "koopconditie": "VRIJ_OP_NAAM",
+                            "huurconditie": null
+                        }
+                    },
+                    "teksten": {
+                        "aanbiedingstekst": "Bouwnummer 1 aan de Havenstraat."
+                    },
+                    "diversen": {
+                        "diversen": {
+                            "wijzigingsdatum": "2024-05-18T10:00:00Z"
+                        }
+                    },
+                    "detail": {
+                        "etages": [
+                            {"aantalKamers": 2, "aantalSlaapkamers": 0},
+                            {"aantalKamers": 3, "aantalSlaapkamers": 2}
+                        ]
+                    },
+                    "media": [
+                        {
+                            "soort": "FOTO",
+                            "url": "https://example.com/bn-1.jpg"
+                        }
+                    ]
+                },
+                {
+                    "id": 7002,
+                    "adres": {
+                        "straat": "Havenstraat",
+                        "huisnummer": 3,
+                        "plaats": "Haarlem",
+                        "postcode": "2011AD"
+                    },
+                    "algemeen": {
+                        "energieklasse": "A_PP",
+                        "woonoppervlakte": 95
+                    },
+                    "financieel": {
+                        "overdracht": {
+                            "koopprijs": 395000,
+                            "huurprijs": 0,
+                            "status": "VERKOCHT",
+                            "koopconditie": "VRIJ_OP_NAAM",
+                            "huurconditie": null
+                        }
+                    },
+                    "teksten": {
+                        "aanbiedingstekst": "Bouwnummer 3 aan de Havenstraat."
+                    },
+                    "diversen": {
+                        "diversen": {
+                            "wijzigingsdatum": "2024-05-19T10:00:00Z"
+                        }
+                    },
+                    "detail": {
+                        "etages": [
+                            {"aantalKamers": 2, "aantalSlaapkamers": 0},
+                            {"aantalKamers": 3, "aantalSlaapkamers": 2}
+                        ]
+                    },
+                    "media": [
+                        {
+                            "soort": "FOTO",
+                            "url": "https://example.com/bn-3.jpg"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -16,3 +16,8 @@
 src/SwaggerClient-php
 ###< friendsofphp/php-cs-fixer ###
 fixtures/*.json
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###

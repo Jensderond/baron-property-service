@@ -1,7 +1,7 @@
 name: baron-property-service
 type: php
 docroot: public
-php_version: "8.1"
+php_version: "8.4"
 webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
@@ -9,9 +9,9 @@ xdebug_enabled: false
 additional_hostnames: []
 additional_fqdns: []
 database:
-    type: mariadb
-    version: "10.6"
-project_tld: nl.local
+  type: mariadb
+  version: "10.6"
+project_tld: nl.internal
 use_dns_when_possible: true
 timezone: Europe/Amsterdam
 composer_version: ""

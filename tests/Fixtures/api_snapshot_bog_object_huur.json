@@ -1,0 +1,626 @@
+{
+  "external_id": 621069,
+  "title": "Argon 45, Oud Gastel",
+  "diversen": {
+    "tiaraObjectGuid": null,
+    "woonoppervlak": "",
+    "situatie": null,
+    "tiaraObjectId": "",
+    "eigenBelang": false,
+    "collegialeInformatie": "",
+    "transactietoelichting": "",
+    "informatieplicht": [],
+    "bouwjaaromschrijving2": "",
+    "bouwjaaromschrijving3": "",
+    "vertrouwelijk": false,
+    "bouwjaar2": "",
+    "bouwjaar3": "",
+    "bouwjaar4": "",
+    "bouwjaar5": "",
+    "bouwjaaromschrijving4": "",
+    "bouwjaaromschrijving5": "",
+    "actief": false,
+    "bouwvorm": "BESTAANDE_BOUW",
+    "wijzigingsdatum": "2025-07-23 12:00:20",
+    "objectcode": "B100000",
+    "invoerdatum": "2023-06-16",
+    "afdelingscode": "938516",
+    "status": "GEEN_WOONRUIMTE_AANWEZIG",
+    "type": null
+  },
+  "category": "Huur",
+  "city": "Oud Gastel",
+  "country": "Nederland",
+  "zip_code": "4751 XC",
+  "house_number": "45",
+  "street": "Argon",
+  "main_function": "Bedrijfsruimte",
+  "status": "VERHUURD",
+  "media": [
+    {
+      "soort": "PLATTEGROND",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 200,
+      "link": "https://assets.uwbaron.nl/169001515.jpg",
+      "mimetype": "image/jpeg"
+    },
+    {
+      "soort": "PLATTEGROND",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 201,
+      "link": "https://assets.uwbaron.nl/169001521.jpg",
+      "mimetype": "image/jpeg"
+    },
+    {
+      "soort": "DOCUMENT",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1000,
+      "link": "https://images.realworks.nl/servlets/images/media.objectmedia/169001697.pdf?portalid=8681&check=api_sha256%3Ab67fc0a24893b40b9ba8980ffbb29a21159c404bc119e702affd9af8534d9365&resize=4&resize=4",
+      "mimetype": "application/pdf"
+    },
+    {
+      "soort": "HOOFDFOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 40150,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226933.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226933.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226933.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 140151,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226935.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226935.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226935.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 240152,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226937.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226937.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226937.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 340153,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226939.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226939.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226939.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 440154,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226941.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226941.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226941.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 540155,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226945.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226945.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226945.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 640156,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226947.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226947.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226947.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 740157,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226949.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226949.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226949.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 840158,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226953.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226953.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226953.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 940159,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226955.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226955.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226955.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1040160,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226957.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226957.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226957.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1140161,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226959.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226959.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226959.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1240162,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226961.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226961.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226961.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1340163,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226963.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226963.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226963.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1440164,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226965.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226965.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226965.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1540165,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226967.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226967.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226967.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1640166,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226971.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226971.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226971.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1740167,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226973.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226973.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226973.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1840168,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226979.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226979.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226979.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 1940169,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226981.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226981.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226981.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2040170,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226983.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226983.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226983.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2140171,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226985.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226985.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226985.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2240172,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226987.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226987.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226987.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2340173,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226989.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226989.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226989.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2440174,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226991.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226991.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226991.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2540175,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226993.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226993.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226993.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2640176,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226995.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226995.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226995.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2740177,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226997.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226997.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226997.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2840178,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227001.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227001.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227001.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 2940179,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227003.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227003.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227003.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 3040180,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227005.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227005.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227005.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 3140233,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227007.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227007.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227007.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 3240232,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227009.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227009.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227009.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 3340231,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227011.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227011.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227011.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    },
+    {
+      "soort": "FOTO",
+      "title": "",
+      "omschrijving": "",
+      "volgnummer": 3440230,
+      "sizes": {
+        "480w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227015.jpg-580x387.webp",
+        "768w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227015.jpg-870x580.webp",
+        "1280w": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165227015.jpg-1450x967.webp"
+      },
+      "mimetype": "image/webp"
+    }
+  ],
+  "image": {
+    "1x": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226933.jpg-401x267.webp",
+    "2x": "https://assets.uwbaron.nl/servlets/images/media.objectmedia/165226933.jpg-802x534.webp"
+  },
+  "description": "<strong>HET BEDRIJFSOBJECT</strong><br />\nDit unieke bedrijfsobject (799 m2 VVO) is gelegen op bedrijventerrein ‘Borchwerf’ II in Oud-Gastel. Volgens het NEN2580 meetrapport bestaat het totale bedrijfsobject uit 246 m2 (VVO) kantoorruimte en een bedrijfsruimte van 507 m2 (VVO). Het bedrijfsobject beschikt over een verhard buitenterrein met 13 parkeerplaatsen en een elektrische laadpaal. Het bouwjaar van het object is 2009 en beschikt over energielabel A+.&nbsp;<br />\n<br />\nWanneer u via de entree binnenkomt, bevindt u zich bij de receptie. De verschillende ruimtes zijn te bereiken via tags. Vanuit de entree kunt u naar diverse vertrekken, zoals de vergaderruimte, showroom met aansluitend kantine, toiletten, werkruimtes en de<br />\nopslagloods.<br />\n<br />\nDe kantine beschikt over een zeer grote keuken met diverse inbouwapparatuur, zoals een vaatwasser, koelkast, vriezer en een combi-oven/magnetron.&nbsp;<br />\n<br />\nDe bedrijfsruimte is zowel aan de voor- als achterzijde toegankelijk via twee hoge overheaddeuren. In deze bedrijfsruimte zijn een 3-tal magazijnruimtes gemaakt en is voorzien van een toiletruimte.<br />\n<br />\nDe eerste verdieping is zowel vanaf de entree als de bedrijfsruimte te betreden. De eerste verdieping bestaat uit een centrale kantoorruimte met aansluitend diverse afgezonderde kantoorruimtes, beveiligde computerruimte, printruimte, pantry met keukeninrichting. Ook zijn er toiletten beschikbaar op de eerste verdieping.<br />\n<br />\nHet bedrijfsobject is voorzien van de volgende installaties:<br />\n• Toegangssysteem d.m.v. tags<br />\n• Alarminstallatie<br />\n• Camera installatie<br />\n• Airco<br />\n• Vloerverwarming<br />\n• Elektrotechnische installatie geregeld d.m.v. domotica<br />\n• Centrale functie om alles uit te schakelen<br />\n• Sonos geluidsinstallatie<br />\n• Bekabeld netwerk<br />\n• Wi-Fi-installatie<br />\n• Brandblusser<br />\n&nbsp;<br />\nIn overleg kan het pand ook deels gehuurd worden. Via het toegangssysteem d.m.v. tags is er een mogelijkheid tot het beperken van toegang in bepaalde zones.<br />\n<br />\n<br />\n<strong>BORCHWERF II</strong><br />\nDit bedrijfsobject is gelegen op het bedrijventerrein de “Borchwerf II” in Oud-Gastel. Het heeft een uitstekende bereikbaarheid en directe aansluiting op de A17 en is hierdoor gunstig gelegen t.o.v. Rotterdam – Zeeland – Antwerpen - Breda.<br />\n<br />\nOp Borchwerf II zijn vele diverse bedrijven gevestigd in verschillende branches, zoals kantoren, logistiek, zakelijke dienstverlening, groothandels- en autobedrijven. Borchwerf II heeft een parkmanagement, waaraan alle bedrijven deelnemen die hier gevestigd zijn. Deze kosten zijn opgenomen in de servicekosten.<br />\n<br />\n<br />\n<strong>HUURPRIJS</strong><br />\n<br />\nKale huurprijs: &nbsp; &nbsp;€ 5.950,00 &nbsp; &nbsp;excl. btw, per maand*<br />\nServicekosten: &nbsp; &nbsp;€ 475,00 &nbsp; &nbsp; &nbsp;excl. btw, per maand<br />\nTotale huurprijs: &nbsp;€ 6.425,00 &nbsp; excl. btw, per maand<br />\n<br />\n* Deze huurprijs is exclusief de kosten voor het gebruik van gas, water, elektra en eventuele andere (bijkomende) kosten.<br />\n<br />\nDe servicekosten bestaan uit:<br />\n• Onderhoud inbraakinstallatie;<br />\n• Onderhoud toegangssysteem;<br />\n• Onderhoud camera installatie;<br />\n• Onderhoud noodverlichting;<br />\n• Onderhoud elektrische deuren;<br />\n• Parkmanagement Borchwerf II.<br />\n<br />\nOnder parkmanagement wordt verstaan:<br />\n• Beheer en onderhoud van het openbaar gebied;<br />\n• Beheer en onderhoud van de 3 meter zone;<br />\n• Beheer en onderhoud van de bewegwijzering;<br />\n• Het zorg dragen voor de collectieve beveiliging;<br />\n• De bevordering van de realisatie van een glasvezelnet;<br />\n• Het stellen van gezamenlijke gedragsregels en de controle op naleving daarvan;<br />\n• Intake en afhandeling van klachten van bedrijven en de betrokken twee<br />\ngrondgemeenten (“incidentenprocedure”);<br />\n• Het maken van afspraken met de twee grondgemeenten hoe te handelen bij<br />\ncalamiteiten;<br />\n• De bevordering van een “plus pakket”.<br />\n<br />\nOmzetbelasting:<br />\nAlle vermelde bedragen zijn exclusief omzetbelasting (tenzij dit uitdrukkelijk vermeld is). Voorts is uitgegaan dat de prestaties van de huurder voor meer dan 90% in de met BTW-belaste sfeer plaatsvinden.<br />\n<br />\n<br />\n<strong>CONTACT</strong><br />\nMeer informatie of graag een bezichtiging inplannen? Neem snel contact op via BARON!",
+  "finance": {
+    "overdracht": {
+      "koopEnOfHuur": {
+        "servicekostenBtwBelast": true,
+        "koopprijsCollegiaalTonen": null,
+        "huurprijsCollegiaalTonen": true,
+        "veilingVanafprijs": null,
+        "veilingZoekprijs": null,
+        "veilingStartdatumEnTijd": null,
+        "veilingEinddatumEnTijd": null,
+        "veilingSiteadres": "",
+        "servicekostenconditie": "PER_MAAND",
+        "bouwrente": null,
+        "huurprijstype": "EXCL_BTW",
+        "veilingssoort": null,
+        "veilingstype": null,
+        "veilingSitenaam": "",
+        "aanmeldingsreden": "IN_VERHUUR_GENOMEN",
+        "koopprijsvoorvoegsel": null,
+        "aanvaardingsdatum": null,
+        "koopconditie": null,
+        "koopprijs": 0,
+        "huurconditie": "PER_MAAND",
+        "huurprijs": 5950,
+        "servicekosten": 475,
+        "aanvaarding": "IN_OVERLEG",
+        "wozWaarde": null,
+        "aanvaardingstoelichting": "",
+        "wozWaardePeildatum": null,
+        "huurprijsvoorvoegsel": "HUURPRIJS",
+        "huurprijsTot": null,
+        "btwVanToepassing": false
+      },
+      "transactie": {
+        "bedrijfshalTransactieprijs": null,
+        "terreinTransactieprijs": null,
+        "kantoorruimteTransactieprijs": 0,
+        "ondertekeningsdatum": "2023-10-17",
+        "overeenkomstduur": "1",
+        "beleggerNationaliteit": null,
+        "publicatieTransactie": true,
+        "vestigingsreden": null,
+        "transactiedatum": "2024-01-01",
+        "beleggertype": null,
+        "saleEnLeaseback": false,
+        "verhuurprijsconditie": "PER_MAAND",
+        "transactieprijsconditie": "KOSTEN_KOPER",
+        "datumOnderVoorbehoudVanaf": null,
+        "datumOnderVoorbehoudTot": null,
+        "verkochtOnderVoorbehoudConditie": null,
+        "verhuurdOnderVoorbehoudConditie": null,
+        "prijsOndervoorbehoud": null,
+        "aantalMaandenIncentives": null,
+        "contanteWaardeIncentives": null,
+        "transactieOppervlakte": 0,
+        "sbiCode": [],
+        "transactieTerOvernameBtwBelast": null,
+        "transactieTerOvernamePersoneel": null,
+        "transactieTerOvernameprijs": null,
+        "transportdatum": null,
+        "transactieprijs": 5500,
+        "incentives": false
+      }
+    }
+  },
+  "price": 5950,
+  "energy_class": "A+",
+  "build_year": 2009,
+  "slug": "argon-45-oud-gastel-621069",
+  "facilities": "Te openen ramen",
+  "archived": false,
+  "price_condition": "p.m.",
+  "accessibility": "Bushalte op 1500 m tot 2000 m, NS Station op 4000 m tot 5000 m en Snelwegafrit op 500 m tot 1000 m",
+  "parking": {
+    "overdekteParkeerplaatsenPrijs": 0,
+    "overdekteParkeerplaatsenAantal": 0,
+    "overdekteParkeerplaatsenBtw": false,
+    "nietOverdekteParkeerplaatsenBtw": false,
+    "parkeerfaciliteiten": "",
+    "nietOverdekteParkeerplaatsenAantal": "13",
+    "nietOverdekteParkeerplaatsenPrijs": null
+  },
+  "local_amentities": "Restaurant op 500 m tot 1000 m",
+  "plot": "799",
+  "functions": [
+    {
+      "bedrijfsruimte": {
+        "bedrijfsruimteKantoorruimte": {
+          "kantoorruimteLuchtbehandeling": [],
+          "kantoorruimteVoorzieningen": [
+            "TE_OPENEN_RAMEN"
+          ],
+          "kantoorruimteOppervlakte": 246,
+          "kantoorruimteAantalVerdiepingen": 2,
+          "kantoorruimtePrijs": null,
+          "kantoorruimteBtwBelast": false
+        },
+        "bedrijfshal": {
+          "oppervlakte": 553,
+          "unitsVanaf": null,
+          "kantoorruimteAanwezig": true,
+          "bedrijfshalVrijeHoogte": null,
+          "bedrijfshalVrijeOverspanning": null,
+          "bedrijfshalVrijeVloerbelasting": null,
+          "bedrijfshalLuchtbehandelingen": [],
+          "bedrijfshalVoorzieningen": [],
+          "bedrijfshalPrijs": null,
+          "bedrijfshalBtwBelast": false,
+          "logistiekeFunctie": false,
+          "terreinAanwezig": true
+        },
+        "terrein": {
+          "terreinUitbreidingsmogelijkheidtype": "IN_VIERKANTE_METERS",
+          "terreinOppervlakte": 328,
+          "terreinUitbreidingsmogelijkheid": 0,
+          "terreinBouwhoogte": 0,
+          "terreinBtwBelast": false,
+          "terreinPrijs": null
+        }
+      },
+      "actief": true,
+      "wijzigingsdatum": "2024-08-20 10:36:14",
+      "invoerdatum": "2023-10-17 16:59:09",
+      "type": "BEDRIJFSRUIMTE"
+    }
+  ],
+  "number_of_floors": 2,
+  "lat": 51.5623363,
+  "lng": 4.4602565,
+  "service_cost_price": 475,
+  "service_cost_condition": "p.m.",
+  "service_cost_v_a_t": true,
+  "readable_status": "Verhuurd",
+  "kadaster": [],
+  "formatted_price": "€ 5.950 p.m.",
+  "formatted_service_price": "€ 475 p.m. excl. btw"
+}

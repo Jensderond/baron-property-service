@@ -2,30 +2,17 @@
 
 namespace App\Serializer\Normalizer;
 
-use App\Helpers\ArrayHelper;
 use App\Entity\BogObject;
+use App\Helpers\ArrayHelper;
 use App\Helpers\KeyTranslationsHelper;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
+class BogObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 {
-    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer) {}
-
-
-    private function addFacilities(&$facilities, $source, $key): void
+    public function __construct(#[Autowire(service: 'app.object_normalizer')] private NormalizerInterface&DenormalizerInterface $objectNormalizer)
     {
-        if (isset($source[$key])) {
-            $facilities = array_merge($facilities, $source[$key]);
-        }
-    }
-
-    private function addPlot(&$plot, $source, $key): void
-    {
-        if (isset($source[$key])) {
-            $plot += $source[$key];
-        }
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): BogObject
@@ -33,27 +20,33 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         $property = new BogObject();
 
         /** Address */
-        if (isset($data['huisnummer'])) {
-            if (isset($data['huisnummertoevoeging'])) {
-                $property->setHouseNumber($data['huisnummer'] . $data['huisnummertoevoeging']);
+        $huisnummer = ArrayHelper::safeGet($data, 'adres.huisnummer.hoofdnummer');
+        if ($huisnummer) {
+            $huisnummertoevoeging = ArrayHelper::safeGet($data, 'adres.huisnummer.toevoeging');
+            if ($huisnummertoevoeging) {
+                $property->setHouseNumber($huisnummer.$huisnummertoevoeging);
             } else {
-                $property->setHouseNumber($data['huisnummer']);
+                $property->setHouseNumber($huisnummer);
             }
         }
-        if (isset($data['plaats'])) {
-            $property->setCity($data['plaats']);
+        $city = ArrayHelper::safeGet($data, 'adres.plaats');
+        if ($city) {
+            $property->setCity($city);
         }
-        if (isset($data['postcode'])) {
-            $property->setZipCode($data['postcode']);
+        $zipcode = ArrayHelper::safeGet($data, 'adres.postcode');
+        if ($zipcode) {
+            $property->setZipCode($zipcode);
         }
-        if (isset($data['straat'])) {
-            $property->setStreet($data['straat']);
+        $street = ArrayHelper::safeGet($data, 'adres.straat');
+        if ($street) {
+            $property->setStreet($street);
         }
-        if (isset($data['land'])) {
-            $property->setCountry($data['land']);
+        $country = ArrayHelper::safeGet($data, 'adres.land');
+        if ($country) {
+            $property->setCountry($country);
         }
 
-        $numberIsZero = ($data['huisnummer'] === "0" || $data['huisnummer'] === 0) && null !== $property->getHouseNumber();
+        $numberIsZero = $huisnummer === null || (($huisnummer === '0' || $huisnummer === 0) && $property->getHouseNumber() !== null);
 
         /** Generic */
         if ($numberIsZero) {
@@ -62,87 +55,101 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         } else {
             $property->setTitle("{$property->getStreet()} {$property->getHouseNumber()}, {$property->getCity()}");
         }
-        if (isset($data['kenmerken']['hoofdfunctie'])) {
-            $property->setMainFunction(KeyTranslationsHelper::mainFunction($data['kenmerken']['hoofdfunctie']));
+        $hoofdfunctie = ArrayHelper::safeGet($data, 'kenmerken.hoofdfunctie');
+        if ($hoofdfunctie) {
+            $property->setMainFunction(KeyTranslationsHelper::mainFunction($hoofdfunctie));
         }
-        $property->setCreatedAt(new \DateTimeImmutable($data['marketing']['publicatiedatum']));
-        $property->setUpdatedAt(new \DateTimeImmutable($data['tijdstipLaatsteWijziging']));
-        $property->setExternalId($data['id']);
+        $property->setCreatedAt(ArrayHelper::safeGetDate($data, 'marketing.publicatiedatum', new \DateTimeImmutable()));
+        $property->setUpdatedAt(ArrayHelper::safeGetDate($data, 'tijdstipLaatsteWijziging', new \DateTimeImmutable()));
+        $property->setExternalId(ArrayHelper::safeGet($data, 'id'));
         $property->setArchived(false);
-        $property->setFinance($data['financieel']);
-        $property->setDiversen($data['diversen']['diversen']);
-        $property->setKadaster($data['diversen']['kadaster']);
+        $property->setFinance(ArrayHelper::safeGet($data, 'financieel', []));
+        $property->setDiversen(ArrayHelper::safeGet($data, 'diversen.diversen', []));
+        $property->setKadaster(ArrayHelper::safeGet($data, 'diversen.kadaster', []));
 
-        if (isset($data['teksten']['eigenSiteTekst']) && !empty($data['teksten']['eigenSiteTekst'])) {
-            $property->setDescription($data['teksten']['eigenSiteTekst']);
-        } elseif (isset($data['teksten']['aanbiedingstekst'])) {
-            $property->setDescription($data['teksten']['aanbiedingstekst']);
-        }
-
-        if (isset($data['gebouwdetails']['bouwjaar']['bouwjaar1'])) {
-            $property->setBuildYear((int)$data['gebouwdetails']['bouwjaar']['bouwjaar1']);
-        }
-        if (isset($data['gebouwdetails']['energielabel']['energieklasse'])) {
-            $property->setEnergyClass(KeyTranslationsHelper::energyClass($data['gebouwdetails']['energielabel']['energieklasse']));
-        }
-
-        foreach ($data['object']['functies'] as $key => $function) {
-            if (!$function['actief']) {
-                unset($data['object']['functies'][$key]);
+        $eigenSiteTekst = ArrayHelper::safeGet($data, 'teksten.eigenSiteTekst');
+        if ($eigenSiteTekst && ! empty($eigenSiteTekst)) {
+            $property->setDescription($eigenSiteTekst);
+        } else {
+            $aanbiedingstekst = ArrayHelper::safeGet($data, 'teksten.aanbiedingstekst');
+            if ($aanbiedingstekst) {
+                $property->setDescription($aanbiedingstekst);
             }
         }
-        // make sure the array is reindexed
-        $data['object']['functies'] = array_values($data['object']['functies']);
 
-        if (isset($data['object']['functies'])) {
-            $plot = 0;
-            $facilities = [];
+        $bouwjaarFromLokatie = ArrayHelper::safeGetNumeric($data, 'gebouwdetails.bouwjaar.bouwjaar1', 0);
+        if ($bouwjaarFromLokatie > 0) {
+            $property->setBuildYear((int) $bouwjaarFromLokatie);
+        }
+        $energieklasse = ArrayHelper::safeGet($data, 'gebouwdetails.energielabel.energieklasse');
+        if ($energieklasse) {
+            $property->setEnergyClass(KeyTranslationsHelper::energyClass($energieklasse));
+        }
 
-            foreach ($data['object']['functies'] as $function) {
-                if (isset($function['bedrijfsruimte'])) {
-                    $this->addFacilities($facilities, $function['bedrijfsruimte']['bedrijfshal'], 'bedrijfshalVoorzieningen');
-                    $this->addFacilities($facilities, $function['bedrijfsruimte']['bedrijfsruimteKantoorruimte'], 'kantoorruimteVoorzieningen');
-                    $this->addPlot($plot, $function['bedrijfsruimte']['bedrijfshal'], 'oppervlakte');
-                    $this->addPlot($plot, $function['bedrijfsruimte']['bedrijfsruimteKantoorruimte'], 'kantoorruimteOppervlakte');
-                    $property->setNumberOfFloors($function['bedrijfsruimte']['bedrijfsruimteKantoorruimte']['kantoorruimteAantalVerdiepingen']);
-                } elseif (isset($function['leisure'])) {
-                    $this->addFacilities($facilities, $function['leisure'], 'leisurevoorzieningen');
-                    $this->addPlot($plot, $function['leisure'], 'oppervlakte');
-                } elseif (isset($function['maatschappelijkvastgoed'])) {
-                    foreach ($function['maatschappelijkvastgoed']['instellingen'] as $instelling) {
+        $functies = ArrayHelper::safeGet($data, 'object.functies', []);
+        if (! is_array($functies)) {
+            $functies = [];
+        }
+        $functies = array_values(array_filter($functies, fn ($function) => is_array($function) && ! empty($function['actief'])));
+
+        $plot = 0;
+        $facilities = [];
+
+        foreach ($functies as $function) {
+            if (isset($function['bedrijfsruimte'])) {
+                $bedrijfshal = ArrayHelper::safeGet($function, 'bedrijfsruimte.bedrijfshal');
+                $kantoor = ArrayHelper::safeGet($function, 'bedrijfsruimte.bedrijfsruimteKantoorruimte');
+                $this->addFacilities($facilities, $bedrijfshal, 'bedrijfshalVoorzieningen');
+                $this->addFacilities($facilities, $kantoor, 'kantoorruimteVoorzieningen');
+                $this->addPlot($plot, $bedrijfshal, 'oppervlakte');
+                $this->addPlot($plot, $kantoor, 'kantoorruimteOppervlakte');
+                if (isset($kantoor['kantoorruimteAantalVerdiepingen'])) {
+                    $property->setNumberOfFloors($kantoor['kantoorruimteAantalVerdiepingen']);
+                }
+            } elseif (isset($function['leisure'])) {
+                $this->addFacilities($facilities, $function['leisure'], 'leisurevoorzieningen');
+                $this->addPlot($plot, $function['leisure'], 'oppervlakte');
+            } elseif (isset($function['maatschappelijkvastgoed'])) {
+                $instellingen = ArrayHelper::safeGet($function, 'maatschappelijkvastgoed.instellingen', []);
+                if (is_array($instellingen)) {
+                    foreach ($instellingen as $instelling) {
                         $this->addFacilities($facilities, $instelling, 'voorzieningen');
                         $this->addPlot($plot, $instelling, 'oppervlakte');
                     }
-                } elseif (isset($function['kantoorruimte'])) {
-                    $this->addFacilities($facilities, $function['kantoorruimte'], 'voorzieningen');
-                    $this->addPlot($plot, $function['kantoorruimte'], 'oppervlakte');
+                }
+            } elseif (isset($function['kantoorruimte'])) {
+                $this->addFacilities($facilities, $function['kantoorruimte'], 'voorzieningen');
+                $this->addPlot($plot, $function['kantoorruimte'], 'oppervlakte');
+                if (isset($function['kantoorruimte']['aantalVerdiepingen'])) {
                     $property->setNumberOfFloors($function['kantoorruimte']['aantalVerdiepingen']);
-                } elseif (isset($function['overige'])) {
-                    $this->addPlot($plot, $function['overige'], 'oppervlakte');
+                }
+            } elseif (isset($function['overige'])) {
+                $this->addPlot($plot, $function['overige'], 'oppervlakte');
+                if (isset($function['overige']['aantalVerdiepingen'])) {
                     $property->setNumberOfFloors($function['overige']['aantalVerdiepingen']);
-                } elseif (isset($function['belegging'])) {
-                    $this->addPlot($plot, $function['belegging'], 'oppervlakte');
-                } elseif (isset($function['winkelruimte'])) {
-                    $this->addPlot($plot, $function['winkelruimte'], 'oppervlakte');
+                }
+            } elseif (isset($function['belegging'])) {
+                $this->addPlot($plot, $function['belegging'], 'oppervlakte');
+            } elseif (isset($function['winkelruimte'])) {
+                $this->addPlot($plot, $function['winkelruimte'], 'oppervlakte');
+                if (isset($function['winkelruimte']['aantalVerdiepingen'])) {
                     $property->setNumberOfFloors($function['winkelruimte']['aantalVerdiepingen']);
                 }
             }
+        }
 
-            if ($plot == 0 && $data['diversen']['kadaster'] !== null && isset($data['diversen']['kadaster'][0]['kadastergegevens'])) {
-                foreach ($data['diversen']['kadaster'] as $kadaster) {
-                    $this->addPlot($plot, $kadaster['kadastergegevens'], 'oppervlakte');
+        if ($plot == 0) {
+            $kadasterList = ArrayHelper::safeGet($data, 'diversen.kadaster', []);
+            if (is_array($kadasterList)) {
+                foreach ($kadasterList as $kadaster) {
+                    $this->addPlot($plot, ArrayHelper::safeGet($kadaster, 'kadastergegevens'), 'oppervlakte');
                 }
             }
-
-            $property->setPlot($plot);
-            $facilities = array_unique($facilities);
         }
 
-        $property->setFunctions($data['object']['functies']);
-
-        if (isset($facilities)) {
-            $property->setFacilities(KeyTranslationsHelper::facilities($facilities));
-        }
+        $property->setPlot($plot);
+        $property->setFunctions($functies);
+        $property->setFacilities(KeyTranslationsHelper::facilities(array_unique($facilities)));
 
         if (isset($data['gebouwdetails']['lokatie'])) {
 
@@ -188,45 +195,50 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
 
                 if (count($accessibility) > 1) {
                     $lastItem = array_pop($accessibility);
-                    $property->setAccessibility(implode(', ', $accessibility) . ' en ' . $lastItem);
+                    $property->setAccessibility(implode(', ', $accessibility).' en '.$lastItem);
                 } else {
                     $property->setAccessibility(implode('', $accessibility));
                 }
 
                 if (count($localAmentities) > 1) {
                     $lastItem = array_pop($localAmentities);
-                    $property->setLocalAmentities(implode(', ', $localAmentities) . ' en ' . $lastItem);
+                    $property->setLocalAmentities(implode(', ', $localAmentities).' en '.$lastItem);
                 } else {
                     $property->setLocalAmentities(implode('', $localAmentities));
                 }
             }
 
-            $property->setBuildYear((int)$data['gebouwdetails']['bouwjaar']['bouwjaar1']);
-        }
-
-        /** Media */
-        $mainImage = array_filter($data['media'], function ($media) {
-            return $media['soort'] === 'HOOFDFOTO';
-        });
-
-        // get first item in $mainImage array
-        $mainImage = array_values($mainImage);
-
-        if (isset($mainImage[0])) {
-            $property->setImage($mainImage[0]);
-        } else {
-            if ($data['media'] !== null && count($data['media']) > 0) {
-                $property->setImage($data['media'][0]);
+            $bouwjaarFromLokatie = ArrayHelper::safeGetNumeric($data, 'gebouwdetails.bouwjaar.bouwjaar1', 0);
+            if ($bouwjaarFromLokatie > 0) {
+                $property->setBuildYear((int) $bouwjaarFromLokatie);
             }
         }
 
-        $property->setMedia($data['media']);
-        ArrayHelper::sort($data['media']);
-        $property->setMediaHash(md5(json_encode($data['media'])));
+        /** Media */
+        $mediaArray = ArrayHelper::safeGet($data, 'media', []);
+        if (! is_array($mediaArray)) {
+            $mediaArray = [];
+        }
+        $mediaArray = ArrayHelper::remapMediaLinks($mediaArray);
+        $mainImage = array_values(array_filter($mediaArray, function ($media) {
+            return is_array($media) && ($media['soort'] ?? null) === 'HOOFDFOTO';
+        }));
+
+        if (isset($mainImage[0])) {
+            $property->setImage($mainImage[0]);
+        } elseif (! empty($mediaArray)) {
+            $property->setImage($mediaArray[0]);
+        }
+
+        $property->setMedia($mediaArray);
+        ArrayHelper::sort($mediaArray);
+        $property->setMediaHash(md5(json_encode($mediaArray)));
 
         /** Price */
-        $condition = $data['financieel']['overdracht']['koopEnOfHuur']['koopconditie'] ?? $data['financieel']['overdracht']['koopEnOfHuur']['huurconditie'];
-        if (isset($condition)) {
+        $koopconditie = ArrayHelper::safeGet($data, 'financieel.overdracht.koopEnOfHuur.koopconditie');
+        $huurconditie = ArrayHelper::safeGet($data, 'financieel.overdracht.koopEnOfHuur.huurconditie');
+        $condition = $koopconditie ?? $huurconditie;
+        if ($condition) {
             $property->setPriceCondition(match ($condition) {
                 // huur: PER_JAAR, PER_MAAND, PER_VIERKANTE_METERS_PER_JAAR
                 'PER_JAAR' => 'p.j.',
@@ -235,31 +247,40 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
                 // Koop: KOSTEN_KOPER, VRIJ_OP_NAAM
                 'KOSTEN_KOPER' => 'k.k.',
                 'VRIJ_OP_NAAM' => 'v.o.n.',
+                default => '',
             });
         }
 
-        $serviceCondition = $data['financieel']['overdracht']['koopEnOfHuur']['servicekostenconditie'] ?: null;
-        if (isset($serviceCondition)) {
+        $serviceCondition = ArrayHelper::safeGet($data, 'financieel.overdracht.koopEnOfHuur.servicekostenconditie');
+        if ($serviceCondition) {
             $property->setServiceCostCondition(match ($serviceCondition) {
-                // huur: PER_JAAR, PER_MAAND, PER_VIERKANTE_METERS_PER_JAAR
                 'PER_JAAR' => 'p.j.',
                 'PER_MAAND' => 'p.m.',
                 'PER_VIERKANTE_METERS_PER_JAAR' => 'p.j. per m²',
+                default => '',
             });
         }
 
-        $property->setCategory($data['financieel']['overdracht']['koopEnOfHuur']['koopprijs'] ? 'Koop' : 'Huur');
-        $property->setPrice($data['financieel']['overdracht']['koopEnOfHuur']['koopprijs'] ?: $data['financieel']['overdracht']['koopEnOfHuur']['huurprijs']);
-        $property->setServiceCostPrice($data['financieel']['overdracht']['koopEnOfHuur']['servicekosten'] ?: null);
-        $property->setServiceCostVAT($data['financieel']['overdracht']['koopEnOfHuur']['servicekostenBtwBelast'] ?: null);
-        $property->setStatus($data['status']);
-        $property->setReadableStatus(KeyTranslationsHelper::status($data['status']));
+        $koopprijs = ArrayHelper::safeGetNumeric($data, 'financieel.overdracht.koopEnOfHuur.koopprijs', 0);
+        $huurprijs = ArrayHelper::safeGetNumeric($data, 'financieel.overdracht.koopEnOfHuur.huurprijs', 0);
+        $property->setCategory($koopprijs ? 'Koop' : 'Huur');
+        $property->setPrice($koopprijs ?: $huurprijs);
+
+        $servicekosten = ArrayHelper::safeGetNumeric($data, 'financieel.overdracht.koopEnOfHuur.servicekosten', 0);
+        $property->setServiceCostPrice($servicekosten ?: null);
+        $property->setServiceCostVAT(ArrayHelper::safeGet($data, 'financieel.overdracht.koopEnOfHuur.servicekostenBtwBelast') ?: null);
+
+        $status = ArrayHelper::safeGet($data, 'status', '');
+        $property->setStatus($status);
+        if ($status) {
+            $property->setReadableStatus(KeyTranslationsHelper::status($status));
+        }
 
         return $property;
     }
 
     /**
-     * @param BogObject $project
+     * @param  BogObject  $project
      */
     public function normalize($project, ?string $format = null, array $context = []): array
     {
@@ -290,12 +311,12 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
         return $data;
     }
 
-    public function supportsDenormalization($data, string $type, ?string $format = null): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === BogObject::class;
     }
 
-    public function supportsNormalization($data, string $format = null, array $context = []): bool
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof BogObject;
     }
@@ -306,5 +327,19 @@ class BogObjectNormalizer implements NormalizerInterface, DenormalizerInterface
             \App\Entity\BogObject::class => true,
             'App\Entity\BogObject[]' => true,
         ];
+    }
+
+    private function addFacilities(&$facilities, $source, $key): void
+    {
+        if (isset($source[$key])) {
+            $facilities = array_merge($facilities, $source[$key]);
+        }
+    }
+
+    private function addPlot(&$plot, $source, $key): void
+    {
+        if (isset($source[$key])) {
+            $plot += $source[$key];
+        }
     }
 }

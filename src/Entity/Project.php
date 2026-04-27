@@ -9,8 +9,6 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\GraphQl\Query;
-use ApiPlatform\Metadata\GraphQl\QueryCollection;
 use App\Repository\ProjectRepository;
 use App\State\ProjectProvider;
 use Cocur\Slugify\Slugify;
@@ -147,36 +145,6 @@ class Project
     public function __construct()
     {
         $this->constructionTypes = new ArrayCollection();
-    }
-
-    /**
-     * @param Collection<int, ConstructionType> $newTypes
-     */
-    private function updateConstructionTypes(Collection $newTypes)
-    {
-        foreach ($newTypes as $newType) {
-            /** @var ConstructionType|null $existingType */
-            $existingType = $this->constructionTypes->filter(function ($type) use ($newType) {
-                return $type->getExternalId() === $newType->getExternalId();
-            })->first();
-
-            if ($existingType) {
-                $existingType->updateFromNewType($newType);
-            } else {
-                $newType->updateFromNewType($newType);
-                $newType->setProject($this);
-                $this->constructionTypes->add($newType);
-            }
-        }
-
-        // Optionally, remove types that are no longer present
-        foreach ($this->constructionTypes as $existingType) {
-            if (!$newTypes->exists(function ($key, $type) use ($existingType) {
-                return $type->getExternalId() === $existingType->getExternalId();
-            })) {
-                $this->constructionTypes->removeElement($existingType);
-            }
-        }
     }
 
     public function __toString()
@@ -619,5 +587,35 @@ class Project
         $this->readableStatus = $readableStatus;
 
         return $this;
+    }
+
+    /**
+     * @param Collection<int, ConstructionType> $newTypes
+     */
+    private function updateConstructionTypes(Collection $newTypes)
+    {
+        foreach ($newTypes as $newType) {
+            /** @var ConstructionType|null $existingType */
+            $existingType = $this->constructionTypes->filter(function ($type) use ($newType) {
+                return $type->getExternalId() === $newType->getExternalId();
+            })->first();
+
+            if ($existingType) {
+                $existingType->updateFromNewType($newType);
+            } else {
+                $newType->updateFromNewType($newType);
+                $newType->setProject($this);
+                $this->constructionTypes->add($newType);
+            }
+        }
+
+        // Optionally, remove types that are no longer present
+        foreach ($this->constructionTypes as $existingType) {
+            if (!$newTypes->exists(function ($key, $type) use ($existingType) {
+                return $type->getExternalId() === $existingType->getExternalId();
+            })) {
+                $this->constructionTypes->removeElement($existingType);
+            }
+        }
     }
 }
