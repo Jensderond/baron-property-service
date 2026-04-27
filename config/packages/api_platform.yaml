@@ -17,5 +17,8 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+            max_age: 900
+            shared_max_age: 900
+            public: true
         normalization_context:
             skip_null_values: true
